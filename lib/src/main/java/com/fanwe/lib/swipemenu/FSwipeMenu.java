@@ -1,11 +1,9 @@
 package com.fanwe.lib.swipemenu;
 
 import android.content.Context;
-import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
-import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.Scroller;
 
@@ -134,22 +132,6 @@ public class FSwipeMenu extends BaseSwipeMenu
             });
         }
         return mGestureManager;
-    }
-
-    private void moveViews(int delta)
-    {
-        if (delta == 0)
-            return;
-
-        final View contentView = getContentView();
-
-        final int minLeft = getLeftContentViewMin();
-        final int maxLeft = getLeftContentViewMax();
-        delta = FTouchHelper.getLegalDelta(contentView.getLeft(), minLeft, maxLeft, delta);
-        if (delta == 0)
-            return;
-
-        ViewCompat.offsetLeftAndRight(contentView, delta);
     }
 
     @Override
