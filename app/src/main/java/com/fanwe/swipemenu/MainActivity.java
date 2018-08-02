@@ -20,9 +20,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         mSwipeMenu = findViewById(R.id.swipemenu);
+
+        // 设置菜单在左边打开，默认右边
         mSwipeMenu.setMenuGravity(SwipeMenu.Gravity.Left);
+        // 设置状态变化回调
         mSwipeMenu.setOnStateChangedCallback(new SwipeMenu.OnStateChangedCallback()
         {
             @Override
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId())
         {
             case R.id.btn_cancel:
+                // 关闭菜单
                 mSwipeMenu.close();
                 Toast.makeText(this, "click cancel", Toast.LENGTH_SHORT).show();
                 break;

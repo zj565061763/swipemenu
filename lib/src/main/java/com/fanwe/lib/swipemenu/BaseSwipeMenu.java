@@ -197,28 +197,6 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         }
     }
 
-    protected final void moveViews(int delta)
-    {
-        if (delta == 0)
-            return;
-
-        final View contentView = getContentView();
-
-        final int left = contentView.getLeft();
-        final int minLeft = getLeftContentViewMin();
-        final int maxLeft = getLeftContentViewMax();
-        delta = FTouchHelper.getLegalDelta(left, minLeft, maxLeft, delta);
-        if (delta == 0)
-            return;
-
-        ViewCompat.offsetLeftAndRight(contentView, delta);
-
-        if (contentView.getLeft() == getLeftContentViewClosed())
-            getMenuView().setVisibility(INVISIBLE);
-        else
-            getMenuView().setVisibility(VISIBLE);
-    }
-
     protected final void dealViewIdle()
     {
         if (isViewIdle())
