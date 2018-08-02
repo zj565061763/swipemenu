@@ -130,6 +130,14 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         }
     }
 
+    @Override
+    public void onViewRemoved(View child)
+    {
+        super.onViewRemoved(child);
+        if (child == mMenuViewContainer)
+            throw new RuntimeException("you can not remove:" + child);
+    }
+
     /**
      * 是否可以从左向右拖动
      *
