@@ -12,7 +12,7 @@ public interface SwipeMenu
     void setOnStateChangedCallback(OnStateChangedCallback callback);
 
     /**
-     * 设置菜单的位置{@link Gravity}
+     * 设置菜单的位置{@link Gravity}，默认靠右边
      *
      * @param gravity
      */
