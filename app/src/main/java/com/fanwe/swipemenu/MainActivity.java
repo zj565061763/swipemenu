@@ -33,6 +33,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.i(TAG, "onStateChanged:" + state);
             }
         });
+        // 设置位置变化回调
+        mSwipeMenu.setOnViewPositionChangeCallback(new SwipeMenu.OnViewPositionChangeCallback()
+        {
+            @Override
+            public void onViewPositionChanged(SwipeMenu swipeMenu)
+            {
+                Log.i(TAG, "onViewPositionChanged");
+            }
+        });
     }
 
     @Override
