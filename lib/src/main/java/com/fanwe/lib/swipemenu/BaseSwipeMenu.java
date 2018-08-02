@@ -169,6 +169,11 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         }
     }
 
+    /**
+     * 移动View
+     *
+     * @param delta
+     */
     protected final void moveViews(int delta)
     {
         if (delta == 0)
@@ -186,6 +191,9 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         ViewCompat.offsetLeftAndRight(contentView, delta);
     }
 
+    /**
+     * View处于静止未拖动状态时候需要执行的逻辑
+     */
     protected final void dealViewIdle()
     {
         if (isViewIdle())
