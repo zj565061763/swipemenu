@@ -300,9 +300,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             height = mContentView.getMeasuredHeight();
         }
 
-        width = Math.max(width, getSuggestedMinimumWidth());
-        height = Math.max(height, getSuggestedMinimumHeight());
-
         width = Utils.getMeasureSize(width, widthMeasureSpec);
         height = Utils.getMeasureSize(height, heightMeasureSpec);
 
