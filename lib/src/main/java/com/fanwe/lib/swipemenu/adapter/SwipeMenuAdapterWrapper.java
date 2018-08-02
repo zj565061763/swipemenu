@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 
 import com.fanwe.lib.swipemenu.FSwipeMenu;
 
-public abstract class SwipeMenuAdapterWrapper extends BaseAdapter
+public class SwipeMenuAdapterWrapper extends BaseAdapter
 {
     private final BaseAdapter mAdapter;
 
@@ -39,19 +39,19 @@ public abstract class SwipeMenuAdapterWrapper extends BaseAdapter
     };
 
     @Override
-    public int getCount()
+    public final int getCount()
     {
         return mAdapter.getCount();
     }
 
     @Override
-    public Object getItem(int position)
+    public final Object getItem(int position)
     {
         return mAdapter.getItem(position);
     }
 
     @Override
-    public long getItemId(int position)
+    public final long getItemId(int position)
     {
         return mAdapter.getItemId(position);
     }
