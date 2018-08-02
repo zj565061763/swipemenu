@@ -9,11 +9,21 @@
         android:layout_width="match_parent"
         android:layout_height="100dp">
 
-        <TextView
+        <!-- 内容view -->
+        <FrameLayout
+            android:id="@+id/fl_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimary" />
+            android:onClick="onClick">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary" />
+
+        </FrameLayout>
+
+        <!-- 菜单view -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

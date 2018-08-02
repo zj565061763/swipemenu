@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_delete:
                 Toast.makeText(this, "click delete", Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.fl_content:
+                Toast.makeText(this, "click content", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 }
