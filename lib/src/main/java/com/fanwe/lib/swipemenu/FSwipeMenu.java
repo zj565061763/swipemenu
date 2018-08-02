@@ -16,15 +16,12 @@ public class FSwipeMenu extends BaseSwipeMenu
 {
     private FGestureManager mGestureManager;
     private FScroller mScroller;
-
     private final int mTouchSlop;
-    private final int mMinFlingVelocity;
 
     public FSwipeMenu(Context context, AttributeSet attrs)
     {
         super(context, attrs);
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-        mMinFlingVelocity = ViewConfiguration.get(context).getScaledMinimumFlingVelocity();
     }
 
     private FScroller getScroller()
@@ -85,34 +82,9 @@ public class FSwipeMenu extends BaseSwipeMenu
                 {
                     if (hasConsumeEvent)
                     {
-                        final int leftStart = getContentView().getLeft();
-                        int leftEnd = 0;
-
                         velocityTracker.computeCurrentVelocity(1000);
                         final int velocityX = (int) velocityTracker.getXVelocity();
-                        if (Math.abs(velocityX) > mMinFlingVelocity)
-                        {
-                            if (velocityX > 0)
-                            {
-                                leftEnd = getLeftContentViewMax();
-                            } else
-                            {
-                                leftEnd = getLeftContentViewMin();
-                            }
-                        } else
-                        {
-                            final int leftMin = getLeftContentViewMin();
-                            final int leftMax = getLeftContentViewMax();
-                            if (leftStart >= ((leftMin + leftMax) / 2))
-                            {
-                                leftEnd = getLeftContentViewMax();
-                            } else
-                            {
-                                leftEnd = getLeftContentViewMin();
-                            }
-                        }
-
-                        smoothScroll(leftStart, leftEnd);
+                        dealDragFinish(velocityX);
                     }
                 }
             });

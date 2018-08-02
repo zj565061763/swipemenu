@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
 import com.fanwe.lib.gesture.FTouchHelper;
@@ -14,6 +15,7 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     private View mContentView;
 
     private State mState = State.Closed;
+    private final int mMinFlingVelocity;
     private OnStateChangedCallback mOnStateChangedCallback;
 
     public BaseSwipeMenu(Context context, AttributeSet attrs)
@@ -22,6 +24,8 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         mMenuViewContainer = new MenuViewContainer(context);
         mMenuViewContainer.setMenuGravity(Gravity.Right);
         addView(mMenuViewContainer);
+
+        mMinFlingVelocity = ViewConfiguration.get(context).getScaledMinimumFlingVelocity();
     }
 
     @Override
@@ -189,6 +193,41 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             return;
 
         ViewCompat.offsetLeftAndRight(contentView, delta);
+    }
+
+    /**
+     * 拖动结束后需要执行的逻辑
+     *
+     * @param velocityX
+     */
+    protected final void dealDragFinish(int velocityX)
+    {
+        final int leftStart = getContentView().getLeft();
+        int leftEnd = 0;
+
+        if (Math.abs(velocityX) > mMinFlingVelocity)
+        {
+            if (velocityX > 0)
+            {
+                leftEnd = getLeftContentViewMax();
+            } else
+            {
+                leftEnd = getLeftContentViewMin();
+            }
+        } else
+        {
+            final int leftMin = getLeftContentViewMin();
+            final int leftMax = getLeftContentViewMax();
+            if (leftStart >= ((leftMin + leftMax) / 2))
+            {
+                leftEnd = getLeftContentViewMax();
+            } else
+            {
+                leftEnd = getLeftContentViewMin();
+            }
+        }
+
+        smoothScroll(leftStart, leftEnd);
     }
 
     /**
