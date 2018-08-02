@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.fanwe.lib.gesture.FTouchHelper;
 
-public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
+abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 {
     private final MenuViewContainer mMenuViewContainer;
     private View mContentView;
