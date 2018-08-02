@@ -72,7 +72,7 @@ final class MenuViewContainer extends LinearLayout
             case Left:
                 return getLeftForContentView(SwipeMenu.State.Closed);
             default:
-                throw new AssertionError("unknow gravity:" + mMenuGravity);
+                throw new AssertionError();
         }
     }
 
@@ -85,7 +85,7 @@ final class MenuViewContainer extends LinearLayout
             case Left:
                 return getLeftForContentView(SwipeMenu.State.Opened);
             default:
-                throw new AssertionError("unknow gravity:" + mMenuGravity);
+                throw new AssertionError();
         }
     }
 
@@ -104,7 +104,7 @@ final class MenuViewContainer extends LinearLayout
             case Left:
                 return mMenuView.getMeasuredWidth();
             default:
-                throw new AssertionError("unknow gravity:" + mMenuGravity);
+                throw new AssertionError();
         }
     }
 

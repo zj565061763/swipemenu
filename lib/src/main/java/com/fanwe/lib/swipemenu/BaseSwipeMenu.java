@@ -145,7 +145,7 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             case Left:
                 return mState == State.Closed;
             default:
-                throw new AssertionError("unknow gravity");
+                throw new AssertionError();
         }
     }
 
@@ -163,7 +163,7 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             case Left:
                 return mState == State.Opened;
             default:
-                throw new AssertionError("unknow gravity");
+                throw new AssertionError();
         }
     }
 
