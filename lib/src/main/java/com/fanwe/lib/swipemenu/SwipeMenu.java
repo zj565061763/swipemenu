@@ -19,6 +19,34 @@ public interface SwipeMenu
     void setMenuGravity(Gravity gravity);
 
     /**
+     * 设置菜单view
+     *
+     * @param view
+     */
+    void setMenuView(View view);
+
+    /**
+     * 设置内容view
+     *
+     * @param view
+     */
+    void setContentView(View view);
+
+    /**
+     * 返回内容view
+     *
+     * @return
+     */
+    View getContentView();
+
+    /**
+     * 返回当前的状态{@link State}
+     *
+     * @return
+     */
+    State getState();
+
+    /**
      * 打开菜单
      */
     void open();
@@ -27,27 +55,6 @@ public interface SwipeMenu
      * 关闭菜单
      */
     void close();
-
-    /**
-     * 设置菜单View
-     *
-     * @param view
-     */
-    void setMenuView(View view);
-
-    /**
-     * 设置内容View
-     *
-     * @param view
-     */
-    void setContentView(View view);
-
-    /**
-     * 返回当前的状态{@link State}
-     *
-     * @return
-     */
-    State getState();
 
     enum State
     {
