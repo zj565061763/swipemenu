@@ -39,6 +39,18 @@ public class SwipeMenuAdapterWrapper extends BaseAdapter
     };
 
     @Override
+    public final int getViewTypeCount()
+    {
+        return mAdapter.getViewTypeCount();
+    }
+
+    @Override
+    public final int getItemViewType(int position)
+    {
+        return mAdapter.getItemViewType(position);
+    }
+
+    @Override
     public final int getCount()
     {
         return mAdapter.getCount();
@@ -66,7 +78,7 @@ public class SwipeMenuAdapterWrapper extends BaseAdapter
         } else
         {
             swipeMenu = new FSwipeMenu(parent.getContext(), null);
-            swipeMenu.setMenuView(((SwipeMenuAdapter) mAdapter).onCreateMenuView(parent.getContext()));
+            swipeMenu.setMenuView(((SwipeMenuAdapter) mAdapter).onCreateMenuView(position, parent.getContext()));
         }
 
         final View contentView = mAdapter.getView(position, swipeMenu.getContentView(), parent);

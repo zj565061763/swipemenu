@@ -7,7 +7,7 @@ import com.fanwe.lib.swipemenu.SwipeMenu;
 
 public interface SwipeMenuAdapter
 {
-    View onCreateMenuView(Context context);
+    View onCreateMenuView(int position, Context context);
 
     void onBindData(int position, View convertView, SwipeMenu swipeMenu);
 }
