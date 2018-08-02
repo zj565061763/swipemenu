@@ -35,18 +35,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
-    public final void setMenuGravity(Gravity gravity)
-    {
-        mMenuViewContainer.setMenuGravity(gravity);
-    }
-
-    @Override
-    public final void setMenuView(View view)
-    {
-        mMenuViewContainer.setContentView(view);
-    }
-
-    @Override
     public final void setContentView(View view)
     {
         if (mContentView != view)
@@ -61,9 +49,27 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
+    public final void setMenuView(View view)
+    {
+        mMenuViewContainer.setContentView(view);
+    }
+
+    @Override
+    public final void setMenuGravity(Gravity gravity)
+    {
+        mMenuViewContainer.setMenuGravity(gravity);
+    }
+
+    @Override
     public final View getContentView()
     {
         return mContentView;
+    }
+
+    @Override
+    public View getMenuView()
+    {
+        return mMenuViewContainer.getContentView();
     }
 
     @Override

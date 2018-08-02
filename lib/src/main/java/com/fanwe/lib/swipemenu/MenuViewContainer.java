@@ -9,7 +9,7 @@ final class MenuViewContainer extends ViewGroup
 {
     private SwipeMenu.Gravity mMenuGravity;
     private boolean mLockEvent;
-    private View mMenuView;
+    private View mContentView;
 
     public MenuViewContainer(Context context)
     {
@@ -30,6 +30,11 @@ final class MenuViewContainer extends ViewGroup
         Utils.removeViewFromParent(view);
         removeAllViews();
         addView(view);
+    }
+
+    public View getContentView()
+    {
+        return mContentView;
     }
 
     @Override
@@ -62,7 +67,7 @@ final class MenuViewContainer extends ViewGroup
 
     public int getMaxScrollDistance()
     {
-        return mMenuView == null ? 0 : mMenuView.getMeasuredWidth();
+        return mContentView == null ? 0 : mContentView.getMeasuredWidth();
     }
 
     public int getLeftContentViewMin()
@@ -96,15 +101,15 @@ final class MenuViewContainer extends ViewGroup
         if (state == SwipeMenu.State.Closed)
             return 0;
 
-        if (mMenuView == null)
+        if (mContentView == null)
             return 0;
 
         switch (mMenuGravity)
         {
             case Right:
-                return -mMenuView.getMeasuredWidth();
+                return -mContentView.getMeasuredWidth();
             case Left:
-                return mMenuView.getMeasuredWidth();
+                return mContentView.getMeasuredWidth();
             default:
                 throw new AssertionError();
         }
@@ -138,7 +143,7 @@ final class MenuViewContainer extends ViewGroup
         if (getChildCount() > 1)
             throw new RuntimeException("MenuViewContainer can only has one child at most");
 
-        mMenuView = child;
+        mContentView = child;
     }
 
     @Override
@@ -147,11 +152,11 @@ final class MenuViewContainer extends ViewGroup
         int width = 0;
         int height = 0;
 
-        if (mMenuView != null && mMenuView.getVisibility() != GONE)
+        if (mContentView != null && mContentView.getVisibility() != GONE)
         {
-            measureChild(mMenuView, widthMeasureSpec, heightMeasureSpec);
-            width = mMenuView.getMeasuredWidth();
-            height = mMenuView.getMeasuredHeight();
+            measureChild(mContentView, widthMeasureSpec, heightMeasureSpec);
+            width = mContentView.getMeasuredWidth();
+            height = mContentView.getMeasuredHeight();
         }
 
         width = Utils.getMeasureSize(width, widthMeasureSpec);
@@ -163,10 +168,10 @@ final class MenuViewContainer extends ViewGroup
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
-        if (mMenuView != null && mMenuView.getVisibility() != GONE)
+        if (mContentView != null && mContentView.getVisibility() != GONE)
         {
-            final int left = mMenuGravity == SwipeMenu.Gravity.Left ? 0 : (getMeasuredWidth() - mMenuView.getMeasuredWidth());
-            mMenuView.layout(left, 0, left + mMenuView.getMeasuredWidth(), mMenuView.getMeasuredHeight());
+            final int left = mMenuGravity == SwipeMenu.Gravity.Left ? 0 : (getMeasuredWidth() - mContentView.getMeasuredWidth());
+            mContentView.layout(left, 0, left + mContentView.getMeasuredWidth(), mContentView.getMeasuredHeight());
         }
     }
 }

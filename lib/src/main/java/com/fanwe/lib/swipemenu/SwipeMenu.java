@@ -12,11 +12,11 @@ public interface SwipeMenu
     void setOnStateChangedCallback(OnStateChangedCallback callback);
 
     /**
-     * 设置菜单的位置{@link Gravity}，默认靠右边
+     * 设置内容view
      *
-     * @param gravity
+     * @param view
      */
-    void setMenuGravity(Gravity gravity);
+    void setContentView(View view);
 
     /**
      * 设置菜单view
@@ -26,11 +26,11 @@ public interface SwipeMenu
     void setMenuView(View view);
 
     /**
-     * 设置内容view
+     * 设置菜单的位置{@link Gravity}，默认靠右边
      *
-     * @param view
+     * @param gravity
      */
-    void setContentView(View view);
+    void setMenuGravity(Gravity gravity);
 
     /**
      * 返回内容view
@@ -38,6 +38,13 @@ public interface SwipeMenu
      * @return
      */
     View getContentView();
+
+    /**
+     * 返回菜单view
+     *
+     * @return
+     */
+    View getMenuView();
 
     /**
      * 返回当前的状态{@link State}
