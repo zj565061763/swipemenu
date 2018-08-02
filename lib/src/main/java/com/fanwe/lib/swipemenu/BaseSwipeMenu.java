@@ -166,6 +166,16 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         }
     }
 
+    private int getLeftContentViewMin()
+    {
+        return mMenuViewContainer.getLeftContentViewMin();
+    }
+
+    private int getLeftContentViewMax()
+    {
+        return mMenuViewContainer.getLeftContentViewMax();
+    }
+
     /**
      * 移动View
      *
@@ -179,9 +189,10 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         final View contentView = getContentView();
 
         final int left = contentView.getLeft();
-        final int minLeft = getLeftContentViewMin();
-        final int maxLeft = getLeftContentViewMax();
-        delta = FTouchHelper.getLegalDelta(left, minLeft, maxLeft, delta);
+        final int leftMin = getLeftContentViewMin();
+        final int leftMax = getLeftContentViewMax();
+
+        delta = FTouchHelper.getLegalDelta(left, leftMin, leftMax, delta);
         if (delta == 0)
             return;
 
@@ -195,22 +206,22 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected final void dealDragFinish(int velocityX)
     {
-        final int leftStart = getContentView().getLeft();
+        final int leftstart = getContentView().getLeft();
         int leftEnd = 0;
+
+        final int leftMin = getLeftContentViewMin();
+        final int leftMax = getLeftContentViewMax();
 
         if (Math.abs(velocityX) > mMinFlingVelocity)
         {
-            leftEnd = velocityX > 0 ? getLeftContentViewMax() : getLeftContentViewMin();
+            leftEnd = velocityX > 0 ? leftMax : leftMin;
         } else
         {
-            final int leftMin = getLeftContentViewMin();
-            final int leftMax = getLeftContentViewMax();
             final int leftMiddle = (leftMin + leftMax) / 2;
-
-            leftEnd = leftStart >= leftMiddle ? leftMax : leftMin;
+            leftEnd = leftstart >= leftMiddle ? leftMax : leftMin;
         }
 
-        smoothScroll(leftStart, leftEnd);
+        smoothScroll(leftstart, leftEnd);
     }
 
     private boolean smoothScroll(int start, int end)
@@ -280,16 +291,6 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      * @return
      */
     protected abstract boolean isViewIdle();
-
-    protected final int getLeftContentViewMin()
-    {
-        return mMenuViewContainer.getLeftContentViewMin();
-    }
-
-    protected final int getLeftContentViewMax()
-    {
-        return mMenuViewContainer.getLeftContentViewMax();
-    }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
