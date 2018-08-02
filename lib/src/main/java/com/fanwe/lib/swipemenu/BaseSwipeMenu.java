@@ -52,18 +52,6 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         smoothScroll(getContentView().getLeft(), mMenuViewContainer.getLeftForContentView(State.Closed));
     }
 
-    protected final boolean smoothScroll(int start, int end)
-    {
-        final boolean scrolled = onSmoothScroll(start, end);
-        if (scrolled)
-            invalidate();
-        else
-            dealViewIdle();
-        return scrolled;
-    }
-
-    protected abstract boolean onSmoothScroll(int start, int end);
-
     @Override
     public final void setMenuView(View view)
     {
@@ -229,6 +217,18 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         smoothScroll(leftStart, leftEnd);
     }
+
+    private boolean smoothScroll(int start, int end)
+    {
+        final boolean scrolled = onSmoothScroll(start, end);
+        if (scrolled)
+            invalidate();
+        else
+            dealViewIdle();
+        return scrolled;
+    }
+
+    protected abstract boolean onSmoothScroll(int start, int end);
 
     /**
      * View处于静止未拖动状态时候需要执行的逻辑
