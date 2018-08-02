@@ -1,11 +1,9 @@
 package com.fanwe.lib.swipemenu;
 
 import android.content.Context;
-import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
-import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.Scroller;
 
@@ -136,23 +134,6 @@ public class FSwipeMenu extends BaseSwipeMenu
         return mGestureManager;
     }
 
-    protected final void moveViews(int delta)
-    {
-        if (delta == 0)
-            return;
-
-        final View contentView = getContentView();
-
-        final int left = contentView.getLeft();
-        final int minLeft = getLeftContentViewMin();
-        final int maxLeft = getLeftContentViewMax();
-        delta = FTouchHelper.getLegalDelta(left, minLeft, maxLeft, delta);
-        if (delta == 0)
-            return;
-
-        ViewCompat.offsetLeftAndRight(contentView, delta);
-    }
-
     @Override
     protected boolean onSmoothScroll(int start, int end)
     {
@@ -190,7 +171,7 @@ public class FSwipeMenu extends BaseSwipeMenu
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
         super.onLayout(changed, l, t, r, b);
-        getScroller().setMaxScrollDistance(getMenuView().getMeasuredWidth());
+        getScroller().setMaxScrollDistance(getMaxScrollDistance());
     }
 
     @Override

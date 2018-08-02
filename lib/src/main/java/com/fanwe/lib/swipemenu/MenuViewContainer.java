@@ -63,6 +63,11 @@ final class MenuViewContainer extends LinearLayout
         return mMenuGravity;
     }
 
+    public int getMaxScrollDistance()
+    {
+        return mMenuView == null ? 0 : mMenuView.getMeasuredWidth();
+    }
+
     public int getLeftContentViewMin()
     {
         switch (mMenuGravity)

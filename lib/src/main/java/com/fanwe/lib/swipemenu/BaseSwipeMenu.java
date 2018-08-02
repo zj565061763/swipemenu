@@ -6,6 +6,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fanwe.lib.gesture.FTouchHelper;
+
 public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 {
     private final MenuViewContainer mMenuViewContainer;
@@ -84,9 +86,9 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         return mState;
     }
 
-    protected final View getMenuView()
+    protected final int getMaxScrollDistance()
     {
-        return mMenuViewContainer;
+        return mMenuViewContainer.getMaxScrollDistance();
     }
 
     protected final View getContentView()
@@ -165,6 +167,23 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             default:
                 throw new AssertionError();
         }
+    }
+
+    protected final void moveViews(int delta)
+    {
+        if (delta == 0)
+            return;
+
+        final View contentView = getContentView();
+
+        final int left = contentView.getLeft();
+        final int minLeft = getLeftContentViewMin();
+        final int maxLeft = getLeftContentViewMax();
+        delta = FTouchHelper.getLegalDelta(left, minLeft, maxLeft, delta);
+        if (delta == 0)
+            return;
+
+        ViewCompat.offsetLeftAndRight(contentView, delta);
     }
 
     protected final void dealViewIdle()
