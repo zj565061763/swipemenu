@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // 设置菜单在左边打开，默认右边
         mSwipeMenu.setMenuGravity(SwipeMenu.Gravity.Left);
         // 设置状态变化回调
-        mSwipeMenu.setOnStateChangedCallback(new SwipeMenu.OnStateChangedCallback()
+        mSwipeMenu.setOnStateChangeCallback(new SwipeMenu.OnStateChangeCallback()
         {
             @Override
             public void onStateChanged(SwipeMenu.State state, SwipeMenu swipeMenu)

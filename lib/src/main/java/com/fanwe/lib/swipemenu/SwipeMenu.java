@@ -9,7 +9,9 @@ public interface SwipeMenu
      *
      * @param callback
      */
-    void setOnStateChangedCallback(OnStateChangedCallback callback);
+    void setOnStateChangeCallback(OnStateChangeCallback callback);
+
+    void setOnViewPositionChangeCallback(OnViewPositionChangeCallback callback);
 
     /**
      * 设置内容view
@@ -87,7 +89,7 @@ public interface SwipeMenu
         Right
     }
 
-    interface OnStateChangedCallback
+    interface OnStateChangeCallback
     {
         /**
          * 状态变更回调
@@ -96,5 +98,15 @@ public interface SwipeMenu
          * @param swipeMenu
          */
         void onStateChanged(State state, SwipeMenu swipeMenu);
+    }
+
+    interface OnViewPositionChangeCallback
+    {
+        /**
+         * view位置变化回调，侧滑菜单滑动或者拖动
+         *
+         * @param swipeMenu
+         */
+        void onViewPositionChanged(SwipeMenu swipeMenu);
     }
 }

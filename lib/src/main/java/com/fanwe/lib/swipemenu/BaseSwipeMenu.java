@@ -16,7 +16,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
     private State mState = State.Closed;
     private final int mMinFlingVelocity;
-    private OnStateChangedCallback mOnStateChangedCallback;
+
+    private OnStateChangeCallback mOnStateChangeCallback;
+    private OnViewPositionChangeCallback mOnViewPositionChangeCallback;
 
     public BaseSwipeMenu(Context context, AttributeSet attrs)
     {
@@ -29,9 +31,15 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
-    public final void setOnStateChangedCallback(OnStateChangedCallback callback)
+    public final void setOnStateChangeCallback(OnStateChangeCallback callback)
     {
-        mOnStateChangedCallback = callback;
+        mOnStateChangeCallback = callback;
+    }
+
+    @Override
+    public final void setOnViewPositionChangeCallback(OnViewPositionChangeCallback callback)
+    {
+        mOnViewPositionChangeCallback = callback;
     }
 
     @Override
@@ -116,8 +124,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         mState = state;
 
-        if (mOnStateChangedCallback != null)
-            mOnStateChangedCallback.onStateChanged(state, this);
+        if (mOnStateChangeCallback != null)
+            mOnStateChangeCallback.onStateChanged(state, this);
     }
 
     @Override
@@ -216,6 +224,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         final boolean totalOpened = mContentView.getLeft() == mMenuViewContainer.getLeftForContentView(State.Opened);
         mMenuViewContainer.setLockEvent(!totalOpened);
+
+        if (mOnViewPositionChangeCallback != null)
+            mOnViewPositionChangeCallback.onViewPositionChanged(this);
     }
 
     /**
