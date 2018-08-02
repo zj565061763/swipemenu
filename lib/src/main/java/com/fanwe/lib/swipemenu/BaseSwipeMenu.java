@@ -78,12 +78,17 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         return mState;
     }
 
+    /**
+     * 返回View可以滚动的最大距离
+     *
+     * @return
+     */
     protected final int getMaxScrollDistance()
     {
         return mMenuViewContainer.getMaxScrollDistance();
     }
 
-    protected final View getContentView()
+    private View getContentView()
     {
         if (mContentView == null)
         {
@@ -195,24 +200,14 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         if (Math.abs(velocityX) > mMinFlingVelocity)
         {
-            if (velocityX > 0)
-            {
-                leftEnd = getLeftContentViewMax();
-            } else
-            {
-                leftEnd = getLeftContentViewMin();
-            }
+            leftEnd = velocityX > 0 ? getLeftContentViewMax() : getLeftContentViewMin();
         } else
         {
             final int leftMin = getLeftContentViewMin();
             final int leftMax = getLeftContentViewMax();
-            if (leftStart >= ((leftMin + leftMax) / 2))
-            {
-                leftEnd = getLeftContentViewMax();
-            } else
-            {
-                leftEnd = getLeftContentViewMin();
-            }
+            final int leftMiddle = (leftMin + leftMax) / 2;
+
+            leftEnd = leftStart >= leftMiddle ? leftMax : leftMin;
         }
 
         smoothScroll(leftStart, leftEnd);
