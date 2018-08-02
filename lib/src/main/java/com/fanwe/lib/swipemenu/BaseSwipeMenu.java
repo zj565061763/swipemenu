@@ -6,8 +6,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fanwe.lib.gesture.FTouchHelper;
-
 public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 {
     private View mMenuView;
@@ -44,16 +42,26 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     public final void open()
     {
-        onSmoothSlide(getContentView().getLeft(), getLeftContentViewOpened());
+        smoothScroll(getContentView().getLeft(), getLeftContentViewOpened());
     }
 
     @Override
     public final void close()
     {
-        onSmoothSlide(getContentView().getLeft(), getLeftContentViewClosed());
+        smoothScroll(getContentView().getLeft(), getLeftContentViewClosed());
     }
 
-    protected abstract boolean onSmoothSlide(int start, int end);
+    protected final boolean smoothScroll(int start, int end)
+    {
+        final boolean scrolled = onSmoothScroll(start, end);
+        if (scrolled)
+            invalidate();
+        else
+            dealViewIdle();
+        return scrolled;
+    }
+
+    protected abstract boolean onSmoothScroll(int start, int end);
 
     @Override
     public final void setMenuView(View view)

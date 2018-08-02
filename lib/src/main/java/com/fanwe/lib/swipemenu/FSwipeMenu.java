@@ -114,7 +114,7 @@ public class FSwipeMenu extends BaseSwipeMenu
                             }
                         }
 
-                        onSmoothSlide(leftStart, leftEnd);
+                        smoothScroll(leftStart, leftEnd);
                     }
                 }
             });
@@ -154,15 +154,10 @@ public class FSwipeMenu extends BaseSwipeMenu
     }
 
     @Override
-    protected boolean onSmoothSlide(int start, int end)
+    protected boolean onSmoothScroll(int start, int end)
     {
         getScroller().abortAnimation();
-        final boolean scrolled = getScroller().scrollToX(start, end, -1);
-        if (scrolled)
-            invalidate();
-        else
-            dealViewIdle();
-        return scrolled;
+        return getScroller().scrollToX(start, end, -1);
     }
 
     private boolean canPull()
