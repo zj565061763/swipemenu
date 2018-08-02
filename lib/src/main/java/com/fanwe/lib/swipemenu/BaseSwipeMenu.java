@@ -197,6 +197,9 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             return;
 
         ViewCompat.offsetLeftAndRight(contentView, delta);
+
+        final boolean totalOpened = contentView.getLeft() == mMenuViewContainer.getLeftForContentView(State.Opened);
+        mMenuViewContainer.setLockEvent(!totalOpened);
     }
 
     /**
