@@ -20,8 +20,6 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     public BaseSwipeMenu(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-        setMenuView(null);
-        setContentView(null);
     }
 
     @Override
@@ -246,12 +244,13 @@ public abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         int height = 0;
 
         final View contentView = getContentView();
+        final View menuView = getMenuView();
+
         if (contentView.getVisibility() != GONE)
         {
             contentView.measure(getChildMeasureSpec(widthMeasureSpec, 0, contentView.getLayoutParams().width),
                     getChildMeasureSpec(heightMeasureSpec, 0, contentView.getLayoutParams().height));
 
-            final View menuView = getMenuView();
             menuView.measure(getChildMeasureSpec(widthMeasureSpec, 0, menuView.getLayoutParams().width),
                     MeasureSpec.makeMeasureSpec(contentView.getMeasuredHeight(), MeasureSpec.EXACTLY));
 
