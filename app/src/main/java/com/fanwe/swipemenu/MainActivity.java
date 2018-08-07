@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             case R.id.btn_cancel:
                 // 关闭菜单
-                mSwipeMenu.open(false, true, false);
+                mSwipeMenu.open(false, true, true);
                 Toast.makeText(this, "click cancel", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_delete:
