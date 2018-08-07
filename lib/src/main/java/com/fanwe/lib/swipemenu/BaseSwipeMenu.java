@@ -26,7 +26,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         super(context, attrs);
 
         mContentContainer = new ContentContainer(context);
-        mContentContainer.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         addView(mContentContainer);
 
         mMenuContainer = new MenuContainer(context);
@@ -348,12 +347,12 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
-        measureChild(mContentContainer, widthMeasureSpec, heightMeasureSpec);
+        mContentContainer.measure(widthMeasureSpec, heightMeasureSpec);
 
         int width = mContentContainer.getMeasuredWidth();
         int height = mContentContainer.getMeasuredHeight();
 
-        mMenuContainer.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
+        mMenuContainer.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.AT_MOST),
                 MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
 
         width = Utils.getMeasureSize(width, widthMeasureSpec);
