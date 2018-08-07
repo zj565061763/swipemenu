@@ -23,18 +23,18 @@ final class MenuViewContainer extends ViewGroup
      */
     public void setMenuView(View view)
     {
-        if (view == null)
+        if (mMenuView != view)
         {
+            mMenuView = null;
             removeAllViews();
-            return;
+
+            if (view != null)
+            {
+                mMenuView = view;
+                Utils.removeViewFromParent(view);
+                addView(view);
+            }
         }
-
-        if (view.getParent() == this)
-            return;
-
-        Utils.removeViewFromParent(view);
-        removeAllViews();
-        addView(view);
     }
 
     /**
@@ -104,10 +104,16 @@ final class MenuViewContainer extends ViewGroup
     public void onViewAdded(View child)
     {
         super.onViewAdded(child);
-        if (getChildCount() > 1)
-            throw new RuntimeException("MenuViewContainer can only has one child at most");
+        if (mMenuView != child)
+            throw new RuntimeException("you can not add menu view this way");
+    }
 
-        mMenuView = child;
+    @Override
+    public void onViewRemoved(View child)
+    {
+        super.onViewRemoved(child);
+        if (mMenuView != null)
+            throw new RuntimeException("you can not remove menu view this way");
     }
 
     @Override
