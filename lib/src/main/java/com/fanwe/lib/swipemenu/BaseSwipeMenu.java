@@ -102,18 +102,22 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             return;
 
         mIsOpened = open;
-
-        abortAnimation();
-        if (anim)
-            smoothScroll(mContentView.getLeft(), mMenuViewContainer.getLeftForContentView(open));
-        else
-            requestLayout();
+        updateViewByState(anim);
 
         if (notify)
         {
             if (mOnStateChangeCallback != null)
                 mOnStateChangeCallback.onStateChanged(mIsOpened, this);
         }
+    }
+
+    private void updateViewByState(boolean anim)
+    {
+        abortAnimation();
+        if (anim)
+            smoothScroll(mContentView.getLeft(), mMenuViewContainer.getLeftForContentView(mIsOpened));
+        else
+            requestLayout();
     }
 
     /**
