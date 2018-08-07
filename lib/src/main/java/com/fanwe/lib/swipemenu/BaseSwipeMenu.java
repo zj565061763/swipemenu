@@ -76,13 +76,18 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
-    public View getMenuView()
+    public final View getMenuView()
     {
         return mMenuViewContainer.getMenuView();
     }
 
+    public final Gravity getMenuGravity()
+    {
+        return mMenuViewContainer.getMenuGravity();
+    }
+
     @Override
-    public boolean isOpened()
+    public final boolean isOpened()
     {
         return mIsOpened;
     }
@@ -115,7 +120,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     {
         abortAnimation();
         if (anim)
-            smoothScroll(mContentView.getLeft(), mMenuViewContainer.getLeftForContentView(mIsOpened));
+            smoothScroll(mContentView.getLeft(), getLeftForContentView(mIsOpened));
         else
             requestLayout();
     }
@@ -127,9 +132,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected final int getMaxScrollDistance()
     {
-        return mMenuViewContainer.getMaxScrollDistance();
+        final View view = getMenuView();
+        return view == null ? 0 : view.getMeasuredWidth();
     }
-
 
     @Override
     protected void onFinishInflate()
@@ -164,7 +169,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected final boolean canPullLeftToRight()
     {
-        switch (mMenuViewContainer.getMenuGravity())
+        switch (getMenuGravity())
         {
             case Right:
                 return mIsOpened;
@@ -182,7 +187,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected final boolean canPullRightToLeft()
     {
-        switch (mMenuViewContainer.getMenuGravity())
+        switch (getMenuGravity())
         {
             case Right:
                 return !mIsOpened;
@@ -193,14 +198,50 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         }
     }
 
-    private int getLeftContentViewMin()
+    private int getLeftMinForContentView()
     {
-        return mMenuViewContainer.getLeftContentViewMin();
+        switch (getMenuGravity())
+        {
+            case Right:
+                return getLeftForContentView(true);
+            case Left:
+                return getLeftForContentView(false);
+            default:
+                throw new AssertionError();
+        }
     }
 
-    private int getLeftContentViewMax()
+    private int getLeftMaxForContentView()
     {
-        return mMenuViewContainer.getLeftContentViewMax();
+        switch (getMenuGravity())
+        {
+            case Right:
+                return getLeftForContentView(false);
+            case Left:
+                return getLeftForContentView(true);
+            default:
+                throw new AssertionError();
+        }
+    }
+
+    private int getLeftForContentView(boolean opened)
+    {
+        if (!opened)
+            return 0;
+
+        final View menuView = getMenuView();
+        if (menuView == null)
+            return 0;
+
+        switch (getMenuGravity())
+        {
+            case Right:
+                return -menuView.getMeasuredWidth();
+            case Left:
+                return menuView.getMeasuredWidth();
+            default:
+                throw new AssertionError();
+        }
     }
 
     /**
@@ -216,8 +257,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             return;
 
         final int left = mContentView.getLeft();
-        final int leftMin = getLeftContentViewMin();
-        final int leftMax = getLeftContentViewMax();
+        final int leftMin = getLeftMinForContentView();
+        final int leftMax = getLeftMaxForContentView();
 
         delta = FTouchHelper.getLegalDelta(left, leftMin, leftMax, delta);
         if (delta == 0)
@@ -225,7 +266,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         ViewCompat.offsetLeftAndRight(mContentView, delta);
 
-        final boolean totalOpened = mContentView.getLeft() == mMenuViewContainer.getLeftForContentView(true);
+        final boolean totalOpened = mContentView.getLeft() == getLeftForContentView(true);
         mMenuViewContainer.setLockEvent(!totalOpened);
 
         if (mOnViewPositionChangeCallback != null)
@@ -245,8 +286,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         final int leftstart = mContentView.getLeft();
         int leftEnd = 0;
 
-        final int leftMin = getLeftContentViewMin();
-        final int leftMax = getLeftContentViewMax();
+        final int leftMin = getLeftMinForContentView();
+        final int leftMax = getLeftMaxForContentView();
 
         if (Math.abs(velocityX) > mMinFlingVelocity)
         {
@@ -295,10 +336,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (isViewIdle())
         {
             final int left = mContentView.getLeft();
-            if (left == mMenuViewContainer.getLeftForContentView(true))
+            if (left == getLeftForContentView(true))
             {
                 openInternal(true, false, true);
-            } else if (left == mMenuViewContainer.getLeftForContentView(false))
+            } else if (left == getLeftForContentView(false))
             {
                 openInternal(false, false, true);
             } else
@@ -350,7 +391,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         int top = 0;
         if (isViewIdle())
         {
-            left = mMenuViewContainer.getLeftForContentView(mIsOpened);
+            left = getLeftForContentView(mIsOpened);
             top = 0;
         } else
         {

@@ -54,6 +54,13 @@ public interface SwipeMenu
     View getMenuView();
 
     /**
+     * 返回菜单位置
+     *
+     * @return {@link Gravity}
+     */
+    Gravity getMenuGravity();
+
+    /**
      * 是否处于打开状态
      *
      * @return

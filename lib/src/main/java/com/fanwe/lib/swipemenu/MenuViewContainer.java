@@ -16,6 +16,11 @@ final class MenuViewContainer extends ViewGroup
         super(context);
     }
 
+    /**
+     * 设置菜单view
+     *
+     * @param view
+     */
     public void setMenuView(View view)
     {
         if (view == null)
@@ -32,15 +37,14 @@ final class MenuViewContainer extends ViewGroup
         addView(view);
     }
 
+    /**
+     * 返回菜单view
+     *
+     * @return
+     */
     public View getMenuView()
     {
         return mMenuView;
-    }
-
-    @Override
-    protected LayoutParams generateDefaultLayoutParams()
-    {
-        return new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
     /**
@@ -60,61 +64,21 @@ final class MenuViewContainer extends ViewGroup
         }
     }
 
+    /**
+     * 返回菜单位置
+     *
+     * @return
+     */
     public SwipeMenu.Gravity getMenuGravity()
     {
         return mMenuGravity;
     }
 
-    public int getMaxScrollDistance()
-    {
-        return mMenuView == null ? 0 : mMenuView.getMeasuredWidth();
-    }
-
-    public int getLeftContentViewMin()
-    {
-        switch (mMenuGravity)
-        {
-            case Right:
-                return getLeftForContentView(true);
-            case Left:
-                return getLeftForContentView(false);
-            default:
-                throw new AssertionError();
-        }
-    }
-
-    public int getLeftContentViewMax()
-    {
-        switch (mMenuGravity)
-        {
-            case Right:
-                return getLeftForContentView(false);
-            case Left:
-                return getLeftForContentView(true);
-            default:
-                throw new AssertionError();
-        }
-    }
-
-    public int getLeftForContentView(boolean opened)
-    {
-        if (!opened)
-            return 0;
-
-        if (mMenuView == null)
-            return 0;
-
-        switch (mMenuGravity)
-        {
-            case Right:
-                return -mMenuView.getMeasuredWidth();
-            case Left:
-                return mMenuView.getMeasuredWidth();
-            default:
-                throw new AssertionError();
-        }
-    }
-
+    /**
+     * 设置是否锁定触摸事件，锁定后菜单view接收不到触摸事件
+     *
+     * @param lockEvent
+     */
     public void setLockEvent(boolean lockEvent)
     {
         mLockEvent = lockEvent;
@@ -144,6 +108,12 @@ final class MenuViewContainer extends ViewGroup
             throw new RuntimeException("MenuViewContainer can only has one child at most");
 
         mMenuView = child;
+    }
+
+    @Override
+    protected LayoutParams generateDefaultLayoutParams()
+    {
+        return new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
     @Override
