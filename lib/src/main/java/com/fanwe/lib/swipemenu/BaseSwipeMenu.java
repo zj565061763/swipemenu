@@ -15,6 +15,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     private View mContentView;
 
     private boolean mIsOpened;
+
     private final int mMinFlingVelocity;
 
     private OnStateChangeCallback mOnStateChangeCallback;
@@ -87,22 +88,37 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
-    public final void open(boolean open)
+    public final void open(boolean open, boolean notify)
     {
-        if (mContentView == null)
-            return;
-
-        if (setState(open))
-            requestLayout();
+        openInternal(open, false, notify);
     }
 
     @Override
-    public void openWithAnim(boolean open)
+    public final void openWithAnim(boolean open, boolean notify)
+    {
+        openInternal(open, true, notify);
+    }
+
+    private void openInternal(boolean open, boolean anim, boolean notify)
     {
         if (mContentView == null)
             return;
 
-        smoothScroll(mContentView.getLeft(), mMenuViewContainer.getLeftForContentView(open));
+        if (mIsOpened == open)
+            return;
+
+        mIsOpened = open;
+
+        if (anim)
+            smoothScroll(mContentView.getLeft(), mMenuViewContainer.getLeftForContentView(open));
+        else
+            requestLayout();
+
+        if (notify)
+        {
+            if (mOnStateChangeCallback != null)
+                mOnStateChangeCallback.onStateChanged(mIsOpened, this);
+        }
     }
 
     /**
@@ -115,18 +131,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         return mMenuViewContainer.getMaxScrollDistance();
     }
 
-    private boolean setState(boolean open)
-    {
-        if (mIsOpened == open)
-            return false;
-
-        mIsOpened = open;
-
-        if (mOnStateChangeCallback != null)
-            mOnStateChangeCallback.onStateChanged(open, this);
-
-        return true;
-    }
 
     @Override
     protected void onFinishInflate()
@@ -282,10 +286,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             final int left = mContentView.getLeft();
             if (left == mMenuViewContainer.getLeftForContentView(true))
             {
-                setState(true);
+                openInternal(true, false, true);
             } else if (left == mMenuViewContainer.getLeftForContentView(false))
             {
-                setState(false);
+                openInternal(false, false, true);
             } else
             {
                 requestLayout();
