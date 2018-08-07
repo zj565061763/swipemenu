@@ -81,10 +81,11 @@ public class SwipeMenuAdapterWrapper extends BaseAdapter
             swipeMenu.setMenuView(((SwipeMenuAdapter) mAdapter).onCreateMenuView(position, parent.getContext()));
         }
 
-        final View contentView = mAdapter.getView(position, swipeMenu.getContentView(), parent);
+        View contentView = swipeMenu.getContentView();
+        contentView = mAdapter.getView(position, contentView, parent);
         swipeMenu.setContentView(contentView);
 
-        ((SwipeMenuAdapter) mAdapter).onBindData(position, convertView, swipeMenu);
+        ((SwipeMenuAdapter) mAdapter).onBindData(position, contentView, swipeMenu.getMenuView(), swipeMenu);
 
         return swipeMenu;
     }

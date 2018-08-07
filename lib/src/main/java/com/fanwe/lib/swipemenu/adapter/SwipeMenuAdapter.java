@@ -9,5 +9,5 @@ public interface SwipeMenuAdapter
 {
     View onCreateMenuView(int position, Context context);
 
-    void onBindData(int position, View convertView, SwipeMenu swipeMenu);
+    void onBindData(int position, View contentView, View menuView, SwipeMenu swipeMenu);
 }
