@@ -4,11 +4,11 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
-final class MenuViewContainer extends LockContainer
+final class MenuContainer extends LockContainer
 {
     private SwipeMenu.Gravity mMenuGravity;
 
-    public MenuViewContainer(Context context)
+    public MenuContainer(Context context)
     {
         super(context);
     }
@@ -44,6 +44,26 @@ final class MenuViewContainer extends LockContainer
     protected LayoutParams generateDefaultLayoutParams()
     {
         return new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+    {
+        int width = 0;
+        int height = 0;
+
+        final View contentView = getContentView();
+        if (contentView != null && contentView.getVisibility() != GONE)
+        {
+            contentView.measure(widthMeasureSpec, heightMeasureSpec);
+            width = contentView.getMeasuredWidth();
+            height = contentView.getMeasuredHeight();
+        }
+
+        width = Utils.getMeasureSize(width, widthMeasureSpec);
+        height = Utils.getMeasureSize(height, heightMeasureSpec);
+
+        setMeasuredDimension(width, height);
     }
 
     @Override
