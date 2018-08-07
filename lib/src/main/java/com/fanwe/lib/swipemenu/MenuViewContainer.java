@@ -9,14 +9,14 @@ final class MenuViewContainer extends ViewGroup
 {
     private SwipeMenu.Gravity mMenuGravity;
     private boolean mLockEvent;
-    private View mContentView;
+    private View mMenuView;
 
     public MenuViewContainer(Context context)
     {
         super(context);
     }
 
-    public void setContentView(View view)
+    public void setMenuView(View view)
     {
         if (view == null)
         {
@@ -32,9 +32,9 @@ final class MenuViewContainer extends ViewGroup
         addView(view);
     }
 
-    public View getContentView()
+    public View getMenuView()
     {
-        return mContentView;
+        return mMenuView;
     }
 
     @Override
@@ -67,7 +67,7 @@ final class MenuViewContainer extends ViewGroup
 
     public int getMaxScrollDistance()
     {
-        return mContentView == null ? 0 : mContentView.getMeasuredWidth();
+        return mMenuView == null ? 0 : mMenuView.getMeasuredWidth();
     }
 
     public int getLeftContentViewMin()
@@ -75,9 +75,9 @@ final class MenuViewContainer extends ViewGroup
         switch (mMenuGravity)
         {
             case Right:
-                return getLeftForContentView(SwipeMenu.State.Opened);
+                return getLeftForContentView(true);
             case Left:
-                return getLeftForContentView(SwipeMenu.State.Closed);
+                return getLeftForContentView(false);
             default:
                 throw new AssertionError();
         }
@@ -88,28 +88,28 @@ final class MenuViewContainer extends ViewGroup
         switch (mMenuGravity)
         {
             case Right:
-                return getLeftForContentView(SwipeMenu.State.Closed);
+                return getLeftForContentView(false);
             case Left:
-                return getLeftForContentView(SwipeMenu.State.Opened);
+                return getLeftForContentView(true);
             default:
                 throw new AssertionError();
         }
     }
 
-    public int getLeftForContentView(SwipeMenu.State state)
+    public int getLeftForContentView(boolean opened)
     {
-        if (state == SwipeMenu.State.Closed)
+        if (!opened)
             return 0;
 
-        if (mContentView == null)
+        if (mMenuView == null)
             return 0;
 
         switch (mMenuGravity)
         {
             case Right:
-                return -mContentView.getMeasuredWidth();
+                return -mMenuView.getMeasuredWidth();
             case Left:
-                return mContentView.getMeasuredWidth();
+                return mMenuView.getMeasuredWidth();
             default:
                 throw new AssertionError();
         }
@@ -143,7 +143,7 @@ final class MenuViewContainer extends ViewGroup
         if (getChildCount() > 1)
             throw new RuntimeException("MenuViewContainer can only has one child at most");
 
-        mContentView = child;
+        mMenuView = child;
     }
 
     @Override
@@ -152,11 +152,11 @@ final class MenuViewContainer extends ViewGroup
         int width = 0;
         int height = 0;
 
-        if (mContentView != null && mContentView.getVisibility() != GONE)
+        if (mMenuView != null && mMenuView.getVisibility() != GONE)
         {
-            measureChild(mContentView, widthMeasureSpec, heightMeasureSpec);
-            width = mContentView.getMeasuredWidth();
-            height = mContentView.getMeasuredHeight();
+            measureChild(mMenuView, widthMeasureSpec, heightMeasureSpec);
+            width = mMenuView.getMeasuredWidth();
+            height = mMenuView.getMeasuredHeight();
         }
 
         width = Utils.getMeasureSize(width, widthMeasureSpec);
@@ -168,10 +168,10 @@ final class MenuViewContainer extends ViewGroup
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
-        if (mContentView != null && mContentView.getVisibility() != GONE)
+        if (mMenuView != null && mMenuView.getVisibility() != GONE)
         {
-            final int left = mMenuGravity == SwipeMenu.Gravity.Left ? 0 : (getMeasuredWidth() - mContentView.getMeasuredWidth());
-            mContentView.layout(left, 0, left + mContentView.getMeasuredWidth(), mContentView.getMeasuredHeight());
+            final int left = mMenuGravity == SwipeMenu.Gravity.Left ? 0 : (getMeasuredWidth() - mMenuView.getMeasuredWidth());
+            mMenuView.layout(left, 0, left + mMenuView.getMeasuredWidth(), mMenuView.getMeasuredHeight());
         }
     }
 }

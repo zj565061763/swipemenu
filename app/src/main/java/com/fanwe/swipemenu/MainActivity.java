@@ -28,9 +28,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mSwipeMenu.setOnStateChangeCallback(new SwipeMenu.OnStateChangeCallback()
         {
             @Override
-            public void onStateChanged(SwipeMenu.State state, SwipeMenu swipeMenu)
+            public void onStateChanged(boolean isOpened, SwipeMenu swipeMenu)
             {
-                Log.i(TAG, "onStateChanged:" + state);
+                Log.i(TAG, "onStateChanged:" + isOpened);
             }
         });
         // 设置位置变化回调
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             case R.id.btn_cancel:
                 // 关闭菜单
-                mSwipeMenu.close();
+                mSwipeMenu.openWithAnim(false);
                 Toast.makeText(this, "click cancel", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_delete:

@@ -11,6 +11,11 @@ public interface SwipeMenu
      */
     void setOnStateChangeCallback(OnStateChangeCallback callback);
 
+    /**
+     * 位置变化回调
+     *
+     * @param callback
+     */
     void setOnViewPositionChangeCallback(OnViewPositionChangeCallback callback);
 
     /**
@@ -49,33 +54,25 @@ public interface SwipeMenu
     View getMenuView();
 
     /**
-     * 返回当前的状态{@link State}
+     * 是否处于打开状态
      *
      * @return
      */
-    State getState();
+    boolean isOpened();
 
     /**
-     * 打开菜单
+     * 打开关闭菜单
+     *
+     * @param open true-打开，false-关闭
      */
-    void open();
+    void open(boolean open);
 
     /**
-     * 关闭菜单
+     * 打开关闭菜单，带动画效果
+     *
+     * @param open true-打开，false-关闭
      */
-    void close();
-
-    enum State
-    {
-        /**
-         * 菜单处于关闭状态
-         */
-        Closed,
-        /**
-         * 菜单处于打开状态
-         */
-        Opened
-    }
+    void openWithAnim(boolean open);
 
     enum Gravity
     {
@@ -94,10 +91,10 @@ public interface SwipeMenu
         /**
          * 状态变更回调
          *
-         * @param state
+         * @param isOpened
          * @param swipeMenu
          */
-        void onStateChanged(State state, SwipeMenu swipeMenu);
+        void onStateChanged(boolean isOpened, SwipeMenu swipeMenu);
     }
 
     interface OnViewPositionChangeCallback

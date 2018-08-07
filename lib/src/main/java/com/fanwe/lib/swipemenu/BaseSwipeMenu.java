@@ -14,7 +14,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     private final MenuViewContainer mMenuViewContainer;
     private View mContentView;
 
-    private State mState = State.Closed;
+    private boolean mIsOpened;
     private final int mMinFlingVelocity;
 
     private OnStateChangeCallback mOnStateChangeCallback;
@@ -59,7 +59,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     public final void setMenuView(View view)
     {
-        mMenuViewContainer.setContentView(view);
+        mMenuViewContainer.setMenuView(view);
     }
 
     @Override
@@ -77,31 +77,32 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     public View getMenuView()
     {
-        return mMenuViewContainer.getContentView();
+        return mMenuViewContainer.getMenuView();
     }
 
     @Override
-    public final State getState()
+    public boolean isOpened()
     {
-        return mState;
+        return mIsOpened;
     }
 
     @Override
-    public final void open()
-    {
-        if (mContentView == null)
-            return;
-
-        smoothScroll(mContentView.getLeft(), mMenuViewContainer.getLeftForContentView(State.Opened));
-    }
-
-    @Override
-    public final void close()
+    public final void open(boolean open)
     {
         if (mContentView == null)
             return;
 
-        smoothScroll(mContentView.getLeft(), mMenuViewContainer.getLeftForContentView(State.Closed));
+        if (setState(open))
+            requestLayout();
+    }
+
+    @Override
+    public void openWithAnim(boolean open)
+    {
+        if (mContentView == null)
+            return;
+
+        smoothScroll(mContentView.getLeft(), mMenuViewContainer.getLeftForContentView(open));
     }
 
     /**
@@ -114,18 +115,17 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         return mMenuViewContainer.getMaxScrollDistance();
     }
 
-
-    private void setState(State state)
+    private boolean setState(boolean open)
     {
-        if (state == null)
-            throw new NullPointerException();
-        if (mState == state)
-            return;
+        if (mIsOpened == open)
+            return false;
 
-        mState = state;
+        mIsOpened = open;
 
         if (mOnStateChangeCallback != null)
-            mOnStateChangeCallback.onStateChanged(state, this);
+            mOnStateChangeCallback.onStateChanged(open, this);
+
+        return true;
     }
 
     @Override
@@ -164,9 +164,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         switch (mMenuViewContainer.getMenuGravity())
         {
             case Right:
-                return mState == State.Opened;
+                return mIsOpened;
             case Left:
-                return mState == State.Closed;
+                return !mIsOpened;
             default:
                 throw new AssertionError();
         }
@@ -182,9 +182,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         switch (mMenuViewContainer.getMenuGravity())
         {
             case Right:
-                return mState == State.Closed;
+                return !mIsOpened;
             case Left:
-                return mState == State.Opened;
+                return mIsOpened;
             default:
                 throw new AssertionError();
         }
@@ -222,7 +222,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         ViewCompat.offsetLeftAndRight(mContentView, delta);
 
-        final boolean totalOpened = mContentView.getLeft() == mMenuViewContainer.getLeftForContentView(State.Opened);
+        final boolean totalOpened = mContentView.getLeft() == mMenuViewContainer.getLeftForContentView(true);
         mMenuViewContainer.setLockEvent(!totalOpened);
 
         if (mOnViewPositionChangeCallback != null)
@@ -280,12 +280,12 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (isViewIdle())
         {
             final int left = mContentView.getLeft();
-            if (left == mMenuViewContainer.getLeftForContentView(State.Closed))
+            if (left == mMenuViewContainer.getLeftForContentView(true))
             {
-                setState(State.Closed);
-            } else if (left == mMenuViewContainer.getLeftForContentView(State.Opened))
+                setState(true);
+            } else if (left == mMenuViewContainer.getLeftForContentView(false))
             {
-                setState(State.Opened);
+                setState(false);
             } else
             {
                 requestLayout();
@@ -335,7 +335,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         int top = 0;
         if (isViewIdle())
         {
-            left = mMenuViewContainer.getLeftForContentView(mState);
+            left = mMenuViewContainer.getLeftForContentView(mIsOpened);
             top = 0;
         } else
         {
