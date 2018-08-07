@@ -88,15 +88,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
-    public final void open(boolean open, boolean notify)
+    public final void open(boolean open, boolean anim, boolean notify)
     {
-        openInternal(open, false, notify);
-    }
-
-    @Override
-    public final void openWithAnim(boolean open, boolean notify)
-    {
-        openInternal(open, true, notify);
+        openInternal(open, anim, notify);
     }
 
     private void openInternal(boolean open, boolean anim, boolean notify)
@@ -109,6 +103,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         mIsOpened = open;
 
+        abortAnimation();
         if (anim)
             smoothScroll(mContentView.getLeft(), mMenuViewContainer.getLeftForContentView(open));
         else
@@ -271,6 +266,18 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         return scrolled;
     }
 
+    /**
+     * 停止滑动动画
+     */
+    protected abstract void abortAnimation();
+
+    /**
+     * 滑动
+     *
+     * @param start
+     * @param end
+     * @return
+     */
     protected abstract boolean onSmoothScroll(int start, int end);
 
     /**

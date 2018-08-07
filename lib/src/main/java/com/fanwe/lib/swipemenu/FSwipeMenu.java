@@ -107,9 +107,14 @@ public class FSwipeMenu extends BaseSwipeMenu
     }
 
     @Override
-    protected boolean onSmoothScroll(int start, int end)
+    protected void abortAnimation()
     {
         getScroller().abortAnimation();
+    }
+
+    @Override
+    protected boolean onSmoothScroll(int start, int end)
+    {
         return getScroller().scrollToX(start, end, -1);
     }
 
