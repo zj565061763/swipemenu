@@ -60,7 +60,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     public final void setMenuView(View view)
     {
-        mMenuViewContainer.setMenuView(view);
+        mMenuViewContainer.setContentView(view);
     }
 
     @Override
@@ -78,7 +78,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     public final View getMenuView()
     {
-        return mMenuViewContainer.getMenuView();
+        return mMenuViewContainer.getContentView();
     }
 
     public final Gravity getMenuGravity()
