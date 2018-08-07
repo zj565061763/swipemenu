@@ -72,9 +72,8 @@ public interface SwipeMenu
      *
      * @param open   true-打开，false-关闭
      * @param anim   true-动画效果，false-无动画
-     * @param notify true-通知回调，false-不通知
      */
-    void open(boolean open, boolean anim, boolean notify);
+    void open(boolean open, boolean anim);
 
     enum Gravity
     {

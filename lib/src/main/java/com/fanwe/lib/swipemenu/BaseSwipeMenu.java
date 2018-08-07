@@ -93,12 +93,12 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
-    public final void open(boolean open, boolean anim, boolean notify)
+    public final void open(boolean open, boolean anim)
     {
-        openInternal(open, anim, notify);
+        openInternal(open, anim);
     }
 
-    private void openInternal(boolean open, boolean anim, boolean notify)
+    private void openInternal(boolean open, boolean anim)
     {
         if (mContentView == null)
             return;
@@ -109,11 +109,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         mIsOpened = open;
         updateViewByState(anim);
 
-        if (notify)
-        {
-            if (mOnStateChangeCallback != null)
-                mOnStateChangeCallback.onStateChanged(mIsOpened, this);
-        }
+        if (mOnStateChangeCallback != null)
+            mOnStateChangeCallback.onStateChanged(mIsOpened, this);
     }
 
     private void updateViewByState(boolean anim)
@@ -338,10 +335,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             final int left = mContentView.getLeft();
             if (left == getLeftForContentView(true))
             {
-                openInternal(true, false, true);
+                openInternal(true, false);
             } else if (left == getLeftForContentView(false))
             {
-                openInternal(false, false, true);
+                openInternal(false, false);
             } else
             {
                 requestLayout();
