@@ -47,26 +47,6 @@ final class MenuContainer extends LockContainer
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-    {
-        int width = 0;
-        int height = 0;
-
-        final View contentView = getContentView();
-        if (contentView != null && contentView.getVisibility() != GONE)
-        {
-            contentView.measure(widthMeasureSpec, heightMeasureSpec);
-            width = contentView.getMeasuredWidth();
-            height = contentView.getMeasuredHeight();
-        }
-
-        width = Utils.getMeasureSize(width, widthMeasureSpec);
-        height = Utils.getMeasureSize(height, heightMeasureSpec);
-
-        setMeasuredDimension(width, height);
-    }
-
-    @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
         final View contentView = getContentView();
