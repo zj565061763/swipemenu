@@ -33,6 +33,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         addView(mMenuContainer);
 
         mMinFlingVelocity = ViewConfiguration.get(context).getScaledMinimumFlingVelocity();
+
+        updateLockEvent();
     }
 
     @Override
@@ -123,6 +125,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         mIsOpened = open;
 
+        updateLockEvent();
+
         if (mOnStateChangeCallback != null)
             mOnStateChangeCallback.onStateChanged(mIsOpened, this);
 
@@ -170,6 +174,18 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         super.onViewRemoved(child);
         if (child == mMenuContainer || child == mContentContainer)
             throw new RuntimeException("you can not remove:" + child);
+    }
+
+    private void updateLockEvent()
+    {
+        if (mIsOpened)
+        {
+            final boolean opened = getContentLeftCurrent() == getContentLeft(true);
+            mMenuContainer.setLockEvent(!opened);
+        } else
+        {
+            mMenuContainer.setLockEvent(true);
+        }
     }
 
     /**
@@ -282,8 +298,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         ViewCompat.offsetLeftAndRight(mContentContainer, delta);
 
-        final boolean opened = getContentLeftCurrent() == getContentLeft(true);
-        mMenuContainer.setLockEvent(!opened);
+        updateLockEvent();
 
         if (mOnViewPositionChangeCallback != null)
             mOnViewPositionChangeCallback.onViewPositionChanged(this);
