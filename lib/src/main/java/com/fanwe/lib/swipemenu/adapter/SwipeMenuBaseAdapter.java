@@ -7,11 +7,11 @@ import android.widget.BaseAdapter;
 
 import com.fanwe.lib.swipemenu.FSwipeMenu;
 
-public class SwipeMenuAdapterWrapper extends BaseAdapter
+public class SwipeMenuBaseAdapter extends BaseAdapter
 {
     private final BaseAdapter mAdapter;
 
-    public SwipeMenuAdapterWrapper(BaseAdapter adapter)
+    public SwipeMenuBaseAdapter(BaseAdapter adapter)
     {
         if (adapter instanceof SwipeMenuAdapter)
         {
@@ -78,7 +78,7 @@ public class SwipeMenuAdapterWrapper extends BaseAdapter
         } else
         {
             swipeMenu = new FSwipeMenu(parent.getContext(), null);
-            swipeMenu.setMenuView(((SwipeMenuAdapter) mAdapter).onCreateMenuView(position, parent.getContext()));
+            swipeMenu.setMenuView(((SwipeMenuAdapter) mAdapter).onCreateMenuView(position, swipeMenu));
         }
 
         View contentView = swipeMenu.getContentView();
