@@ -60,6 +60,19 @@ public class SwipeMenuAdapterView extends FrameLayout
         return mMapSwipeMenu.keySet();
     }
 
+    /**
+     * 关闭所有菜单
+     *
+     * @param anim
+     */
+    public void closeAllSwipeMenu(boolean anim)
+    {
+        for (SwipeMenu item : getSwipeMenu())
+        {
+            item.close(anim);
+        }
+    }
+
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev)
     {
