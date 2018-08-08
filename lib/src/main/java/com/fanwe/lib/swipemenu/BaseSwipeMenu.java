@@ -180,8 +180,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     {
         if (mIsOpened)
         {
-            final boolean opened = getContentLeftCurrent() == getContentLeft(true);
-            mMenuContainer.setLockEvent(!opened);
+            final boolean totalOpened = getContentLeftCurrent() == getContentLeft(true);
+            mMenuContainer.setLockEvent(!totalOpened);
         } else
         {
             mMenuContainer.setLockEvent(true);
