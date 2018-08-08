@@ -33,6 +33,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.e(TAG, "onStateChanged:" + isOpened);
             }
         });
+        mSwipeMenu.setOnViewPositionChangeCallback(new SwipeMenu.OnViewPositionChangeCallback()
+        {
+            @Override
+            public void onViewPositionChanged(SwipeMenu swipeMenu)
+            {
+                Log.i(TAG, "onViewPositionChanged:" + swipeMenu.getScrollPercent());
+            }
+        });
     }
 
     @Override

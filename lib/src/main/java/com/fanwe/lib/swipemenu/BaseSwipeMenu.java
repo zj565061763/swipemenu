@@ -83,6 +83,17 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
+    public float getScrollPercent()
+    {
+        final float total = getMaxScrollDistance();
+        if (total <= 0)
+            return 0;
+
+        final int current = Math.abs(getContentLeftCurrent() - getContentLeft(false));
+        return current / total;
+    }
+
+    @Override
     public final boolean isOpened()
     {
         return mIsOpened;

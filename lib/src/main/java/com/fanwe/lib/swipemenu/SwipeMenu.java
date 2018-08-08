@@ -61,6 +61,13 @@ public interface SwipeMenu
     Gravity getMenuGravity();
 
     /**
+     * 返回当前view滚动的百分比[0-1]
+     *
+     * @return
+     */
+    float getScrollPercent();
+
+    /**
      * 是否处于打开状态
      *
      * @return
@@ -70,8 +77,8 @@ public interface SwipeMenu
     /**
      * 打开关闭菜单
      *
-     * @param open   true-打开，false-关闭
-     * @param anim   true-动画效果，false-无动画
+     * @param open true-打开，false-关闭
+     * @param anim true-动画效果，false-无动画
      */
     void open(boolean open, boolean anim);
 
