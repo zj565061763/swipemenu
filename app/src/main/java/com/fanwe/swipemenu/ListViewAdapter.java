@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fanwe.lib.adapter.FSimpleAdapter;
 import com.fanwe.lib.swipemenu.SwipeMenu;
@@ -86,6 +87,18 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeM
             swipeMenu.open(false);
         else
             swipeMenu.close(false);
+
+        contentView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (swipeMenu.getScrollPercent() != 0)
+                    swipeMenu.close(true);
+                else
+                    Toast.makeText(getContext(), "click " + model, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         final Button btn_delete = menuView.findViewById(R.id.btn_delete);
         btn_delete.setOnClickListener(new View.OnClickListener()
