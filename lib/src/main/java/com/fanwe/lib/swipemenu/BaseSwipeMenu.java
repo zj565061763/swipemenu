@@ -352,7 +352,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         int width = mContentContainer.getMeasuredWidth();
         int height = mContentContainer.getMeasuredHeight();
 
-        mMenuContainer.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.AT_MOST),
+        mMenuContainer.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
 
         width = Utils.getMeasureSize(width, widthMeasureSpec);
