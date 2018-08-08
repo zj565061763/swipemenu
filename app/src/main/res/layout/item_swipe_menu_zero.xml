@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:background="#C7C7CC"
+        android:text="取消"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/btn_delete"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:background="#FE3A30"
+        android:text="删除"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>

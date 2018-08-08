@@ -10,6 +10,7 @@ import com.fanwe.lib.swipemenu.FSwipeMenu;
 public class SwipeMenuBaseAdapter extends BaseAdapter
 {
     private final BaseAdapter mAdapter;
+    private final SwipeMenuAdapterView mAdapterView;
 
     public SwipeMenuBaseAdapter(BaseAdapter adapter)
     {
@@ -17,6 +18,7 @@ public class SwipeMenuBaseAdapter extends BaseAdapter
         {
             mAdapter = adapter;
             adapter.registerDataSetObserver(mDataSetObserver);
+            mAdapterView = ((SwipeMenuAdapter) adapter).getSwipeMenuAdapterView();
         } else
             throw new IllegalArgumentException("adapter must be instance of " + SwipeMenuAdapter.class);
     }
@@ -86,6 +88,9 @@ public class SwipeMenuBaseAdapter extends BaseAdapter
         swipeMenu.setContentView(contentView);
 
         ((SwipeMenuAdapter) mAdapter).onBindData(position, contentView, swipeMenu.getMenuView(), swipeMenu);
+
+        if (mAdapterView != null)
+            mAdapterView.put(swipeMenu, position);
 
         return swipeMenu;
     }

@@ -10,4 +10,6 @@ public interface SwipeMenuAdapter
     View onCreateMenuView(int position, ViewGroup parent);
 
     void onBindData(int position, View contentView, View menuView, SwipeMenu swipeMenu);
+
+    SwipeMenuAdapterView getSwipeMenuAdapterView();
 }
