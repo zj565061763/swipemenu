@@ -9,22 +9,30 @@ import android.widget.FrameLayout;
 
 import com.fanwe.lib.swipemenu.SwipeMenu;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.WeakHashMap;
 
 public class SwipeMenuAdapterView extends FrameLayout
 {
+    private final Map<SwipeMenu, Integer> mMapSwipeMenu = new WeakHashMap<>();
+    private InterceptTouchEventCallback mInterceptTouchEventCallback;
+
     public SwipeMenuAdapterView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
+        setInterceptTouchEventCallback(new SingleModeTouchListener());
     }
 
-    private final Map<SwipeMenu, Integer> mMapSwipeMenu = new WeakHashMap<>();
-
-    private final int[] mLocation = {0, 0};
-    private final Rect mRect = new Rect();
+    /**
+     * 设置拦截回调对象
+     *
+     * @param callback
+     */
+    public void setInterceptTouchEventCallback(InterceptTouchEventCallback callback)
+    {
+        mInterceptTouchEventCallback = callback;
+    }
 
     /**
      * 添加要管理的菜单
@@ -42,42 +50,62 @@ public class SwipeMenuAdapterView extends FrameLayout
         mMapSwipeMenu.put(swipeMenu, position);
     }
 
-    private List<SwipeMenu> getOpenedSwipeMenu()
+    /**
+     * 得到所有菜单
+     *
+     * @return
+     */
+    public Set<SwipeMenu> getSwipeMenu()
     {
-        final List<SwipeMenu> list = new ArrayList<>();
-        for (Map.Entry<SwipeMenu, Integer> item : mMapSwipeMenu.entrySet())
-        {
-            final SwipeMenu swipeMenu = item.getKey();
-            if (swipeMenu.isOpened())
-                list.add(swipeMenu);
-        }
-        return list;
+        return mMapSwipeMenu.keySet();
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev)
     {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN)
+        if (mInterceptTouchEventCallback != null)
         {
-            final List<SwipeMenu> list = getOpenedSwipeMenu();
-            for (SwipeMenu item : list)
+            if (mInterceptTouchEventCallback.onInterceptTouchEvent(ev, this))
+                return true;
+        }
+
+        return super.onInterceptTouchEvent(ev);
+    }
+
+    public interface InterceptTouchEventCallback
+    {
+        boolean onInterceptTouchEvent(MotionEvent event, SwipeMenuAdapterView adapterView);
+    }
+
+    public static final class SingleModeTouchListener implements InterceptTouchEventCallback
+    {
+        private final int[] mLocation = {0, 0};
+        private final Rect mRect = new Rect();
+
+        @Override
+        public boolean onInterceptTouchEvent(MotionEvent event, SwipeMenuAdapterView adapterView)
+        {
+            if (event.getAction() == MotionEvent.ACTION_DOWN)
             {
-                final View view = (View) item;
-
-                view.getLocationOnScreen(mLocation);
-                mRect.left = mLocation[0];
-                mRect.top = mLocation[1];
-                mRect.right = mLocation[0] + view.getWidth();
-                mRect.bottom = mLocation[1] + view.getHeight();
-
-                if (mRect.contains((int) ev.getRawX(), (int) ev.getRawY()))
+                for (SwipeMenu item : adapterView.getSwipeMenu())
                 {
-                } else
-                {
-                    item.close(true);
+                    final View view = (View) item;
+
+                    view.getLocationOnScreen(mLocation);
+                    mRect.left = mLocation[0];
+                    mRect.top = mLocation[1];
+                    mRect.right = mLocation[0] + view.getWidth();
+                    mRect.bottom = mLocation[1] + view.getHeight();
+
+                    if (mRect.contains((int) event.getRawX(), (int) event.getRawY()))
+                    {
+                    } else
+                    {
+                        item.close(true);
+                    }
                 }
             }
+            return false;
         }
-        return super.onInterceptTouchEvent(ev);
     }
 }
