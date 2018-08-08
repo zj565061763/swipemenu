@@ -1,5 +1,6 @@
 package com.fanwe.swipemenu;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import com.fanwe.lib.swipemenu.adapter.SwipeMenuAdapterView;
 
 public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeMenuAdapter
 {
+    public static final String TAG = ListViewAdapter.class.getSimpleName();
+
     private final SwipeMenuAdapterView mSwipeMenuAdapterView;
 
     public ListViewAdapter(SwipeMenuAdapterView swipeMenuAdapterView)
@@ -75,6 +78,7 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeM
             public void onStateChanged(boolean isOpened, SwipeMenu swipeMenu)
             {
                 model.isOpened = isOpened;
+                Log.i(TAG, "onStateChanged:" + isOpened + " " + position);
             }
         });
 
