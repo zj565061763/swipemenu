@@ -104,42 +104,43 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     public final void open(boolean anim)
     {
-        if (setState(true))
-            updateViewByState(anim);
+        setState(true);
+        updateViewByState(anim);
     }
 
     @Override
     public final void close(boolean anim)
     {
-        if (setState(false))
-            updateViewByState(anim);
+        setState(false);
+        updateViewByState(anim);
     }
 
-    private boolean setState(boolean open)
+    private void setState(boolean open)
     {
         if (getContentView() == null)
-            return false;
+            return;
 
         if (mIsOpened == open)
-            return false;
+            return;
 
         mIsOpened = open;
-
         updateLockEvent();
 
         if (mOnStateChangeCallback != null)
             mOnStateChangeCallback.onStateChanged(mIsOpened, this);
-
-        return true;
     }
 
     private void updateViewByState(boolean anim)
     {
         abortAnimation();
         if (anim)
-            smoothScroll(mContentContainer.getLeft(), getContentLeft(mIsOpened));
-        else
+        {
+            if (onSmoothScroll(mContentContainer.getLeft(), getContentLeft(mIsOpened)))
+                invalidate();
+        } else
+        {
             requestLayout();
+        }
     }
 
     /**
@@ -329,17 +330,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             leftEnd = leftstart >= leftMiddle ? leftMax : leftMin;
         }
 
-        smoothScroll(leftstart, leftEnd);
-    }
-
-    private boolean smoothScroll(int start, int end)
-    {
-        final boolean scrolled = onSmoothScroll(start, end);
-        if (scrolled)
+        if (onSmoothScroll(leftstart, leftEnd))
             invalidate();
         else
             dealViewIdle();
-        return scrolled;
     }
 
     /**
@@ -357,7 +351,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     protected abstract boolean onSmoothScroll(int start, int end);
 
     /**
-     * View处于静止未拖动状态时候需要执行的逻辑
+     * view由非空闲状态变为空闲状态需要执行的逻辑
      */
     protected final void dealViewIdle()
     {
