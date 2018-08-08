@@ -33,6 +33,7 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
                 Log.e(TAG, "onStateChanged:" + isOpened);
             }
         });
+        // 设置view位置变化回调
         mSwipeMenu.setOnViewPositionChangeCallback(new SwipeMenu.OnViewPositionChangeCallback()
         {
             @Override
@@ -50,7 +51,7 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
         {
             case R.id.btn_cancel:
                 // 关闭菜单
-                mSwipeMenu.open(false, true);
+                mSwipeMenu.close(true);
                 break;
             case R.id.btn_delete:
                 Toast.makeText(this, "click delete", Toast.LENGTH_SHORT).show();

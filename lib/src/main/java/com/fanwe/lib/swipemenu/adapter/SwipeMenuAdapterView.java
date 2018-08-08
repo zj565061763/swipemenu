@@ -52,7 +52,10 @@ public class SwipeMenuAdapterView extends FrameLayout
             mMapInfo.put(position, info);
         } else
         {
-            swipeMenu.open(info.mIsOpened, false);
+            if (info.mIsOpened)
+                swipeMenu.open(false);
+            else
+                swipeMenu.close(false);
         }
     }
 
@@ -81,7 +84,7 @@ public class SwipeMenuAdapterView extends FrameLayout
             final SwipeMenu swipeMenu = info.mSwipeMenu.get();
             if (swipeMenu != null)
             {
-                swipeMenu.open(false, false);
+                swipeMenu.close(false);
                 mMapSwipeMenu.remove(swipeMenu);
             }
         }
@@ -119,7 +122,7 @@ public class SwipeMenuAdapterView extends FrameLayout
                 {
                 } else
                 {
-                    item.open(false, true);
+                    item.close(true);
                 }
             }
         }
