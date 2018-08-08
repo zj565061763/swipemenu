@@ -69,13 +69,26 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeM
     {
         final DataModel model = getDataHolder().get(position);
 
+        swipeMenu.setOnStateChangeCallback(new SwipeMenu.OnStateChangeCallback()
+        {
+            @Override
+            public void onStateChanged(boolean isOpened, SwipeMenu swipeMenu)
+            {
+                model.isOpened = isOpened;
+            }
+        });
+
+        if (model.isOpened)
+            swipeMenu.open(false);
+        else
+            swipeMenu.close(false);
+
         final Button btn_delete = menuView.findViewById(R.id.btn_delete);
         btn_delete.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                getSwipeMenuAdapterView().remove(position);
                 getDataHolder().removeData(model);
             }
         });

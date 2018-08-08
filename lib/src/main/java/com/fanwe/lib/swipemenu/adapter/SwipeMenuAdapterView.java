@@ -9,9 +9,7 @@ import android.widget.FrameLayout;
 
 import com.fanwe.lib.swipemenu.SwipeMenu;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -24,7 +22,6 @@ public class SwipeMenuAdapterView extends FrameLayout
     }
 
     private final Map<SwipeMenu, Integer> mMapSwipeMenu = new WeakHashMap<>();
-    private final Map<Integer, SwipeMenuInfo> mMapInfo = new HashMap<>();
 
     private final int[] mLocation = {0, 0};
     private final Rect mRect = new Rect();
@@ -43,51 +40,6 @@ public class SwipeMenuAdapterView extends FrameLayout
             throw new IllegalArgumentException();
 
         mMapSwipeMenu.put(swipeMenu, position);
-        swipeMenu.setOnStateChangeCallback(mOnStateChangeCallback);
-
-        SwipeMenuInfo info = mMapInfo.get(position);
-        if (info == null)
-        {
-            info = new SwipeMenuInfo(swipeMenu);
-            mMapInfo.put(position, info);
-        } else
-        {
-            if (info.mIsOpened)
-                swipeMenu.open(false);
-            else
-                swipeMenu.close(false);
-        }
-    }
-
-    private final SwipeMenu.OnStateChangeCallback mOnStateChangeCallback = new SwipeMenu.OnStateChangeCallback()
-    {
-        @Override
-        public void onStateChanged(boolean isOpened, SwipeMenu swipeMenu)
-        {
-            final Integer position = mMapSwipeMenu.get(swipeMenu);
-            final SwipeMenuInfo info = mMapInfo.get(position);
-            if (info != null)
-                info.mIsOpened = isOpened;
-        }
-    };
-
-    /**
-     * 移除某个位置的数据
-     *
-     * @param position
-     */
-    public void remove(int position)
-    {
-        final SwipeMenuInfo info = mMapInfo.remove(position);
-        if (info != null)
-        {
-            final SwipeMenu swipeMenu = info.mSwipeMenu.get();
-            if (swipeMenu != null)
-            {
-                swipeMenu.close(false);
-                mMapSwipeMenu.remove(swipeMenu);
-            }
-        }
     }
 
     private List<SwipeMenu> getOpenedSwipeMenu()
@@ -127,17 +79,5 @@ public class SwipeMenuAdapterView extends FrameLayout
             }
         }
         return super.onInterceptTouchEvent(ev);
-    }
-
-    private static class SwipeMenuInfo
-    {
-        public final WeakReference<SwipeMenu> mSwipeMenu;
-        public boolean mIsOpened;
-
-        public SwipeMenuInfo(SwipeMenu swipeMenu)
-        {
-            mSwipeMenu = new WeakReference<>(swipeMenu);
-            mIsOpened = swipeMenu.isOpened();
-        }
     }
 }

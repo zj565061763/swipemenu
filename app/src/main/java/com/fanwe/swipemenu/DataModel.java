@@ -14,6 +14,8 @@ public class DataModel
     public String name;
     public int type;
 
+    public boolean isOpened;
+
     public static List<DataModel> get(int count)
     {
         final List<DataModel> list = new ArrayList<>();
