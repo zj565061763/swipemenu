@@ -9,11 +9,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.fanwe.lib.swipemenu.adapter.SwipeMenuAdapterView
-        android:id="@+id/swipe_adapter_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </com.fanwe.lib.swipemenu.adapter.SwipeMenuAdapterView>
-
 </FrameLayout>

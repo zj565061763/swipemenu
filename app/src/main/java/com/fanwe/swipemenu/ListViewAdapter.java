@@ -11,18 +11,13 @@ import android.widget.Toast;
 import com.fanwe.lib.adapter.FSimpleAdapter;
 import com.fanwe.lib.swipemenu.SwipeMenu;
 import com.fanwe.lib.swipemenu.adapter.SwipeMenuAdapter;
-import com.fanwe.lib.swipemenu.adapter.SwipeMenuAdapterView;
+import com.fanwe.lib.swipemenu.adapter.SwipeMenuHolder;
 
 public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeMenuAdapter
 {
     public static final String TAG = ListViewAdapter.class.getSimpleName();
 
-    private final SwipeMenuAdapterView mSwipeMenuAdapterView;
-
-    public ListViewAdapter(SwipeMenuAdapterView swipeMenuAdapterView)
-    {
-        mSwipeMenuAdapterView = swipeMenuAdapterView;
-    }
+    private final SwipeMenuHolder mSwipeMenuHolder = new SwipeMenuHolder();
 
     @Override
     public int getLayoutId(int position, View convertView, ViewGroup parent)
@@ -112,8 +107,8 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeM
     }
 
     @Override
-    public SwipeMenuAdapterView getSwipeMenuAdapterView()
+    public SwipeMenuHolder getSwipeMenuHolder()
     {
-        return mSwipeMenuAdapterView;
+        return mSwipeMenuHolder;
     }
 }

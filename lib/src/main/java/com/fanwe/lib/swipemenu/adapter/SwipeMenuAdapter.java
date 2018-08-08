@@ -11,5 +11,5 @@ public interface SwipeMenuAdapter
 
     void onBindData(int position, View contentView, View menuView, SwipeMenu swipeMenu);
 
-    SwipeMenuAdapterView getSwipeMenuAdapterView();
+    SwipeMenuHolder getSwipeMenuHolder();
 }
