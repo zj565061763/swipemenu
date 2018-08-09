@@ -39,7 +39,9 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onViewPositionChanged(SwipeMenu swipeMenu)
             {
-                Log.i(TAG, "onViewPositionChanged:" + swipeMenu.getScrollPercent());
+                // 获得滚动百分比
+                final float scrollPercent = swipeMenu.getScrollPercent();
+                Log.i(TAG, "onViewPositionChanged:" + scrollPercent);
             }
         });
     }
@@ -50,11 +52,8 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId())
         {
             case R.id.btn_cancel:
-                // 关闭菜单
+                // 关闭菜单，true-动画效果，false-无动画
                 mSwipeMenu.close(true);
-                break;
-            case R.id.btn_delete:
-                Toast.makeText(this, "click delete", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.fl_content:
                 Toast.makeText(this, "click content", Toast.LENGTH_SHORT).show();
