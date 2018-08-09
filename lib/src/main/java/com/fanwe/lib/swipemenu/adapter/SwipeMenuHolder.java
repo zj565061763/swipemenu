@@ -30,6 +30,7 @@ public class SwipeMenuHolder
             throw new IllegalArgumentException("tag must not be instance of view");
 
         mMapSwipeMenu.put(swipeMenu, tag);
+        swipeMenu.setOnStateChangeCallback(mOnStateChangeCallback);
 
         SwipeMenuInfo info = mMapInfo.get(tag);
         if (info == null)
@@ -44,8 +45,6 @@ public class SwipeMenuHolder
             else
                 swipeMenu.close(false);
         }
-
-        swipeMenu.setOnStateChangeCallback(mOnStateChangeCallback);
     }
 
     private final SwipeMenu.OnStateChangeCallback mOnStateChangeCallback = new SwipeMenu.OnStateChangeCallback()
