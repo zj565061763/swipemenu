@@ -1,6 +1,5 @@
 package com.fanwe.swipemenu;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,6 @@ import com.fanwe.lib.swipemenu.adapter.SwipeMenuHolder;
 public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeMenuAdapter
 {
     public static final String TAG = ListViewAdapter.class.getSimpleName();
-
-    private final SwipeMenuHolder mSwipeMenuHolder = new SwipeMenuHolder();
 
     @Override
     public int getLayoutId(int position, View convertView, ViewGroup parent)
@@ -68,21 +65,6 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeM
     {
         final DataModel model = getDataHolder().get(position);
 
-        swipeMenu.setOnStateChangeCallback(new SwipeMenu.OnStateChangeCallback()
-        {
-            @Override
-            public void onStateChanged(boolean isOpened, SwipeMenu swipeMenu)
-            {
-                model.isOpened = isOpened;
-                Log.i(TAG, "onStateChanged:" + isOpened + " " + position);
-            }
-        });
-
-        if (model.isOpened)
-            swipeMenu.open(false);
-        else
-            swipeMenu.close(false);
-
         contentView.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -101,14 +83,25 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeM
             @Override
             public void onClick(View v)
             {
+                getSwipeMenuHolder().remove(model);
                 getDataHolder().removeData(model);
             }
         });
     }
 
     @Override
+    public Object getTag(int position)
+    {
+        return getDataHolder().get(position);
+    }
+
+    private SwipeMenuHolder mSwipeMenuHolder;
+
+    @Override
     public SwipeMenuHolder getSwipeMenuHolder()
     {
+        if (mSwipeMenuHolder == null)
+            mSwipeMenuHolder = new SwipeMenuHolder();
         return mSwipeMenuHolder;
     }
 }

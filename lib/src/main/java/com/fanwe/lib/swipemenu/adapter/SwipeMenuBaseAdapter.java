@@ -17,10 +17,12 @@ public class SwipeMenuBaseAdapter extends BaseAdapter
         if (adapter instanceof SwipeMenuAdapter)
         {
             mAdapter = adapter;
-            adapter.registerDataSetObserver(mDataSetObserver);
             mSwipeMenuHolder = ((SwipeMenuAdapter) adapter).getSwipeMenuHolder();
+            adapter.registerDataSetObserver(mDataSetObserver);
         } else
+        {
             throw new IllegalArgumentException("adapter must be instance of " + SwipeMenuAdapter.class);
+        }
     }
 
     private final DataSetObserver mDataSetObserver = new DataSetObserver()
@@ -90,7 +92,10 @@ public class SwipeMenuBaseAdapter extends BaseAdapter
         ((SwipeMenuAdapter) mAdapter).onBindData(position, contentView, swipeMenu.getMenuView(), swipeMenu);
 
         if (mSwipeMenuHolder != null)
-            mSwipeMenuHolder.put(swipeMenu, position);
+        {
+            final Object tag = ((SwipeMenuAdapter) mAdapter).getTag(position);
+            mSwipeMenuHolder.put(swipeMenu, tag);
+        }
 
         return swipeMenu;
     }

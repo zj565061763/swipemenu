@@ -33,8 +33,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         addView(mMenuContainer);
 
         mMinFlingVelocity = ViewConfiguration.get(context).getScaledMinimumFlingVelocity();
-
-        updateLockEvent();
     }
 
     @Override
@@ -428,5 +426,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         if (ViewCompat.getZ(mContentContainer) <= ViewCompat.getZ(mMenuContainer))
             ViewCompat.setZ(mContentContainer, ViewCompat.getZ(mMenuContainer) + 1);
+
+        updateLockEvent();
     }
 }
