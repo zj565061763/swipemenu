@@ -1,6 +1,5 @@
 package com.fanwe.lib.swipemenu.adapter;
 
-import android.util.Log;
 import android.view.View;
 
 import com.fanwe.lib.swipemenu.SwipeMenu;
@@ -56,8 +55,6 @@ public class SwipeMenuHolder
             final SwipeMenuInfo info = mMapInfo.get(tag);
             if (info != null)
                 info.mIsOpened = isOpened;
-
-            Log.i(SwipeMenuHolder.class.getSimpleName(), isOpened + " " + tag);
         }
     };
 
