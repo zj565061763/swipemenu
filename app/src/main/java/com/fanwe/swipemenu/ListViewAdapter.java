@@ -9,19 +9,16 @@ import android.widget.Toast;
 
 import com.fanwe.lib.adapter.FSimpleAdapter;
 import com.fanwe.lib.swipemenu.SwipeMenu;
+import com.fanwe.lib.swipemenu.adapter.AdapterSwipeMenuHolder;
 import com.fanwe.lib.swipemenu.adapter.SwipeMenuAdapter;
-import com.fanwe.lib.swipemenu.adapter.SwipeMenuHolder;
 
 public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeMenuAdapter
 {
-    public static final String TAG = ListViewAdapter.class.getSimpleName();
+    public final AdapterSwipeMenuHolder mAdapterSwipeMenuHolder = new AdapterSwipeMenuHolder(this);
 
     @Override
     public int getLayoutId(int position, View convertView, ViewGroup parent)
     {
-        /**
-         * 返回item布局
-         */
         return R.layout.item_list;
     }
 
@@ -33,36 +30,16 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeM
     }
 
     @Override
-    public int getItemViewType(int position)
-    {
-        final DataModel model = getDataHolder().get(position);
-        return model.type;
-    }
-
-    @Override
-    public int getViewTypeCount()
-    {
-        return 2;
-    }
-
-    @Override
     public View onCreateMenuView(int position, ViewGroup parent)
     {
-        final int type = getItemViewType(position);
-        switch (type)
-        {
-            case DataModel.TYPE_ZERO:
-                return LayoutInflater.from(parent.getContext()).inflate(R.layout.item_swipe_menu_zero, parent, false);
-            case DataModel.TYPE_ONE:
-                return LayoutInflater.from(parent.getContext()).inflate(R.layout.item_swipe_menu_one, parent, false);
-            default:
-                return null;
-        }
+        return LayoutInflater.from(parent.getContext()).inflate(R.layout.item_swipe_menu_view, parent, false);
     }
 
     @Override
     public void onBindData(final int position, View contentView, View menuView, final SwipeMenu swipeMenu)
     {
+        mAdapterSwipeMenuHolder.bind(swipeMenu, position);
+
         final DataModel model = getDataHolder().get(position);
 
         contentView.setOnClickListener(new View.OnClickListener()
@@ -83,7 +60,7 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeM
             @Override
             public void onClick(View v)
             {
-                getSwipeMenuHolder().remove(model);
+                mAdapterSwipeMenuHolder.remove(model);
                 getDataHolder().removeData(model);
             }
         });
@@ -93,15 +70,5 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeM
     public Object getTag(int position)
     {
         return getDataHolder().get(position);
-    }
-
-    private SwipeMenuHolder mSwipeMenuHolder;
-
-    @Override
-    public SwipeMenuHolder getSwipeMenuHolder()
-    {
-        if (mSwipeMenuHolder == null)
-            mSwipeMenuHolder = new SwipeMenuHolder();
-        return mSwipeMenuHolder;
     }
 }

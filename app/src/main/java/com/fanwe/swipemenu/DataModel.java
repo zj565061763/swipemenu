@@ -8,11 +8,7 @@ import java.util.List;
  */
 public class DataModel
 {
-    public static final int TYPE_ZERO = 0;
-    public static final int TYPE_ONE = 1;
-
     public String name;
-    public int type;
 
     public static List<DataModel> get(int count)
     {
@@ -21,7 +17,6 @@ public class DataModel
         {
             final DataModel model = new DataModel();
             model.name = String.valueOf(i);
-            model.type = (i % 2 == 0) ? TYPE_ZERO : TYPE_ONE;
             list.add(model);
         }
         return list;

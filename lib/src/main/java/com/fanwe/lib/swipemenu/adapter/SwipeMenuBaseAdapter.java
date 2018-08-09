@@ -10,14 +10,12 @@ import com.fanwe.lib.swipemenu.FSwipeMenu;
 public class SwipeMenuBaseAdapter extends BaseAdapter
 {
     private final BaseAdapter mAdapter;
-    private final SwipeMenuHolder mSwipeMenuHolder;
 
     public SwipeMenuBaseAdapter(BaseAdapter adapter)
     {
         if (adapter instanceof SwipeMenuAdapter)
         {
             mAdapter = adapter;
-            mSwipeMenuHolder = ((SwipeMenuAdapter) adapter).getSwipeMenuHolder();
             adapter.registerDataSetObserver(mDataSetObserver);
         } else
         {
@@ -90,12 +88,6 @@ public class SwipeMenuBaseAdapter extends BaseAdapter
         swipeMenu.setContentView(contentView);
 
         ((SwipeMenuAdapter) mAdapter).onBindData(position, contentView, swipeMenu.getMenuView(), swipeMenu);
-
-        if (mSwipeMenuHolder != null)
-        {
-            final Object tag = ((SwipeMenuAdapter) mAdapter).getTag(position);
-            mSwipeMenuHolder.put(swipeMenu, tag);
-        }
 
         return swipeMenu;
     }

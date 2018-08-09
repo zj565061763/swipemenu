@@ -33,6 +33,4 @@ public interface SwipeMenuAdapter
      * @return
      */
     Object getTag(int position);
-
-    SwipeMenuHolder getSwipeMenuHolder();
 }
