@@ -6,7 +6,7 @@
 
     <Button
         android:id="@+id/btn_delete"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="#FE3A30"
         android:text="删除"
