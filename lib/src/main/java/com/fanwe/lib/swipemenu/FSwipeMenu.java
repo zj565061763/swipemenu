@@ -35,7 +35,7 @@ public class FSwipeMenu extends BaseSwipeMenu
                 public void onScrollStateChanged(boolean isFinished)
                 {
                     if (isFinished)
-                        updateViewByState(false);
+                        dealScrollFinish();
                 }
 
                 @Override

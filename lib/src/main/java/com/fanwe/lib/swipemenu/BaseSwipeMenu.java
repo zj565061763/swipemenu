@@ -20,6 +20,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
     private OnStateChangeCallback mOnStateChangeCallback;
     private OnViewPositionChangeCallback mOnViewPositionChangeCallback;
+    private PullCondition mPullCondition;
 
     public BaseSwipeMenu(Context context, AttributeSet attrs)
     {
@@ -45,6 +46,12 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     public final void setOnViewPositionChangeCallback(OnViewPositionChangeCallback callback)
     {
         mOnViewPositionChangeCallback = callback;
+    }
+
+    @Override
+    public final void setPullCondition(PullCondition pullCondition)
+    {
+        mPullCondition = pullCondition;
     }
 
     @Override
@@ -123,7 +130,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      *
      * @param anim
      */
-    protected final void updateViewByState(boolean anim)
+    private void updateViewByState(boolean anim)
     {
         final int leftCurrent = getContentLeftCurrent();
         final int leftState = getContentLeft(mIsOpened);
@@ -177,6 +184,11 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         }
     }
 
+    private boolean checkPullCondition()
+    {
+        return mPullCondition == null ? true : mPullCondition.canPull(this);
+    }
+
     /**
      * 是否可以从左向右拖动
      *
@@ -184,6 +196,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected final boolean canPullLeftToRight()
     {
+        if (!checkPullCondition())
+            return false;
+
         switch (getMenuGravity())
         {
             case Right:
@@ -202,6 +217,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected final boolean canPullRightToLeft()
     {
+        if (!checkPullCondition())
+            return false;
+
         switch (getMenuGravity())
         {
             case Right:
@@ -319,6 +337,15 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         if (!setOpened(opened, true))
             updateViewByState(true);
+    }
+
+    /**
+     * view惯性滚动结束需要执行的逻辑
+     */
+    protected final void dealScrollFinish()
+    {
+        if (isViewIdle())
+            updateViewByState(false);
     }
 
     /**

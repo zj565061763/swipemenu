@@ -19,6 +19,13 @@ public interface SwipeMenu
     void setOnViewPositionChangeCallback(OnViewPositionChangeCallback callback);
 
     /**
+     * 设置拖动限制条件
+     *
+     * @param pullCondition
+     */
+    void setPullCondition(PullCondition pullCondition);
+
+    /**
      * 设置内容view
      *
      * @param view
@@ -115,5 +122,10 @@ public interface SwipeMenu
          * @param swipeMenu
          */
         void onViewPositionChanged(boolean isDrag, SwipeMenu swipeMenu);
+    }
+
+    interface PullCondition
+    {
+        boolean canPull(SwipeMenu swipeMenu);
     }
 }
