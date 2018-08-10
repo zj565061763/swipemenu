@@ -100,6 +100,8 @@ public class FSwipeMenu extends BaseSwipeMenu
                 public void onTagConsumeChanged(boolean tag)
                 {
                     FTouchHelper.requestDisallowInterceptTouchEvent(FSwipeMenu.this, tag);
+                    if (tag)
+                        setScrollState(ScrollState.Drag);
                 }
             });
         }
