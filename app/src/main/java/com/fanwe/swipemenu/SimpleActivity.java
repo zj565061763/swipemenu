@@ -23,7 +23,7 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
         mSwipeMenu = findViewById(R.id.swipemenu);
 
         // 设置菜单在左边打开，默认右边
-//        mSwipeMenu.setMenuGravity(SwipeMenu.Gravity.Left);
+        mSwipeMenu.setMenuGravity(SwipeMenu.Gravity.Left);
         // 设置状态变化回调
         mSwipeMenu.setOnStateChangeCallback(new SwipeMenu.OnStateChangeCallback()
         {
