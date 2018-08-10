@@ -15,11 +15,13 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     private final MenuContainer mMenuContainer;
 
     private boolean mIsOpened;
+    private ScrollState mScrollState = ScrollState.Idle;
 
     private final int mMinFlingVelocity;
 
     private OnStateChangeCallback mOnStateChangeCallback;
     private OnViewPositionChangeCallback mOnViewPositionChangeCallback;
+    private OnScrollStateChangeCallback mOnScrollStateChangeCallback;
     private PullCondition mPullCondition;
 
     public BaseSwipeMenu(Context context, AttributeSet attrs)
@@ -46,6 +48,12 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     public final void setOnViewPositionChangeCallback(OnViewPositionChangeCallback callback)
     {
         mOnViewPositionChangeCallback = callback;
+    }
+
+    @Override
+    public final void setOnScrollStateChangeCallback(OnScrollStateChangeCallback callback)
+    {
+        mOnScrollStateChangeCallback = callback;
     }
 
     @Override
@@ -87,6 +95,22 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     public final Gravity getMenuGravity()
     {
         return mMenuContainer.getMenuGravity();
+    }
+
+    @Override
+    public final ScrollState getScrollState()
+    {
+        return mScrollState;
+    }
+
+    private void setScrollState(ScrollState state)
+    {
+        if (mScrollState != state)
+        {
+            mScrollState = state;
+            if (mOnScrollStateChangeCallback != null)
+                mOnScrollStateChangeCallback.onScrollStateChanged(state, this);
+        }
     }
 
     @Override
@@ -147,7 +171,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             if (anim)
             {
                 if (onSmoothScroll(mContentContainer.getLeft(), getContentLeft(mIsOpened)))
+                {
+                    setScrollState(ScrollState.Fling);
                     invalidate();
+                }
             } else
             {
                 requestLayout();
@@ -311,8 +338,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             return;
 
         ViewCompat.offsetLeftAndRight(mContentContainer, delta);
-
         updateLockEvent();
+
+        setScrollState(isDrag ? ScrollState.Drag : ScrollState.Fling);
 
         if (mOnViewPositionChangeCallback != null)
             mOnViewPositionChangeCallback.onViewPositionChanged(isDrag, this);
@@ -343,6 +371,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         if (!setOpened(opened, true))
             updateViewByState(true);
+
+        if (mScrollState == ScrollState.Drag)
+            setScrollState(ScrollState.Idle);
     }
 
     /**
@@ -351,7 +382,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     protected final void dealScrollFinish()
     {
         if (isViewIdle())
+        {
             updateViewByState(false);
+            setScrollState(ScrollState.Idle);
+        }
     }
 
     /**

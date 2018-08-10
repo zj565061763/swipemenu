@@ -19,6 +19,13 @@ public interface SwipeMenu
     void setOnViewPositionChangeCallback(OnViewPositionChangeCallback callback);
 
     /**
+     * 设置滚动状态变化回调
+     *
+     * @param callback
+     */
+    void setOnScrollStateChangeCallback(OnScrollStateChangeCallback callback);
+
+    /**
      * 设置拖动限制条件
      *
      * @param pullCondition
@@ -68,6 +75,13 @@ public interface SwipeMenu
     Gravity getMenuGravity();
 
     /**
+     * 返回滚动状态
+     *
+     * @return
+     */
+    ScrollState getScrollState();
+
+    /**
      * 返回当前view滚动的百分比[0-1]
      *
      * @return
@@ -102,6 +116,22 @@ public interface SwipeMenu
         Right
     }
 
+    enum ScrollState
+    {
+        /**
+         * 空闲状态
+         */
+        Idle,
+        /**
+         * 拖动状态
+         */
+        Drag,
+        /**
+         * 惯性滑动状态
+         */
+        Fling
+    }
+
     interface OnStateChangeCallback
     {
         /**
@@ -122,6 +152,11 @@ public interface SwipeMenu
          * @param swipeMenu
          */
         void onViewPositionChanged(boolean isDrag, SwipeMenu swipeMenu);
+    }
+
+    interface OnScrollStateChangeCallback
+    {
+        void onScrollStateChanged(ScrollState state, SwipeMenu swipeMenu);
     }
 
     interface PullCondition

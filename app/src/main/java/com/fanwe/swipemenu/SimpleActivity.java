@@ -44,6 +44,15 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
                 Log.i(TAG, "onViewPositionChanged:" + isDrag + " " + scrollPercent);
             }
         });
+        // 设置滚动状态变化回调
+        mSwipeMenu.setOnScrollStateChangeCallback(new SwipeMenu.OnScrollStateChangeCallback()
+        {
+            @Override
+            public void onScrollStateChanged(SwipeMenu.ScrollState state, SwipeMenu swipeMenu)
+            {
+                Log.i(TAG, "onScrollStateChanged:" + state);
+            }
+        });
     }
 
     @Override
