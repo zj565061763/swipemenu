@@ -156,6 +156,12 @@ public interface SwipeMenu
 
     interface OnScrollStateChangeCallback
     {
+        /**
+         * 滚动状态变化回调
+         *
+         * @param state
+         * @param swipeMenu
+         */
         void onScrollStateChanged(ScrollState state, SwipeMenu swipeMenu);
     }
 
