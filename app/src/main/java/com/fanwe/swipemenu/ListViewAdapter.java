@@ -10,11 +10,12 @@ import android.widget.Toast;
 import com.fanwe.lib.adapter.FSimpleAdapter;
 import com.fanwe.lib.swipemenu.SwipeMenu;
 import com.fanwe.lib.swipemenu.adapter.AdapterSwipeMenuHolder;
+import com.fanwe.lib.swipemenu.adapter.SingleModeAdapterSwipeMenuHolder;
 import com.fanwe.lib.swipemenu.adapter.SwipeMenuAdapter;
 
 public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeMenuAdapter
 {
-    public final AdapterSwipeMenuHolder mAdapterSwipeMenuHolder = new AdapterSwipeMenuHolder(this);
+    public final AdapterSwipeMenuHolder mAdapterSwipeMenuHolder = new SingleModeAdapterSwipeMenuHolder(this);
 
     @Override
     public int getLayoutId(int position, View convertView, ViewGroup parent)

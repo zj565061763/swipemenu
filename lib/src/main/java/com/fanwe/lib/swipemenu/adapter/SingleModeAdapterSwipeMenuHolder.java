@@ -17,6 +17,20 @@ public class SingleModeAdapterSwipeMenuHolder extends AdapterSwipeMenuHolder imp
     }
 
     @Override
+    public void onStateChanged(boolean isOpened, SwipeMenu swipeMenu)
+    {
+        super.onStateChanged(isOpened, swipeMenu);
+        if (isOpened)
+        {
+            for (SwipeMenu item : getAllSwipeMenu())
+            {
+                if (item != swipeMenu)
+                    item.setOpened(false, true);
+            }
+        }
+    }
+
+    @Override
     public void onViewPositionChanged(boolean isDrag, SwipeMenu swipeMenu)
     {
         if (isDrag)
