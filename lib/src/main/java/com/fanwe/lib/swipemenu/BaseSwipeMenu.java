@@ -113,7 +113,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         updateViewByState(anim);
 
         if (mOnStateChangeCallback != null)
-            mOnStateChangeCallback.onStateChanged(mIsOpened, this);
+            mOnStateChangeCallback.onStateChanged(opened, this);
 
         return true;
     }
