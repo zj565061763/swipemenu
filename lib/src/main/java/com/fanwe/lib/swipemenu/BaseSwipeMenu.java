@@ -278,8 +278,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      * 移动View
      *
      * @param delta
+     * @param isDrag
      */
-    protected final void moveViews(int delta)
+    protected final void moveViews(int delta, boolean isDrag)
     {
         if (getContentView() == null)
             return;
@@ -300,7 +301,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         updateLockEvent();
 
         if (mOnViewPositionChangeCallback != null)
-            mOnViewPositionChangeCallback.onViewPositionChanged(this);
+            mOnViewPositionChangeCallback.onViewPositionChanged(isDrag, this);
     }
 
     /**

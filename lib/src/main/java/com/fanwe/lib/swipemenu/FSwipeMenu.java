@@ -42,7 +42,7 @@ public class FSwipeMenu extends BaseSwipeMenu
                 public void onScroll(int lastX, int lastY, int currX, int currY)
                 {
                     final int deltaX = currX - lastX;
-                    moveViews(deltaX);
+                    moveViews(deltaX, false);
                 }
             });
         }
@@ -73,7 +73,7 @@ public class FSwipeMenu extends BaseSwipeMenu
                 public boolean onEventConsume(MotionEvent event)
                 {
                     final int deltaX = (int) getGestureManager().getTouchHelper().getDeltaX();
-                    moveViews(deltaX);
+                    moveViews(deltaX, true);
                     return true;
                 }
 
