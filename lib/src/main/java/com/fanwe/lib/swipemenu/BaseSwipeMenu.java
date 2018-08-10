@@ -125,10 +125,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected final void updateViewByState(boolean anim)
     {
-        final int left = getContentLeftCurrent();
+        final int leftCurrent = getContentLeftCurrent();
         final int leftState = getContentLeft(mIsOpened);
 
-        if (left != leftState)
+        if (leftCurrent != leftState)
         {
             abortAnimation();
             if (anim)
@@ -150,8 +150,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (getChildCount() > 4)
             throw new RuntimeException("SwipeMenu can only has 2 children at most");
 
-        View content = getChildAt(2);
-        View menu = getChildAt(3);
+        final View content = getChildAt(2);
+        final View menu = getChildAt(3);
 
         setContentView(content);
         setMenuView(menu);
@@ -278,11 +278,11 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (delta == 0)
             return;
 
-        final int left = getContentLeftCurrent();
+        final int leftCurrent = getContentLeftCurrent();
         final int leftMin = getContentLeftMin();
         final int leftMax = getContentLeftMax();
 
-        delta = FTouchHelper.getLegalDelta(left, leftMin, leftMax, delta);
+        delta = FTouchHelper.getLegalDelta(leftCurrent, leftMin, leftMax, delta);
         if (delta == 0)
             return;
 
