@@ -116,7 +116,7 @@ public interface SwipeMenu
         /**
          * view位置变化回调，侧滑菜单滑动或者拖动
          *
-         * @param isDrag
+         * @param isDrag    true-拖动，false-惯性滚动
          * @param swipeMenu
          */
         void onViewPositionChanged(boolean isDrag, SwipeMenu swipeMenu);
