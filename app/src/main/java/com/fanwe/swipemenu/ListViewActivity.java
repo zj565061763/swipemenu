@@ -27,7 +27,7 @@ public class ListViewActivity extends AppCompatActivity
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState)
             {
-//                mAdapter.getSwipeMenuHolder().closeAllSwipeMenu(true);
+                mAdapter.mAdapterSwipeMenuHolder.setAllSwipeMenuOpenedExcept(false, true, null);
             }
 
             @Override

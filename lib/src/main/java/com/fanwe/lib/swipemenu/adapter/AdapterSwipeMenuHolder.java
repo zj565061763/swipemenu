@@ -76,6 +76,22 @@ public class AdapterSwipeMenuHolder implements SwipeMenu.OnStateChangeCallback
         return mMapSwipeMenu.keySet();
     }
 
+    /**
+     * 除了指定的菜单外，设置所有菜单的状态
+     *
+     * @param opened
+     * @param anim
+     * @param except
+     */
+    public void setAllSwipeMenuOpenedExcept(boolean opened, boolean anim, SwipeMenu except)
+    {
+        for (SwipeMenu item : getAllSwipeMenu())
+        {
+            if (item != except)
+                item.setOpened(opened, anim);
+        }
+    }
+
     @Override
     public void onStateChanged(boolean isOpened, SwipeMenu swipeMenu)
     {
