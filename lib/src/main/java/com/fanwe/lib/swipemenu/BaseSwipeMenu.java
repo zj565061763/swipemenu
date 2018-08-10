@@ -100,56 +100,46 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
-    public final void open(boolean anim)
-    {
-        setState(true);
-        updateViewByState(anim);
-    }
-
-    @Override
-    public final void close(boolean anim)
-    {
-        setState(false);
-        updateViewByState(anim);
-    }
-
-    private void setState(boolean open)
+    public boolean setOpened(boolean opened, boolean anim)
     {
         if (getContentView() == null)
-            return;
+            return false;
 
-        if (mIsOpened == open)
-            return;
+        if (mIsOpened == opened)
+            return false;
 
-        mIsOpened = open;
+        mIsOpened = opened;
         updateLockEvent();
+        updateViewByState(anim);
 
         if (mOnStateChangeCallback != null)
             mOnStateChangeCallback.onStateChanged(mIsOpened, this);
-    }
 
-    private void updateViewByState(boolean anim)
-    {
-        abortAnimation();
-        if (anim)
-        {
-            if (onSmoothScroll(mContentContainer.getLeft(), getContentLeft(mIsOpened)))
-                invalidate();
-        } else
-        {
-            requestLayout();
-        }
+        return true;
     }
 
     /**
-     * 返回View可以滚动的最大距离
+     * 根据状态更新view的位置
      *
-     * @return
+     * @param anim
      */
-    protected final int getMaxScrollDistance()
+    protected final void updateViewByState(boolean anim)
     {
-        final View view = getMenuView();
-        return view == null ? 0 : view.getMeasuredWidth();
+        final int left = getContentLeftCurrent();
+        final int leftState = getContentLeft(mIsOpened);
+
+        if (left != leftState)
+        {
+            abortAnimation();
+            if (anim)
+            {
+                if (onSmoothScroll(mContentContainer.getLeft(), getContentLeft(mIsOpened)))
+                    invalidate();
+            } else
+            {
+                requestLayout();
+            }
+        }
     }
 
     @Override
@@ -311,28 +301,35 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected final void dealDragFinish(int velocityX)
     {
-        if (getContentView() == null)
-            return;
-
-        final int leftstart = getContentLeftCurrent();
-        int leftEnd = 0;
-
+        final int leftCurrent = getContentLeftCurrent();
         final int leftMin = getContentLeftMin();
         final int leftMax = getContentLeftMax();
 
+        int leftEnd = 0;
         if (Math.abs(velocityX) > mMinFlingVelocity)
         {
             leftEnd = velocityX > 0 ? leftMax : leftMin;
         } else
         {
             final int leftMiddle = (leftMin + leftMax) / 2;
-            leftEnd = leftstart >= leftMiddle ? leftMax : leftMin;
+            leftEnd = leftCurrent >= leftMiddle ? leftMax : leftMin;
         }
 
-        if (onSmoothScroll(leftstart, leftEnd))
-            invalidate();
-        else
-            dealViewIdle();
+        final boolean opened = leftEnd == getContentLeft(true) ? true : false;
+
+        if (!setOpened(opened, true))
+            updateViewByState(true);
+    }
+
+    /**
+     * 返回View可以滚动的最大距离
+     *
+     * @return
+     */
+    protected final int getMaxScrollDistance()
+    {
+        final View view = getMenuView();
+        return view == null ? 0 : view.getMeasuredWidth();
     }
 
     /**
@@ -348,30 +345,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      * @return
      */
     protected abstract boolean onSmoothScroll(int start, int end);
-
-    /**
-     * view由非空闲状态变为空闲状态需要执行的逻辑
-     */
-    protected final void dealViewIdle()
-    {
-        if (getContentView() == null)
-            return;
-
-        if (isViewIdle())
-        {
-            final int left = getContentLeftCurrent();
-            if (left == getContentLeft(true))
-            {
-                setState(true);
-            } else if (left == getContentLeft(false))
-            {
-                setState(false);
-            } else
-            {
-                requestLayout();
-            }
-        }
-    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)

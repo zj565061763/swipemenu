@@ -23,7 +23,7 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
         mSwipeMenu = findViewById(R.id.swipemenu);
 
         // 设置菜单在左边打开，默认右边
-        mSwipeMenu.setMenuGravity(SwipeMenu.Gravity.Left);
+//        mSwipeMenu.setMenuGravity(SwipeMenu.Gravity.Left);
         // 设置状态变化回调
         mSwipeMenu.setOnStateChangeCallback(new SwipeMenu.OnStateChangeCallback()
         {
@@ -52,8 +52,8 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId())
         {
             case R.id.btn_cancel:
-                // 关闭菜单，true-动画效果，false-无动画
-                mSwipeMenu.close(true);
+                // 关闭菜单，true-执行滑动动画
+                mSwipeMenu.setOpened(false, true);
                 break;
             case R.id.fl_content:
                 Toast.makeText(this, "click content", Toast.LENGTH_SHORT).show();

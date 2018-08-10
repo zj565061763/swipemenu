@@ -48,7 +48,7 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeM
             public void onClick(View v)
             {
                 if (swipeMenu.getScrollPercent() != 0)
-                    swipeMenu.close(true);
+                    swipeMenu.setOpened(false, true);
                 else
                     Toast.makeText(getContext(), "click " + model, Toast.LENGTH_SHORT).show();
             }

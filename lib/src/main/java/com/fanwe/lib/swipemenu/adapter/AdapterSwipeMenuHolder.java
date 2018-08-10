@@ -47,15 +47,12 @@ public class AdapterSwipeMenuHolder implements SwipeMenu.OnStateChangeCallback
         SwipeMenuInfo info = mMapInfo.get(tag);
         if (info == null)
         {
-            swipeMenu.close(false);
+            swipeMenu.setOpened(false, false);
             info = new SwipeMenuInfo(swipeMenu);
             mMapInfo.put(tag, info);
         } else
         {
-            if (info.mIsOpened)
-                swipeMenu.open(false);
-            else
-                swipeMenu.close(false);
+            swipeMenu.setOpened(info.mIsOpened, false);
         }
     }
 

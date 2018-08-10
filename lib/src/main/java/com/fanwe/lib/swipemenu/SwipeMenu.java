@@ -75,18 +75,13 @@ public interface SwipeMenu
     boolean isOpened();
 
     /**
-     * 打开菜单
+     * 打开或者关闭菜单
      *
-     * @param anim true-动画效果，false-无动画
+     * @param opened true-打开，false-关闭
+     * @param anim   true-动画效果，false-无动画
+     * @return
      */
-    void open(boolean anim);
-
-    /**
-     * 关闭菜单
-     *
-     * @param anim true-动画效果，false-无动画
-     */
-    void close(boolean anim);
+    boolean setOpened(boolean opened, boolean anim);
 
     enum Gravity
     {
