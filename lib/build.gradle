@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 20180801
-        versionName "1.0.0"
+        versionCode 20180811
+        versionName "1.0.0-beta1"
     }
 
     buildTypes {
@@ -23,7 +23,6 @@ android {
 dependencies {
     implementation 'com.github.zj565061763:gesture:1.0.10'
     implementation 'com.android.support:support-v4:27.1.1'
-    compileOnly 'com.android.support:recyclerview-v7:27.1.1'
 }
 
 // 指定编码
