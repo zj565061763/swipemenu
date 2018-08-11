@@ -9,8 +9,8 @@ import android.widget.Toast;
 import com.fanwe.lib.adapter.FSimpleRecyclerAdapter;
 import com.fanwe.lib.adapter.viewholder.FRecyclerViewHolder;
 import com.fanwe.lib.swipemenu.SwipeMenu;
-import com.fanwe.lib.swipemenu.utils.SwipeMenuHolder;
 import com.fanwe.lib.swipemenu.utils.SingleModeSwipeMenuHolder;
+import com.fanwe.lib.swipemenu.utils.SwipeMenuHolder;
 
 public class RecyclerViewAdapter extends FSimpleRecyclerAdapter<DataModel>
 {
@@ -31,6 +31,7 @@ public class RecyclerViewAdapter extends FSimpleRecyclerAdapter<DataModel>
         final SwipeMenu swipeMenu = holder.get(R.id.swipemenu);
         mAdapterSwipeMenuHolder.bind(swipeMenu, position);
 
+        swipeMenu.setMenuGravity(SwipeMenu.Gravity.Left);
         swipeMenu.getContentView().setOnClickListener(new View.OnClickListener()
         {
             @Override
