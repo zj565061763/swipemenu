@@ -29,7 +29,7 @@ public class RecyclerViewAdapter extends FSimpleRecyclerAdapter<DataModel>
         textView.setText(model.name);
 
         final SwipeMenu swipeMenu = holder.get(R.id.swipemenu);
-        mAdapterSwipeMenuHolder.bind(swipeMenu, position);
+        mAdapterSwipeMenuHolder.bind(swipeMenu, model);
 
         swipeMenu.setMenuGravity(SwipeMenu.Gravity.Left);
         swipeMenu.getContentView().setOnClickListener(new View.OnClickListener()
