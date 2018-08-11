@@ -72,6 +72,9 @@ public class SwipeMenuRecyclerAdapter extends RecyclerView.Adapter<SwipeMenuRecy
 
         final RecyclerView.ViewHolder viewHolder = mAdapter.onCreateViewHolder(parent, viewType);
         swipeMenu.setContentView(viewHolder.itemView);
+        final ViewGroup.LayoutParams params = viewHolder.itemView.getLayoutParams();
+        if (params != null)
+            swipeMenu.setLayoutParams(new ViewGroup.LayoutParams(params));
 
         final SwipeMenuViewHolder swipeMenuViewHolder = new SwipeMenuViewHolder(swipeMenu);
         swipeMenuViewHolder.mViewHolder = viewHolder;
