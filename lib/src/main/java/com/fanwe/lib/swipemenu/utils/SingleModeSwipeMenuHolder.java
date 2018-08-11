@@ -1,26 +1,20 @@
-package com.fanwe.lib.swipemenu.adapter;
+package com.fanwe.lib.swipemenu.utils;
 
 import com.fanwe.lib.swipemenu.SwipeMenu;
 
 import java.lang.ref.WeakReference;
 
-public class SingleModeAdapterSwipeMenuHolder extends AdapterSwipeMenuHolder implements
+public class SingleModeSwipeMenuHolder extends SwipeMenuHolder implements
         SwipeMenu.OnViewPositionChangeCallback,
         SwipeMenu.OnScrollStateChangeCallback,
         SwipeMenu.PullCondition
-
 {
     private WeakReference<SwipeMenu> mBusySwipeMenu;
 
-    public SingleModeAdapterSwipeMenuHolder(SwipeMenuAdapter adapter)
-    {
-        super(adapter);
-    }
-
     @Override
-    public void bind(SwipeMenu swipeMenu, int position)
+    public void bind(SwipeMenu swipeMenu, Object tag)
     {
-        super.bind(swipeMenu, position);
+        super.bind(swipeMenu, tag);
         swipeMenu.setOnViewPositionChangeCallback(this);
         swipeMenu.setOnScrollStateChangeCallback(this);
         swipeMenu.setPullCondition(this);

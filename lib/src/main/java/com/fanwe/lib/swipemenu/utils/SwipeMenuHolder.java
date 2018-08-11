@@ -1,4 +1,4 @@
-package com.fanwe.lib.swipemenu.adapter;
+package com.fanwe.lib.swipemenu.utils;
 
 import android.view.View;
 
@@ -10,34 +10,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-public class AdapterSwipeMenuHolder implements SwipeMenu.OnStateChangeCallback
+public class SwipeMenuHolder implements SwipeMenu.OnStateChangeCallback
 {
-    private final SwipeMenuAdapter mAdapter;
     private final Map<SwipeMenu, Object> mMapSwipeMenu = new WeakHashMap<>();
     private final Map<Object, SwipeMenuInfo> mMapInfo = new HashMap<>();
-
-    public AdapterSwipeMenuHolder(SwipeMenuAdapter adapter)
-    {
-        if (adapter == null)
-            throw new NullPointerException();
-        mAdapter = adapter;
-    }
 
     /**
      * 绑定某个位置和某个菜单的状态
      *
      * @param swipeMenu
-     * @param position
+     * @param tag
      */
-    public void bind(SwipeMenu swipeMenu, int position)
+    public void bind(SwipeMenu swipeMenu, Object tag)
     {
-        if (swipeMenu == null)
+        if (swipeMenu == null || tag == null)
             throw new NullPointerException();
 
-        if (position < 0)
-            throw new IllegalArgumentException("position out of range ( position >= 0 )");
-
-        final Object tag = mAdapter.getTag(position);
         if (tag instanceof View)
             throw new IllegalArgumentException("tag must not be instance of view");
 

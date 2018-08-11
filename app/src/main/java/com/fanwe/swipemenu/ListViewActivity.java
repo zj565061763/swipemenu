@@ -5,8 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-import com.fanwe.lib.swipemenu.adapter.SwipeMenuBaseAdapter;
-
 public class ListViewActivity extends AppCompatActivity
 {
     private ListView mListView;
@@ -20,7 +18,7 @@ public class ListViewActivity extends AppCompatActivity
         mListView = findViewById(R.id.listview);
 
         mAdapter.getDataHolder().setData(DataModel.get(50));
-        mListView.setAdapter(new SwipeMenuBaseAdapter(mAdapter));
+        mListView.setAdapter(mAdapter);
 
         mListView.setOnScrollListener(new AbsListView.OnScrollListener()
         {

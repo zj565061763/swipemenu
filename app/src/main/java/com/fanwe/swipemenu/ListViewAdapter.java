@@ -1,6 +1,5 @@
 package com.fanwe.swipemenu;
 
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -9,13 +8,12 @@ import android.widget.Toast;
 
 import com.fanwe.lib.adapter.FSimpleAdapter;
 import com.fanwe.lib.swipemenu.SwipeMenu;
-import com.fanwe.lib.swipemenu.adapter.AdapterSwipeMenuHolder;
-import com.fanwe.lib.swipemenu.adapter.SingleModeAdapterSwipeMenuHolder;
-import com.fanwe.lib.swipemenu.adapter.SwipeMenuAdapter;
+import com.fanwe.lib.swipemenu.utils.SwipeMenuHolder;
+import com.fanwe.lib.swipemenu.utils.SingleModeSwipeMenuHolder;
 
-public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeMenuAdapter
+public class ListViewAdapter extends FSimpleAdapter<DataModel>
 {
-    public final AdapterSwipeMenuHolder mAdapterSwipeMenuHolder = new SingleModeAdapterSwipeMenuHolder(this);
+    public final SwipeMenuHolder mAdapterSwipeMenuHolder = new SingleModeSwipeMenuHolder();
 
     @Override
     public int getLayoutId(int position, View convertView, ViewGroup parent)
@@ -28,20 +26,9 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeM
     {
         final TextView textView = get(R.id.textview, convertView);
         textView.setText(model.name);
-    }
 
-    @Override
-    public View onCreateMenuView(int position, ViewGroup parent)
-    {
-        return LayoutInflater.from(parent.getContext()).inflate(R.layout.item_swipe_menu_view, parent, false);
-    }
-
-    @Override
-    public void onBindSwipeMenu(int position, final SwipeMenu swipeMenu)
-    {
-        mAdapterSwipeMenuHolder.bind(swipeMenu, position);
-
-        final DataModel model = getDataHolder().get(position);
+        final SwipeMenu swipeMenu = get(R.id.swipemenu, convertView);
+        mAdapterSwipeMenuHolder.bind(swipeMenu, model);
 
         swipeMenu.getContentView().setOnClickListener(new View.OnClickListener()
         {
@@ -65,11 +52,5 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeM
                 getDataHolder().removeData(model);
             }
         });
-    }
-
-    @Override
-    public Object getTag(int position)
-    {
-        return getDataHolder().get(position);
     }
 }

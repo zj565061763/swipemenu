@@ -5,8 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.fanwe.lib.swipemenu.adapter.SwipeMenuRecyclerAdapter;
-
 public class RecyclerViewActivity extends AppCompatActivity
 {
     private RecyclerView mRecyclerView;
@@ -21,7 +19,7 @@ public class RecyclerViewActivity extends AppCompatActivity
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mAdapter.getDataHolder().setData(DataModel.get(50));
-        mRecyclerView.setAdapter(new SwipeMenuRecyclerAdapter(mAdapter));
+        mRecyclerView.setAdapter(mAdapter);
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
