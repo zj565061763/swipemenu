@@ -16,10 +16,10 @@ public class SwipeMenuHolder implements SwipeMenu.OnStateChangeCallback
     private final Map<Object, SwipeMenuInfo> mMapInfo = new HashMap<>();
 
     /**
-     * 绑定某个位置和某个菜单的状态
+     * 绑定某个菜单的状态
      *
      * @param swipeMenu
-     * @param tag
+     * @param tag       如果在有复用机制的列表中使用，建议tag传入每一项对应的实体
      */
     public void bind(SwipeMenu swipeMenu, Object tag)
     {
