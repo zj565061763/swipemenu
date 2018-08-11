@@ -37,13 +37,13 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeM
     }
 
     @Override
-    public void onBindData(final int position, View contentView, View menuView, final SwipeMenu swipeMenu)
+    public void onBindSwipeMenu(int position, final SwipeMenu swipeMenu)
     {
         mAdapterSwipeMenuHolder.bind(swipeMenu, position);
 
         final DataModel model = getDataHolder().get(position);
 
-        contentView.setOnClickListener(new View.OnClickListener()
+        swipeMenu.getContentView().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -55,7 +55,7 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel> implements SwipeM
             }
         });
 
-        final Button btn_delete = menuView.findViewById(R.id.btn_delete);
+        final Button btn_delete = swipeMenu.getMenuView().findViewById(R.id.btn_delete);
         btn_delete.setOnClickListener(new View.OnClickListener()
         {
             @Override

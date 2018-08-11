@@ -10,21 +10,19 @@ public interface SwipeMenuAdapter
     /**
      * 创建菜单view
      *
-     * @param position
+     * @param viewType
      * @param parent
      * @return
      */
-    View onCreateMenuView(int position, ViewGroup parent);
+    View onCreateMenuView(int viewType, ViewGroup parent);
 
     /**
      * 绑定数据
      *
      * @param position
-     * @param contentView
-     * @param menuView
      * @param swipeMenu
      */
-    void onBindData(int position, View contentView, View menuView, SwipeMenu swipeMenu);
+    void onBindSwipeMenu(int position, SwipeMenu swipeMenu);
 
     /**
      * 返回每一项的唯一标识，建议返回每一项对应的实体对象

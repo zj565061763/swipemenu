@@ -80,14 +80,14 @@ public class SwipeMenuBaseAdapter extends BaseAdapter
         } else
         {
             swipeMenu = new FSwipeMenu(parent.getContext(), null);
-            swipeMenu.setMenuView(((SwipeMenuAdapter) mAdapter).onCreateMenuView(position, swipeMenu));
+            swipeMenu.setMenuView(((SwipeMenuAdapter) mAdapter).onCreateMenuView(getItemViewType(position), swipeMenu));
         }
 
         View contentView = swipeMenu.getContentView();
         contentView = mAdapter.getView(position, contentView, parent);
         swipeMenu.setContentView(contentView);
 
-        ((SwipeMenuAdapter) mAdapter).onBindData(position, contentView, swipeMenu.getMenuView(), swipeMenu);
+        ((SwipeMenuAdapter) mAdapter).onBindSwipeMenu(position, swipeMenu);
 
         return swipeMenu;
     }

@@ -21,8 +21,9 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.github.zj565061763:gesture:1.0.10'
+    implementation 'com.android.support:support-v4:27.1.1'
+    compileOnly 'com.android.support:recyclerview-v7:27.1.1'
 }
 
 // 指定编码
