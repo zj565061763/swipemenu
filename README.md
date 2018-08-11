@@ -4,6 +4,9 @@ Android侧滑菜单，详细请参考demo
 # Gradle 
 [![](https://jitpack.io/v/zj565061763/swipemenu.svg)](https://jitpack.io/#zj565061763/swipemenu)
 
+# 简单效果
+![](https://raw.githubusercontent.com/zj565061763/swipemenu/master/screenshot/swipemenu.gif)
+
 # SwipeMenu接口
 ```java
 public interface SwipeMenu
