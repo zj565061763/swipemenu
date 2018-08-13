@@ -4,7 +4,6 @@ import android.view.View;
 
 import com.fanwe.lib.swipemenu.SwipeMenu;
 
-import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -36,8 +35,7 @@ public class SwipeMenuHolder implements SwipeMenu.OnStateChangeCallback
         if (info == null)
         {
             swipeMenu.setOpened(false, false);
-            info = new SwipeMenuInfo(swipeMenu);
-            mMapInfo.put(tag, info);
+            mMapInfo.put(tag, new SwipeMenuInfo());
         } else
         {
             swipeMenu.setOpened(info.mIsOpened, false);
@@ -91,13 +89,6 @@ public class SwipeMenuHolder implements SwipeMenu.OnStateChangeCallback
 
     private static class SwipeMenuInfo
     {
-        public final WeakReference<SwipeMenu> mSwipeMenu;
         public boolean mIsOpened;
-
-        public SwipeMenuInfo(SwipeMenu swipeMenu)
-        {
-            mSwipeMenu = new WeakReference<>(swipeMenu);
-            mIsOpened = swipeMenu.isOpened();
-        }
     }
 }
