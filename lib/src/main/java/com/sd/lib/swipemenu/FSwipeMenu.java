@@ -7,10 +7,10 @@ import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
 import android.widget.Scroller;
 
-import com.fanwe.lib.gesture.FGestureManager;
-import com.fanwe.lib.gesture.FScroller;
-import com.fanwe.lib.gesture.FTouchHelper;
-import com.fanwe.lib.gesture.tag.TagHolder;
+import com.sd.lib.gesture.FGestureManager;
+import com.sd.lib.gesture.FScroller;
+import com.sd.lib.gesture.FTouchHelper;
+import com.sd.lib.gesture.tag.TagHolder;
 
 public class FSwipeMenu extends BaseSwipeMenu
 {

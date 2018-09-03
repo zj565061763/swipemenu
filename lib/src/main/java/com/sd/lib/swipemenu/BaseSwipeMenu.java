@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
-import com.fanwe.lib.gesture.FTouchHelper;
+import com.sd.lib.gesture.FTouchHelper;
 
 abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 {
