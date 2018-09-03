@@ -5,8 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-import com.fanwe.swipemenu.R;
-
 public class ListViewActivity extends AppCompatActivity
 {
     private ListView mListView;

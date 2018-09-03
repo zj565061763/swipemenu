@@ -6,9 +6,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fanwe.lib.adapter.FSimpleRecyclerAdapter;
-import com.fanwe.lib.adapter.viewholder.FRecyclerViewHolder;
-import com.fanwe.swipemenu.R;
+import com.sd.lib.adapter.FSimpleRecyclerAdapter;
+import com.sd.lib.adapter.viewholder.FRecyclerViewHolder;
 import com.sd.lib.swipemenu.SwipeMenu;
 import com.sd.lib.swipemenu.utils.SingleModeSwipeMenuHolder;
 import com.sd.lib.swipemenu.utils.SwipeMenuHolder;

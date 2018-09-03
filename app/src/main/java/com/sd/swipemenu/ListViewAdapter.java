@@ -6,8 +6,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fanwe.lib.adapter.FSimpleAdapter;
-import com.fanwe.swipemenu.R;
+import com.sd.lib.adapter.FSimpleAdapter;
 import com.sd.lib.swipemenu.SwipeMenu;
 import com.sd.lib.swipemenu.utils.SwipeMenuHolder;
 import com.sd.lib.swipemenu.utils.SingleModeSwipeMenuHolder;

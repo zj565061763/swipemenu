@@ -5,8 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.fanwe.swipemenu.R;
-
 public class RecyclerViewActivity extends AppCompatActivity
 {
     private RecyclerView mRecyclerView;

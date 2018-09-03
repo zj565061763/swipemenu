@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.fanwe.swipemenu.R;
 import com.sd.lib.swipemenu.FSwipeMenu;
 import com.sd.lib.swipemenu.SwipeMenu;
 
