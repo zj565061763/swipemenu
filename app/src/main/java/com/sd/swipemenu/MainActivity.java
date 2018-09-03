@@ -1,9 +1,11 @@
-package com.fanwe.swipemenu;
+package com.sd.swipemenu;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import com.fanwe.swipemenu.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {

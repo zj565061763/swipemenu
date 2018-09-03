@@ -1,4 +1,4 @@
-package com.fanwe.swipemenu;
+package com.sd.swipemenu;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.fanwe.lib.swipemenu;
+package com.sd.lib.swipemenu;
 
 import android.view.View;
 

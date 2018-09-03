@@ -1,4 +1,4 @@
-package com.fanwe.swipemenu;
+package com.sd.swipemenu;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,8 +6,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.fanwe.lib.swipemenu.FSwipeMenu;
-import com.fanwe.lib.swipemenu.SwipeMenu;
+import com.fanwe.swipemenu.R;
+import com.sd.lib.swipemenu.FSwipeMenu;
+import com.sd.lib.swipemenu.SwipeMenu;
 
 public class SimpleActivity extends AppCompatActivity implements View.OnClickListener
 {

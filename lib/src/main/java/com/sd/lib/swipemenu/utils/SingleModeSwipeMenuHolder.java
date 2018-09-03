@@ -1,6 +1,6 @@
-package com.fanwe.lib.swipemenu.utils;
+package com.sd.lib.swipemenu.utils;
 
-import com.fanwe.lib.swipemenu.SwipeMenu;
+import com.sd.lib.swipemenu.SwipeMenu;
 
 import java.lang.ref.WeakReference;
 

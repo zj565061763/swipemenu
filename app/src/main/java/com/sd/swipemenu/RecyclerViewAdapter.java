@@ -1,4 +1,4 @@
-package com.fanwe.swipemenu;
+package com.sd.swipemenu;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -6,30 +6,33 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fanwe.lib.adapter.FSimpleAdapter;
-import com.fanwe.lib.swipemenu.SwipeMenu;
-import com.fanwe.lib.swipemenu.utils.SwipeMenuHolder;
-import com.fanwe.lib.swipemenu.utils.SingleModeSwipeMenuHolder;
+import com.fanwe.lib.adapter.FSimpleRecyclerAdapter;
+import com.fanwe.lib.adapter.viewholder.FRecyclerViewHolder;
+import com.fanwe.swipemenu.R;
+import com.sd.lib.swipemenu.SwipeMenu;
+import com.sd.lib.swipemenu.utils.SingleModeSwipeMenuHolder;
+import com.sd.lib.swipemenu.utils.SwipeMenuHolder;
 
-public class ListViewAdapter extends FSimpleAdapter<DataModel>
+public class RecyclerViewAdapter extends FSimpleRecyclerAdapter<DataModel>
 {
     public final SwipeMenuHolder mAdapterSwipeMenuHolder = new SingleModeSwipeMenuHolder();
 
     @Override
-    public int getLayoutId(int position, View convertView, ViewGroup parent)
+    public int getLayoutId(ViewGroup parent, int viewType)
     {
         return R.layout.item_list;
     }
 
     @Override
-    public void onBindData(int position, View convertView, ViewGroup parent, final DataModel model)
+    public void onBindData(FRecyclerViewHolder<DataModel> holder, int position, final DataModel model)
     {
-        final TextView textView = get(R.id.textview, convertView);
+        final TextView textView = holder.get(R.id.textview);
         textView.setText(model.name);
 
-        final SwipeMenu swipeMenu = get(R.id.swipemenu, convertView);
+        final SwipeMenu swipeMenu = holder.get(R.id.swipemenu);
         mAdapterSwipeMenuHolder.bind(swipeMenu, model);
 
+        swipeMenu.setMenuGravity(SwipeMenu.Gravity.Left);
         swipeMenu.getContentView().setOnClickListener(new View.OnClickListener()
         {
             @Override

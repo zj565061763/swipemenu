@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.fanwe.lib.swipemenu.FSwipeMenu
+    <com.sd.lib.swipemenu.FSwipeMenu
         android:id="@+id/swipemenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -42,6 +42,6 @@
 
         </LinearLayout>
 
-    </com.fanwe.lib.swipemenu.FSwipeMenu>
+    </com.sd.lib.swipemenu.FSwipeMenu>
 
 </LinearLayout>

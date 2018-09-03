@@ -1,8 +1,8 @@
-package com.fanwe.lib.swipemenu.utils;
+package com.sd.lib.swipemenu.utils;
 
 import android.view.View;
 
-import com.fanwe.lib.swipemenu.SwipeMenu;
+import com.sd.lib.swipemenu.SwipeMenu;
 
 import java.util.HashMap;
 import java.util.Map;
