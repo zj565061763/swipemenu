@@ -60,8 +60,6 @@ abstract class LockContainer extends ViewGroup
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev)
     {
-        if (mLockEvent)
-            return true;
         return super.onInterceptTouchEvent(ev);
     }
 
@@ -69,8 +67,9 @@ abstract class LockContainer extends ViewGroup
     public boolean onTouchEvent(MotionEvent event)
     {
         if (mLockEvent)
-            return true;
-        return super.onTouchEvent(event);
+            return false;
+        else
+            return super.onTouchEvent(event);
     }
 
     @Override
