@@ -63,6 +63,7 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.btn_cancel:
                 // 关闭菜单，true-执行滑动动画
                 mSwipeMenu.setOpened(false, true);
+                Toast.makeText(this, "click cancel", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.fl_content:
                 Toast.makeText(this, "click content", Toast.LENGTH_SHORT).show();
