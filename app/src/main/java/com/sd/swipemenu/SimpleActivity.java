@@ -67,6 +67,9 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.fl_content:
                 Toast.makeText(this, "click content", Toast.LENGTH_SHORT).show();
                 break;
+            default:
+                Toast.makeText(this, String.valueOf(v), Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 }
