@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import com.sd.lib.gesture.FTouchHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 {
@@ -23,6 +25,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     private MenuContainer mContainerMenuTop;
     private MenuContainer mContainerMenuRight;
     private MenuContainer mContainerMenuBottom;
+
+    private final Map<Direction, MenuContainer> mMapContainerMenu = new HashMap<>();
 
     private State mState = State.Close;
     private Direction mMenuDirection;
@@ -60,10 +64,13 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                     {
                         if (mState == State.OpenLeft)
                             setState(State.Close, false);
+
+                        mMapContainerMenu.remove(Direction.Left);
                         mContainerMenuLeft = null;
                     }
                 }
             };
+            mMapContainerMenu.put(Direction.Left, mContainerMenuLeft);
             mContainerMenuLeft.setGravity(Gravity.LEFT);
             addView(mContainerMenuLeft);
         }
@@ -84,10 +91,13 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                     {
                         if (mState == State.OpenTop)
                             setState(State.Close, false);
+
+                        mMapContainerMenu.remove(Direction.Top);
                         mContainerMenuTop = null;
                     }
                 }
             };
+            mMapContainerMenu.put(Direction.Top, mContainerMenuTop);
             mContainerMenuTop.setGravity(Gravity.TOP);
             addView(mContainerMenuTop);
         }
@@ -108,10 +118,13 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                     {
                         if (mState == State.OpenRight)
                             setState(State.Close, false);
+
+                        mMapContainerMenu.remove(Direction.Right);
                         mContainerMenuRight = null;
                     }
                 }
             };
+            mMapContainerMenu.put(Direction.Right, mContainerMenuRight);
             mContainerMenuRight.setGravity(Gravity.RIGHT);
             addView(mContainerMenuRight);
         }
@@ -132,10 +145,13 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                     {
                         if (mState == State.OpenBottom)
                             setState(State.Close, false);
+
+                        mMapContainerMenu.remove(Direction.Bottom);
                         mContainerMenuBottom = null;
                     }
                 }
             };
+            mMapContainerMenu.put(Direction.Bottom, mContainerMenuBottom);
             mContainerMenuBottom.setGravity(Gravity.BOTTOM);
             addView(mContainerMenuBottom);
         }
@@ -181,22 +197,11 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     public final View getMenuView(Direction direction)
     {
-        if (direction == null)
+        final MenuContainer container = mMapContainerMenu.get(direction);
+        if (container == null)
             return null;
 
-        switch (direction)
-        {
-            case Left:
-                return mContainerMenuLeft == null ? null : mContainerMenuLeft.getContentView();
-            case Top:
-                return mContainerMenuTop == null ? null : mContainerMenuTop.getContentView();
-            case Right:
-                return mContainerMenuRight == null ? null : mContainerMenuRight.getContentView();
-            case Bottom:
-                return mContainerMenuBottom == null ? null : mContainerMenuBottom.getContentView();
-            default:
-                throw new RuntimeException();
-        }
+        return container.getContentView();
     }
 
     @Override
@@ -219,6 +224,17 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
             if (mIsDebug)
                 Log.i(SwipeMenu.class.getSimpleName(), "setScrollState:" + state);
+
+            if (state == ScrollState.Idle)
+            {
+                if (mState == State.Close && getScrollPercent() == 0)
+                {
+                    for (MenuContainer item : mMapContainerMenu.values())
+                    {
+                        item.setVisibility(INVISIBLE);
+                    }
+                }
+            }
 
             if (mOnScrollStateChangeCallback != null)
                 mOnScrollStateChangeCallback.onScrollStateChanged(state, this);
@@ -358,12 +374,11 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     public void onViewRemoved(View child)
     {
         super.onViewRemoved(child);
-        if (child == mContainerContent
-                || child == mContainerMenuLeft
-                || child == mContainerMenuTop
-                || child == mContainerMenuRight
-                || child == mContainerMenuBottom)
-            throw new RuntimeException("you can not remove view this way");
+        for (MenuContainer item : mMapContainerMenu.values())
+        {
+            if (item == child)
+                throw new RuntimeException("you can not remove view this way");
+        }
     }
 
     /**
@@ -381,6 +396,13 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             mMenuDirection = direction;
             if (mIsDebug)
                 Log.e(SwipeMenu.class.getSimpleName(), "setMenuDirection:" + direction);
+
+            final MenuContainer container = mMapContainerMenu.get(direction);
+            if (container != null)
+                container.setVisibility(VISIBLE);
+            else
+                throw new RuntimeException("MenuContainer not found for direction:" + direction);
+
             onMenuDirectionChanged(direction);
         }
     }
@@ -422,14 +444,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         switch (state)
         {
             case Close:
-                if (mContainerMenuLeft != null)
-                    mContainerMenuLeft.setLockEvent(true);
-                if (mContainerMenuTop != null)
-                    mContainerMenuTop.setLockEvent(true);
-                if (mContainerMenuRight != null)
-                    mContainerMenuRight.setLockEvent(true);
-                if (mContainerMenuBottom != null)
-                    mContainerMenuBottom.setLockEvent(true);
+                for (MenuContainer item : mMapContainerMenu.values())
+                {
+                    item.setLockEvent(true);
+                }
                 break;
             case OpenLeft:
                 if (mContainerMenuLeft != null)
@@ -659,17 +677,18 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected final int getMaxScrollDistance()
     {
-        if (mMenuDirection == null)
+        final View view = getMenuView(mMenuDirection);
+        if (view == null)
             return 0;
 
         switch (mMenuDirection)
         {
             case Left:
             case Right:
-                return getMenuView(mMenuDirection).getWidth();
+                return view.getWidth();
             case Top:
             case Bottom:
-                return getMenuView(mMenuDirection).getHeight();
+                return view.getHeight();
             default:
                 throw new RuntimeException();
         }
