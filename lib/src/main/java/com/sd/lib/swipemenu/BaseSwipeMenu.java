@@ -288,7 +288,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     private void updateViewByState(boolean anim)
     {
         final int boundCurrent = getContentBoundCurrent();
-        final int boundState = getContentBoundState(getState());
+        final int boundState = getContentBoundState(mState);
 
         if (boundCurrent != boundState)
         {
