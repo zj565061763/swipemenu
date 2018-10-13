@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="lib_swipemenu_content" type="id" />
+    <item name="lib_swipemenu_menu_left" type="id" />
+    <item name="lib_swipemenu_menu_top" type="id" />
+    <item name="lib_swipemenu_menu_right" type="id" />
+    <item name="lib_swipemenu_menu_bottom" type="id" />
+
+</resources>

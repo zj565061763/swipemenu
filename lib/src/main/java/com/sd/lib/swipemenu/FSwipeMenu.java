@@ -42,8 +42,8 @@ public class FSwipeMenu extends BaseSwipeMenu
                 @Override
                 public void onScroll(int lastX, int lastY, int currX, int currY)
                 {
-                    final int deltaX = currX - lastX;
-                    moveViews(deltaX, false);
+                    final int delta = getMenuDirection().isHorizontal() ? (currX - lastX) : (currY - lastY);
+                    moveViews(delta, false);
                 }
             });
         }
@@ -71,8 +71,11 @@ public class FSwipeMenu extends BaseSwipeMenu
                 @Override
                 public boolean onEventConsume(MotionEvent event)
                 {
-                    final int deltaX = (int) getGestureManager().getTouchHelper().getDeltaX();
-                    moveViews(deltaX, true);
+                    final int delta = getMenuDirection().isHorizontal()
+                            ? (int) getGestureManager().getTouchHelper().getDeltaX()
+                            : (int) getGestureManager().getTouchHelper().getDeltaY();
+
+                    moveViews(delta, true);
                     return true;
                 }
 
@@ -116,7 +119,10 @@ public class FSwipeMenu extends BaseSwipeMenu
     @Override
     protected boolean onSmoothScroll(int start, int end)
     {
-        return getScroller().scrollToX(start, end, -1);
+        if (getMenuDirection().isHorizontal())
+            return getScroller().scrollToX(start, end, -1);
+        else
+            return getScroller().scrollToY(start, end, -1);
     }
 
     private boolean canPull()
@@ -202,11 +208,17 @@ public class FSwipeMenu extends BaseSwipeMenu
             if (!isScrollToBound(pullToStart, getContentView()))
                 return false;
 
+            Direction direction = null;
             if (state == State.Close)
-                setOpenDirection(getDirectionForCloseState(pullToStart));
+                direction = getMenuDirectionForCloseState(pullToStart);
             else if (state == getOpenStateCanPull(pullToStart))
-                setOpenDirection(getDirectionForOpenState(state);
+                direction = getMenuDirectionForOpenState(state);
 
+            final View view = getMenuViewForMenuDirection(direction);
+            if (view == null)
+                return false;
+
+            setMenuDirection(direction);
             return true;
         }
 
@@ -216,9 +228,9 @@ public class FSwipeMenu extends BaseSwipeMenu
 
         protected abstract boolean isScrollToBound(boolean pullToStart, View view);
 
-        protected abstract Direction getDirectionForCloseState(boolean pullToStart);
+        protected abstract Direction getMenuDirectionForCloseState(boolean pullToStart);
 
-        protected abstract Direction getDirectionForOpenState(State state);
+        protected abstract Direction getMenuDirectionForOpenState(State state);
     }
 
     private final PullHelper mHorizontalPullHelper = new PullHelper()
@@ -245,7 +257,7 @@ public class FSwipeMenu extends BaseSwipeMenu
         }
 
         @Override
-        protected Direction getDirectionForCloseState(boolean pullToStart)
+        protected Direction getMenuDirectionForCloseState(boolean pullToStart)
         {
             return pullToStart ? Direction.Right : Direction.Left;
         }
@@ -257,7 +269,7 @@ public class FSwipeMenu extends BaseSwipeMenu
         }
 
         @Override
-        protected Direction getDirectionForOpenState(State state)
+        protected Direction getMenuDirectionForOpenState(State state)
         {
             if (state == State.OpenLeft)
                 return Direction.Left;
@@ -292,7 +304,7 @@ public class FSwipeMenu extends BaseSwipeMenu
         }
 
         @Override
-        protected Direction getDirectionForCloseState(boolean pullToStart)
+        protected Direction getMenuDirectionForCloseState(boolean pullToStart)
         {
             return pullToStart ? Direction.Bottom : Direction.Top;
         }
@@ -304,7 +316,7 @@ public class FSwipeMenu extends BaseSwipeMenu
         }
 
         @Override
-        protected Direction getDirectionForOpenState(State state)
+        protected Direction getMenuDirectionForOpenState(State state)
         {
             if (state == State.OpenTop)
                 return Direction.Top;

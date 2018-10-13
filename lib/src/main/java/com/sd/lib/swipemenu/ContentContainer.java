@@ -1,8 +1,11 @@
 package com.sd.lib.swipemenu;
 
 import android.content.Context;
-import android.view.View;
+import android.view.ViewGroup;
 
+/**
+ * 保存内容View的容器
+ */
 final class ContentContainer extends LockContainer
 {
     public ContentContainer(Context context)
@@ -11,12 +14,10 @@ final class ContentContainer extends LockContainer
     }
 
     @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b)
+    public final void setLayoutParams(ViewGroup.LayoutParams params)
     {
-        final View contentView = getContentView();
-        if (contentView != null && contentView.getVisibility() != GONE)
-        {
-            contentView.layout(0, 0, contentView.getMeasuredWidth(), contentView.getMeasuredHeight());
-        }
+        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        super.setLayoutParams(params);
     }
 }

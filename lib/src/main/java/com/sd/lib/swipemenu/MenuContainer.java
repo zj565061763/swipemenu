@@ -6,54 +6,27 @@ import android.view.ViewGroup;
 
 final class MenuContainer extends LockContainer
 {
-    private SwipeMenu.Gravity mMenuGravity;
-
     public MenuContainer(Context context)
     {
         super(context);
     }
 
-    /**
-     * 设置菜单位置
-     *
-     * @param gravity
-     */
-    public void setMenuGravity(SwipeMenu.Gravity gravity)
-    {
-        if (gravity == null)
-            throw new NullPointerException();
-
-        if (mMenuGravity != gravity)
-        {
-            mMenuGravity = gravity;
-            requestLayout();
-        }
-    }
-
-    /**
-     * 返回菜单位置
-     *
-     * @return
-     */
-    public SwipeMenu.Gravity getMenuGravity()
-    {
-        return mMenuGravity;
-    }
-
     @Override
-    protected LayoutParams generateDefaultLayoutParams()
-    {
-        return new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b)
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
         final View contentView = getContentView();
-        if (contentView != null && contentView.getVisibility() != GONE)
+        final ViewGroup.LayoutParams params = getLayoutParams();
+        if (contentView != null && params != null)
         {
-            final int left = mMenuGravity == SwipeMenu.Gravity.Left ? 0 : (getMeasuredWidth() - contentView.getMeasuredWidth());
-            contentView.layout(left, 0, left + contentView.getMeasuredWidth(), contentView.getMeasuredHeight());
+            final ViewGroup.LayoutParams contentViewParams = contentView.getLayoutParams();
+            if (params.width != contentViewParams.width || params.height != contentViewParams.height)
+            {
+                params.width = contentViewParams.width;
+                params.height = contentViewParams.height;
+                setLayoutParams(params);
+            }
         }
+
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 }

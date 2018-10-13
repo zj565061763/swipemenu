@@ -3,9 +3,9 @@ package com.sd.lib.swipemenu;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
-abstract class LockContainer extends ViewGroup
+abstract class LockContainer extends LinearLayout
 {
     private boolean mLockEvent;
     private View mContentView;
@@ -58,18 +58,6 @@ abstract class LockContainer extends ViewGroup
     }
 
     @Override
-    public final void setLayoutParams(LayoutParams params)
-    {
-        if (params.width != LayoutParams.MATCH_PARENT)
-            params.width = LayoutParams.MATCH_PARENT;
-
-        if (params.height != LayoutParams.MATCH_PARENT)
-            params.height = LayoutParams.MATCH_PARENT;
-
-        super.setLayoutParams(params);
-    }
-
-    @Override
     public boolean onTouchEvent(MotionEvent event)
     {
         if (mLockEvent)
@@ -98,24 +86,5 @@ abstract class LockContainer extends ViewGroup
     public void setPadding(int left, int top, int right, int bottom)
     {
         super.setPadding(0, 0, 0, 0);
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-    {
-        int width = 0;
-        int height = 0;
-
-        if (mContentView != null && mContentView.getVisibility() != GONE)
-        {
-            measureChild(mContentView, widthMeasureSpec, heightMeasureSpec);
-            width = mContentView.getMeasuredWidth();
-            height = mContentView.getMeasuredHeight();
-        }
-
-        width = Utils.getMeasureSize(width, widthMeasureSpec);
-        height = Utils.getMeasureSize(height, heightMeasureSpec);
-
-        setMeasuredDimension(width, height);
     }
 }
