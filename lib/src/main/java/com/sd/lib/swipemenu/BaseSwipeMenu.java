@@ -216,8 +216,16 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         return mScrollState;
     }
 
+    /**
+     * 设置滚动状态
+     *
+     * @param state
+     */
     protected final void setScrollState(ScrollState state)
     {
+        if (state == null)
+            throw new NullPointerException();
+
         if (mScrollState != state)
         {
             mScrollState = state;
@@ -225,19 +233,27 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             if (mIsDebug)
                 Log.i(SwipeMenu.class.getSimpleName(), "setScrollState:" + state);
 
-            if (state == ScrollState.Idle)
-            {
-                if (mState == State.Close && getScrollPercent() == 0)
-                {
-                    for (MenuContainer item : mMapContainerMenu.values())
-                    {
-                        item.setVisibility(INVISIBLE);
-                    }
-                }
-            }
+            hideContainerMenuIfNeed();
 
             if (mOnScrollStateChangeCallback != null)
                 mOnScrollStateChangeCallback.onScrollStateChanged(state, this);
+        }
+    }
+
+    private void hideContainerMenuIfNeed()
+    {
+        if (mScrollState == ScrollState.Idle)
+        {
+            if (mState == State.Close && getScrollPercent() == 0)
+            {
+                for (MenuContainer item : mMapContainerMenu.values())
+                {
+                    item.setVisibility(INVISIBLE);
+                }
+
+                if (mIsDebug)
+                    Log.i(SwipeMenu.class.getSimpleName(), "hide all menu container");
+            }
         }
     }
 
@@ -820,5 +836,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             ViewCompat.setZ(mContainerContent, maxZ + 1);
 
         updateLockEvent();
+        hideContainerMenuIfNeed();
     }
 }
