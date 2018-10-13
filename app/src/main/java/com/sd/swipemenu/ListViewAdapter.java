@@ -53,5 +53,15 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel>
                 getDataHolder().removeData(model);
             }
         });
+
+        final Button btn_cancel = swipeMenu.getMenuView(SwipeMenu.Direction.Left).findViewById(R.id.btn_cancel);
+        btn_cancel.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                swipeMenu.setState(SwipeMenu.State.Close, true);
+            }
+        });
     }
 }

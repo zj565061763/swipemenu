@@ -41,7 +41,6 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
             {
                 // 获得滚动百分比
                 final float scrollPercent = swipeMenu.getScrollPercent();
-                Log.i(TAG, "onViewPositionChanged:" + isDrag + " " + scrollPercent);
             }
         });
         // 设置滚动状态变化回调
@@ -60,13 +59,20 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
     {
         switch (v.getId())
         {
-            case R.id.btn_cancel:
-                // 关闭菜单，true-执行滑动动画
-                mSwipeMenu.setState(SwipeMenu.State.Close, true);
-                Toast.makeText(this, "click cancel", Toast.LENGTH_SHORT).show();
-                break;
             case R.id.tv_content:
                 Toast.makeText(this, "click content", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.tv_menu_left:
+                Toast.makeText(this, "click menu left", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.tv_menu_right:
+                Toast.makeText(this, "click menu right", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.tv_menu_top:
+                Toast.makeText(this, "click menu top", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.tv_menu_bottom:
+                Toast.makeText(this, "click menu bottom", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 Toast.makeText(this, String.valueOf(v), Toast.LENGTH_SHORT).show();

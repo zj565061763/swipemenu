@@ -26,21 +26,20 @@
 
         </FrameLayout>
 
-        <!-- 菜单view -->
         <FrameLayout
             android:id="@id/lib_swipemenu_menu_left"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/btn_cancel"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tv_menu_left"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#C7C7CC"
+                android:background="@android:color/holo_green_dark"
+                android:gravity="center"
                 android:onClick="onClick"
-                android:text="取消"
-                android:textColor="#FFFFFF" />
+                android:text="left"
+                android:textColor="@android:color/white" />
 
         </FrameLayout>
 
@@ -57,6 +56,40 @@
                 android:gravity="center"
                 android:onClick="onClick"
                 android:text="right"
+                android:textColor="@android:color/white" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@id/lib_swipemenu_menu_top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_menu_top"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/holo_orange_dark"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="top"
+                android:textColor="@android:color/white" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@id/lib_swipemenu_menu_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_menu_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/holo_purple"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="bottom"
                 android:textColor="@android:color/white" />
 
         </FrameLayout>
