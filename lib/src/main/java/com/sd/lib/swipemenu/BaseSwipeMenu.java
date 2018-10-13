@@ -692,12 +692,21 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         }
         mContainerContent.layout(left, top, left + mContainerContent.getMeasuredWidth(), top + mContainerContent.getMeasuredHeight());
 
-        // menu
-        mContainerMenuLeft.layout(0, 0,
-                mContainerMenuLeft.getMeasuredWidth(), mContainerMenuLeft.getMeasuredHeight());
+        float maxZ = 0;
 
-        if (ViewCompat.getZ(mContainerContent) <= ViewCompat.getZ(mContainerMenuLeft))
-            ViewCompat.setZ(mContainerContent, ViewCompat.getZ(mContainerMenuLeft) + 1);
+        // left
+        if (mContainerMenuLeft != null)
+        {
+            mContainerMenuLeft.layout(0, 0,
+                    mContainerMenuLeft.getMeasuredWidth(), mContainerMenuLeft.getMeasuredHeight());
+
+            final float menuZ = ViewCompat.getZ(mContainerMenuLeft);
+            if (menuZ > maxZ)
+                maxZ = menuZ;
+        }
+
+        if (ViewCompat.getZ(mContainerContent) <= maxZ)
+            ViewCompat.setZ(mContainerContent, maxZ + 1);
 
         updateLockEvent();
     }
