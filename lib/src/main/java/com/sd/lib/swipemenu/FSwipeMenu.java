@@ -111,6 +111,12 @@ public class FSwipeMenu extends BaseSwipeMenu
     }
 
     @Override
+    protected void onMenuDirectionChanged(Direction direction)
+    {
+        getScroller().setMaxScrollDistance(getMaxScrollDistance());
+    }
+
+    @Override
     protected void abortAnimation()
     {
         getScroller().abortAnimation();
@@ -163,13 +169,6 @@ public class FSwipeMenu extends BaseSwipeMenu
     }
 
     @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b)
-    {
-        super.onLayout(changed, l, t, r, b);
-        getScroller().setMaxScrollDistance(getMaxScrollDistance());
-    }
-
-    @Override
     public void computeScroll()
     {
         if (getScroller().computeScrollOffset())
@@ -180,9 +179,14 @@ public class FSwipeMenu extends BaseSwipeMenu
     protected boolean isViewIdle()
     {
         final boolean checkScrollerFinished = getScroller().isFinished();
-        final boolean checkNotDragging = !getGestureManager().getTagHolder().isTagConsume();
+        if (!checkScrollerFinished)
+            return false;
 
-        return checkScrollerFinished && checkNotDragging;
+        final boolean checkNotDragging = !getGestureManager().getTagHolder().isTagConsume();
+        if (!checkNotDragging)
+            return false;
+
+        return true;
     }
 
     @Override

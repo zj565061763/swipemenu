@@ -290,10 +290,14 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     {
         if (direction == null)
             throw new NullPointerException();
-        mMenuDirection = direction;
-        if (mIsDebug)
-            Log.e(SwipeMenu.class.getSimpleName(), "setMenuDirection:" + direction);
 
+        if (mMenuDirection != direction)
+        {
+            mMenuDirection = direction;
+            if (mIsDebug)
+                Log.e(SwipeMenu.class.getSimpleName(), "setMenuDirection:" + direction);
+            onMenuDirectionChanged(direction);
+        }
     }
 
     /**
@@ -605,6 +609,13 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 throw new RuntimeException();
         }
     }
+
+    /**
+     * 显示菜单方向发生变化
+     *
+     * @param direction
+     */
+    protected abstract void onMenuDirectionChanged(Direction direction);
 
     /**
      * 停止滑动动画
