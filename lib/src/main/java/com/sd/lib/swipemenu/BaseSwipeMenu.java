@@ -47,7 +47,20 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     {
         if (mContainerMenuLeft == null)
         {
-            mContainerMenuLeft = new MenuContainer(getContext());
+            mContainerMenuLeft = new MenuContainer(getContext())
+            {
+                @Override
+                protected void onContentViewChanged(View view)
+                {
+                    super.onContentViewChanged(view);
+                    if (view == null)
+                    {
+                        if (mState == State.OpenLeft)
+                            setState(State.Close, false);
+                        mContainerMenuLeft = null;
+                    }
+                }
+            };
             mContainerMenuLeft.setGravity(Gravity.LEFT);
             addView(mContainerMenuLeft);
         }
@@ -58,7 +71,20 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     {
         if (mContainerMenuTop == null)
         {
-            mContainerMenuTop = new MenuContainer(getContext());
+            mContainerMenuTop = new MenuContainer(getContext())
+            {
+                @Override
+                protected void onContentViewChanged(View view)
+                {
+                    super.onContentViewChanged(view);
+                    if (view == null)
+                    {
+                        if (mState == State.OpenTop)
+                            setState(State.Close, false);
+                        mContainerMenuTop = null;
+                    }
+                }
+            };
             mContainerMenuTop.setGravity(Gravity.TOP);
             addView(mContainerMenuTop);
         }
@@ -69,7 +95,20 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     {
         if (mContainerMenuRight == null)
         {
-            mContainerMenuRight = new MenuContainer(getContext());
+            mContainerMenuRight = new MenuContainer(getContext())
+            {
+                @Override
+                protected void onContentViewChanged(View view)
+                {
+                    super.onContentViewChanged(view);
+                    if (view == null)
+                    {
+                        if (mState == State.OpenRight)
+                            setState(State.Close, false);
+                        mContainerMenuRight = null;
+                    }
+                }
+            };
             mContainerMenuRight.setGravity(Gravity.RIGHT);
             addView(mContainerMenuRight);
         }
@@ -80,7 +119,20 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     {
         if (mContainerMenuBottom == null)
         {
-            mContainerMenuBottom = new MenuContainer(getContext());
+            mContainerMenuBottom = new MenuContainer(getContext())
+            {
+                @Override
+                protected void onContentViewChanged(View view)
+                {
+                    super.onContentViewChanged(view);
+                    if (view == null)
+                    {
+                        if (mState == State.OpenBottom)
+                            setState(State.Close, false);
+                        mContainerMenuBottom = null;
+                    }
+                }
+            };
             mContainerMenuBottom.setGravity(Gravity.BOTTOM);
             addView(mContainerMenuBottom);
         }

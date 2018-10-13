@@ -21,7 +21,7 @@ abstract class LockContainer extends LinearLayout
      *
      * @param view
      */
-    public void setContentView(View view)
+    public final void setContentView(View view)
     {
         if (mContentView != view)
         {
@@ -34,7 +34,13 @@ abstract class LockContainer extends LinearLayout
                 Utils.removeViewFromParent(view);
                 addView(view);
             }
+
+            onContentViewChanged(view);
         }
+    }
+
+    protected void onContentViewChanged(View view)
+    {
     }
 
     /**
@@ -42,7 +48,7 @@ abstract class LockContainer extends LinearLayout
      *
      * @return
      */
-    public View getContentView()
+    public final View getContentView()
     {
         return mContentView;
     }
