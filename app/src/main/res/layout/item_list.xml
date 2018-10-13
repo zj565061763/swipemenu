@@ -24,9 +24,35 @@
 
         </FrameLayout>
 
-        <include
+        <FrameLayout
+            android:id="@id/lib_swipemenu_menu_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#C7C7CC"
+                android:text="取消"
+                android:textColor="#FFFFFF" />
+
+        </FrameLayout>
+
+        <FrameLayout
             android:id="@id/lib_swipemenu_menu_right"
-            layout="@layout/item_swipe_menu_view" />
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#FE3A30"
+                android:text="删除"
+                android:textColor="#FFFFFF" />
+
+        </FrameLayout>
 
     </com.sd.lib.swipemenu.FSwipeMenu>
 

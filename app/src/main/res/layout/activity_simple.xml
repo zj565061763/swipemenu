@@ -27,7 +27,7 @@
         </FrameLayout>
 
         <!-- 菜单view -->
-        <LinearLayout
+        <FrameLayout
             android:id="@id/lib_swipemenu_menu_left"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -42,7 +42,24 @@
                 android:text="取消"
                 android:textColor="#FFFFFF" />
 
-        </LinearLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@id/lib_swipemenu_menu_right"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_menu_right"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/holo_red_dark"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="right"
+                android:textColor="@android:color/white" />
+
+        </FrameLayout>
 
     </com.sd.lib.swipemenu.FSwipeMenu>
 
