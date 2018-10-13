@@ -34,12 +34,12 @@ public class SwipeMenuHolder implements SwipeMenu.OnStateChangeCallback
         SwipeMenuInfo info = mMapInfo.get(tag);
         if (info == null)
         {
-            swipeMenu.setState(SwipeMenu.State.Close, false);
+            info = new SwipeMenuInfo();
+            info.mState = SwipeMenu.State.Close;
             mMapInfo.put(tag, new SwipeMenuInfo());
-        } else
-        {
-            swipeMenu.setState(info.mState, false);
         }
+
+        swipeMenu.setState(info.mState, false);
     }
 
     @Override

@@ -239,6 +239,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     public final boolean setState(State state, boolean anim)
     {
+        if (state == null)
+            throw new NullPointerException();
+
         if (getContentView() == null)
             return false;
 
