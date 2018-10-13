@@ -58,9 +58,15 @@ abstract class LockContainer extends ViewGroup
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev)
+    public final void setLayoutParams(LayoutParams params)
     {
-        return super.onInterceptTouchEvent(ev);
+        if (params.width != LayoutParams.MATCH_PARENT)
+            params.width = LayoutParams.MATCH_PARENT;
+
+        if (params.height != LayoutParams.MATCH_PARENT)
+            params.height = LayoutParams.MATCH_PARENT;
+
+        super.setLayoutParams(params);
     }
 
     @Override

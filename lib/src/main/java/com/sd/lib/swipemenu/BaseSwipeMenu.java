@@ -129,7 +129,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (total <= 0)
             return 0;
 
-        final int current = Math.abs(getContentLeftCurrent() - getContentLeft(false));
+        final int current = Math.abs(getContentBoundCurrent() - getContentBound(false));
         return current / total;
     }
 
@@ -171,15 +171,15 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     private void updateViewByState(boolean anim)
     {
-        final int leftCurrent = getContentLeftCurrent();
-        final int leftState = getContentLeft(mIsOpened);
+        final int leftCurrent = getContentBoundCurrent();
+        final int leftState = getContentBound(mIsOpened);
 
         if (leftCurrent != leftState)
         {
             abortAnimation();
             if (anim)
             {
-                if (onSmoothScroll(mContentContainer.getLeft(), getContentLeft(mIsOpened)))
+                if (onSmoothScroll(mContentContainer.getLeft(), getContentBound(mIsOpened)))
                 {
                     setScrollState(ScrollState.Fling);
                     invalidate();
@@ -231,21 +231,11 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         }
     }
 
-    /**
-     * 返回拖动方向
-     *
-     * @return
-     */
-    protected final Direction getOpenDirection()
-    {
-        return mOpenDirection;
-    }
-
     private void updateLockEvent()
     {
         if (mIsOpened)
         {
-            final boolean totalOpened = getContentLeftCurrent() == getContentLeft(true);
+            final boolean totalOpened = getContentBoundCurrent() == getContentBound(true);
             mMenuContainer.setLockEvent(!totalOpened);
         } else
         {
@@ -258,61 +248,29 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         return mPullCondition == null ? true : mPullCondition.canPull(this);
     }
 
-    /**
-     * 是否可以从左向右拖动
-     *
-     * @return
-     */
-    protected final boolean canPullLeftToRight()
+    private int getContentBoundCurrent()
     {
-        if (!checkPullCondition())
-            return false;
-
-        switch (getMenuGravity())
+        switch (mOpenDirection)
         {
-            case Right:
-                return mIsOpened;
             case Left:
-                return !mIsOpened;
+            case Right:
+                return mContentContainer.getLeft();
+            case Top:
+            case Bottom:
+                return mContentContainer.getTop();
             default:
                 throw new AssertionError();
         }
     }
 
-    /**
-     * 是否可以从右向左拖动
-     *
-     * @return
-     */
-    protected final boolean canPullRightToLeft()
-    {
-        if (!checkPullCondition())
-            return false;
-
-        switch (getMenuGravity())
-        {
-            case Right:
-                return !mIsOpened;
-            case Left:
-                return mIsOpened;
-            default:
-                throw new AssertionError();
-        }
-    }
-
-    private int getContentLeftCurrent()
-    {
-        return mContentContainer.getLeft();
-    }
-
-    private int getContentLeftMin()
+    private int getContentBoundMin()
     {
         switch (getMenuGravity())
         {
             case Right:
-                return getContentLeft(true);
+                return getContentBound(true);
             case Left:
-                return getContentLeft(false);
+                return getContentBound(false);
             default:
                 throw new AssertionError();
         }
@@ -323,17 +281,17 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         switch (getMenuGravity())
         {
             case Right:
-                return getContentLeft(false);
+                return getContentBound(false);
             case Left:
-                return getContentLeft(true);
+                return getContentBound(true);
             default:
                 throw new AssertionError();
         }
     }
 
-    private int getContentLeft(boolean opened)
+    private int getContentBound(State state)
     {
-        if (!opened)
+        if (s)
             return 0;
 
         final View menuView = getMenuView();
@@ -365,8 +323,11 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (delta == 0)
             return;
 
-        final int leftCurrent = getContentLeftCurrent();
-        final int leftMin = getContentLeftMin();
+        if (mOpenDirection == null)
+            throw new NullPointerException("open direction is null");
+
+        final int leftCurrent = getContentBoundCurrent();
+        final int leftMin = getContentBoundMin();
         final int leftMax = getContentLeftMax();
 
         delta = FTouchHelper.getLegalDelta(leftCurrent, leftMin, leftMax, delta);
@@ -387,8 +348,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected final void dealDragFinish(int velocityX)
     {
-        final int leftCurrent = getContentLeftCurrent();
-        final int leftMin = getContentLeftMin();
+        final int leftCurrent = getContentBoundCurrent();
+        final int leftMin = getContentBoundMin();
         final int leftMax = getContentLeftMax();
 
         int leftEnd = 0;
@@ -401,7 +362,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             leftEnd = leftCurrent >= leftMiddle ? leftMax : leftMin;
         }
 
-        final boolean opened = leftEnd == getContentLeft(true) ? true : false;
+        final boolean opened = leftEnd == getContentBound(true) ? true : false;
 
         if (!setOpened(opened, true))
             updateViewByState(true);
@@ -482,7 +443,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         if (isViewIdle())
         {
-            left = getContentLeft(mIsOpened);
+            left = getContentBound(mIsOpened);
             top = 0;
 
         } else

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
+import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.Scroller;
 
@@ -58,15 +59,13 @@ public class FSwipeMenu extends BaseSwipeMenu
                 @Override
                 public boolean shouldInterceptEvent(MotionEvent event)
                 {
-                    final boolean shouldInterceptEvent = canPull();
-                    return shouldInterceptEvent;
+                    return canPull();
                 }
 
                 @Override
                 public boolean shouldConsumeEvent(MotionEvent event)
                 {
-                    final boolean shouldConsumeEvent = canPull();
-                    return shouldConsumeEvent;
+                    return canPull();
                 }
 
                 @Override
@@ -134,54 +133,15 @@ public class FSwipeMenu extends BaseSwipeMenu
         if (degreeX < 45)
         {
             // horizontal
-            final State state = getState();
-            if (state == State.OpenTop || state == State.OpenBottom)
-                return false;
-
-            final int deltaX = (int) getGestureManager().getTouchHelper().getDeltaXFromDown();
-            if (Math.abs(deltaX) < mTouchSlop)
-                return false;
-
-            if (deltaX < 0)
-            {
-                // drag left
-                if (state == State.OpenRight)
-                    return false;
-
-                if (!FTouchHelper.isScrollToRight(getContentView()))
-                    return false;
-
-                if (state == State.Close)
-                    setOpenDirection(Direction.Right);
-                else if (state == State.OpenLeft)
-                    setOpenDirection(Direction.Left);
-
-                return true;
-            } else
-            {
-                // drag right
-                if (state == State.OpenLeft)
-                    return false;
-
-                if (!FTouchHelper.isScrollToLeft(getContentView()))
-                    return false;
-
-                return true;
-            }
+            final int delta = (int) getGestureManager().getTouchHelper().getDeltaXFromDown();
+            return mHorizontalPullHelper.canPull(delta, getState());
 
         } else
         {
             // vertical
+            final int delta = (int) getGestureManager().getTouchHelper().getDeltaYFromDown();
+            return mVerticalPullHelper.canPull(delta, getState());
         }
-
-
-        final boolean checkDegree = getGestureManager().getTouchHelper().getDegreeXFromDown() < 30;
-
-        final int deltaX = (int) getGestureManager().getTouchHelper().getDeltaXFromDown();
-        final boolean checkPullDelta = Math.abs(deltaX) > mTouchSlop;
-        final boolean checkPull = (deltaX < 0 && canPullRightToLeft()) || (deltaX > 0 && canPullLeftToRight());
-
-        return checkViewIdle && checkDegree && checkPullDelta && checkPull;
     }
 
     @Override
@@ -225,4 +185,135 @@ public class FSwipeMenu extends BaseSwipeMenu
         super.onDetachedFromWindow();
         getScroller().abortAnimation();
     }
+
+    //---------- PullHelper Start ----------
+
+    public abstract class PullHelper
+    {
+        public final boolean canPull(int delta, State state)
+        {
+            if (Math.abs(delta) < mTouchSlop)
+                return false;
+
+            final boolean pullToStart = delta < 0;
+            if (!isLegalState(state, pullToStart))
+                return false;
+
+            if (!isScrollToBound(pullToStart, getContentView()))
+                return false;
+
+            if (state == State.Close)
+                setOpenDirection(getDirectionForCloseState(pullToStart));
+            else if (state == getOpenStateCanPull(pullToStart))
+                setOpenDirection(getDirectionForOpenState(state);
+
+            return true;
+        }
+
+        protected abstract boolean isLegalState(State state, boolean pullToStart);
+
+        protected abstract State getOpenStateCanPull(boolean pullToStart);
+
+        protected abstract boolean isScrollToBound(boolean pullToStart, View view);
+
+        protected abstract Direction getDirectionForCloseState(boolean pullToStart);
+
+        protected abstract Direction getDirectionForOpenState(State state);
+    }
+
+    private final PullHelper mHorizontalPullHelper = new PullHelper()
+    {
+        @Override
+        protected boolean isLegalState(State state, boolean pullToStart)
+        {
+            if (state == State.Close)
+                return true;
+
+            if (state == State.OpenLeft && pullToStart)
+                return true;
+
+            if (state == State.OpenRight && !pullToStart)
+                return true;
+
+            return false;
+        }
+
+        @Override
+        protected boolean isScrollToBound(boolean pullToStart, View view)
+        {
+            return pullToStart ? FTouchHelper.isScrollToRight(view) : FTouchHelper.isScrollToLeft(view);
+        }
+
+        @Override
+        protected Direction getDirectionForCloseState(boolean pullToStart)
+        {
+            return pullToStart ? Direction.Right : Direction.Left;
+        }
+
+        @Override
+        protected State getOpenStateCanPull(boolean pullToStart)
+        {
+            return pullToStart ? State.OpenLeft : State.OpenRight;
+        }
+
+        @Override
+        protected Direction getDirectionForOpenState(State state)
+        {
+            if (state == State.OpenLeft)
+                return Direction.Left;
+            else if (state == State.OpenRight)
+                return Direction.Right;
+            else
+                throw new RuntimeException();
+        }
+    };
+
+    private final PullHelper mVerticalPullHelper = new PullHelper()
+    {
+        @Override
+        protected boolean isLegalState(State state, boolean pullToStart)
+        {
+            if (state == State.Close)
+                return true;
+
+            if (state == State.OpenTop && pullToStart)
+                return true;
+
+            if (state == State.OpenBottom && !pullToStart)
+                return true;
+
+            return false;
+        }
+
+        @Override
+        protected boolean isScrollToBound(boolean pullToStart, View view)
+        {
+            return pullToStart ? FTouchHelper.isScrollToBottom(view) : FTouchHelper.isScrollToTop(view);
+        }
+
+        @Override
+        protected Direction getDirectionForCloseState(boolean pullToStart)
+        {
+            return pullToStart ? Direction.Bottom : Direction.Top;
+        }
+
+        @Override
+        protected State getOpenStateCanPull(boolean pullToStart)
+        {
+            return pullToStart ? State.OpenTop : State.OpenBottom;
+        }
+
+        @Override
+        protected Direction getDirectionForOpenState(State state)
+        {
+            if (state == State.OpenTop)
+                return Direction.Top;
+            else if (state == State.OpenBottom)
+                return Direction.Bottom;
+            else
+                throw new RuntimeException();
+        }
+    };
+
+    //---------- PullHelper end ----------
 }
