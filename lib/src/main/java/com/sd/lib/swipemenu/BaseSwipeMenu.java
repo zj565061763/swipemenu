@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 
 import com.sd.lib.gesture.FTouchHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 {
     protected boolean mIsDebug;
@@ -310,28 +313,39 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         super.onFinishInflate();
 
         final int count = getChildCount();
+        if (count <= 0)
+            return;
+
+        final List<View> list = new ArrayList<>(5);
         for (int i = 0; i < count; i++)
         {
-            final View child = getChildAt(i);
-            final int childId = child.getId();
+            list.add(getChildAt(i));
+        }
+
+        for (View item : list)
+        {
+            if (item == mContainerContent)
+                continue;
+
+            final int childId = item.getId();
             if (childId == R.id.lib_swipemenu_content)
             {
-                mContainerContent.setContentView(child);
+                mContainerContent.setContentView(item);
             } else if (childId == R.id.lib_swipemenu_menu_left)
             {
-                getContainerMenuLeft().setContentView(child);
+                getContainerMenuLeft().setContentView(item);
             } else if (childId == R.id.lib_swipemenu_menu_top)
             {
-                getContainerMenuTop().setContentView(child);
+                getContainerMenuTop().setContentView(item);
             } else if (childId == R.id.lib_swipemenu_menu_right)
             {
-                getContainerMenuRight().setContentView(child);
+                getContainerMenuRight().setContentView(item);
             } else if (childId == R.id.lib_swipemenu_menu_bottom)
             {
-                getContainerMenuBottom().setContentView(child);
+                getContainerMenuBottom().setContentView(item);
             } else
             {
-                throw new RuntimeException("Illegal child:" + child);
+                throw new RuntimeException("Illegal child:" + item);
             }
         }
     }
