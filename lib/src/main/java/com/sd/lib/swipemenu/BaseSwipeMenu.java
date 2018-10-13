@@ -680,8 +680,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         // content
         int left = 0;
         int top = 0;
-        int right = 0;
-        int bottom = 0;
 
         if (isViewIdle())
         {
@@ -692,10 +690,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             left = mContainerContent.getLeft();
             top = mContainerContent.getTop();
         }
-
-        right = left + mContainerContent.getMeasuredWidth();
-        bottom = top + mContainerContent.getMeasuredHeight();
-        mContainerContent.layout(left, top, right, bottom);
+        mContainerContent.layout(left, top, left + mContainerContent.getMeasuredWidth(), top + mContainerContent.getMeasuredHeight());
 
         // menu
         mContainerMenuLeft.layout(0, 0,
