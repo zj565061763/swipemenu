@@ -181,6 +181,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     public final View getMenuView(Direction direction)
     {
+        if (direction == null)
+            return null;
+
         switch (direction)
         {
             case Left:
@@ -255,7 +258,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             else
                 direction = stateToMenuDirection(state);
 
-            final View view = getMenuViewForMenuDirection(direction);
+            final View view = getMenuView(direction);
             if (view == null)
                 throw new IllegalArgumentException("Illegal state:" + state);
 
@@ -389,32 +392,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         return mMenuDirection;
     }
 
-    /**
-     * 返回菜单显示方向对应的菜单view
-     *
-     * @param direction
-     * @return
-     */
-    protected final View getMenuViewForMenuDirection(Direction direction)
-    {
-        if (direction == null)
-            return null;
-
-        switch (direction)
-        {
-            case Left:
-                return mContainerMenuLeft == null ? null : mContainerMenuLeft.getContentView();
-            case Top:
-                return mContainerMenuTop == null ? null : mContainerMenuTop.getContentView();
-            case Right:
-                return mContainerMenuRight == null ? null : mContainerMenuRight.getContentView();
-            case Bottom:
-                return mContainerMenuBottom == null ? null : mContainerMenuBottom.getContentView();
-            default:
-                throw new RuntimeException();
-        }
-    }
-
     private Direction stateToMenuDirection(State state)
     {
         switch (state)
@@ -479,18 +456,22 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
     private int getContentBoundState(State state)
     {
+        final View view = getMenuView(stateToMenuDirection(state));
+        if (view == null)
+            return 0;
+
         switch (state)
         {
             case Close:
                 return 0;
             case OpenLeft:
-                return mContainerMenuLeft == null ? 0 : mContainerMenuLeft.getWidth();
+                return view.getWidth();
             case OpenTop:
-                return mContainerMenuTop == null ? 0 : mContainerMenuTop.getHeight();
+                return view.getHeight();
             case OpenRight:
-                return mContainerMenuRight == null ? 0 : -mContainerMenuRight.getWidth();
+                return -view.getWidth();
             case OpenBottom:
-                return mContainerMenuBottom == null ? 0 : -mContainerMenuBottom.getHeight();
+                return -view.getHeight();
             default:
                 throw new RuntimeException();
         }

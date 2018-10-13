@@ -202,6 +202,10 @@ public class FSwipeMenu extends BaseSwipeMenu
     {
         public final boolean canPull(int delta, State state)
         {
+            final View contentView = getContentView();
+            if (contentView == null)
+                return false;
+
             if (Math.abs(delta) < mTouchSlop)
                 return false;
 
@@ -209,7 +213,7 @@ public class FSwipeMenu extends BaseSwipeMenu
             if (!isLegalState(state, pullToStart))
                 return false;
 
-            if (!isScrollToBound(pullToStart, getContentView()))
+            if (!isScrollToBound(pullToStart, contentView))
                 return false;
 
             Direction direction = null;
@@ -218,7 +222,7 @@ public class FSwipeMenu extends BaseSwipeMenu
             else if (state == getOpenStateCanPull(pullToStart))
                 direction = getMenuDirectionForOpenState(state);
 
-            final View view = getMenuViewForMenuDirection(direction);
+            final View view = getMenuView(direction);
             if (view == null)
                 return false;
 
