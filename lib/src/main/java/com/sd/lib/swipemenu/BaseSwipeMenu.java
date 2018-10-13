@@ -641,7 +641,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         final boolean isViewIdle = isViewIdle();
 
         if (mIsDebug)
-            Log.i(SwipeMenu.class.getSimpleName(), "dealScrollFinish:" + isViewIdle);
+            Log.i(SwipeMenu.class.getSimpleName(), "dealScrollFinish isViewIdle:" + isViewIdle);
 
         if (isViewIdle)
         {
