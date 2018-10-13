@@ -255,8 +255,11 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             if (view == null)
                 throw new IllegalArgumentException("Illegal state:" + state);
 
-            mState = state;
             setMenuDirection(direction);
+            mState = state;
+
+            if (mIsDebug)
+                Log.i(SwipeMenu.class.getSimpleName(), "setState:" + state);
 
             updateLockEvent();
             updateViewByState(anim);
@@ -285,6 +288,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         if (boundCurrent != boundState)
         {
+            if (mIsDebug)
+                Log.i(SwipeMenu.class.getSimpleName(), "updateViewByState:" + boundCurrent + "," + boundState + " anim:" + anim);
+
             abortAnimation();
             if (anim)
             {
