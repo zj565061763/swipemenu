@@ -589,7 +589,11 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (delta == 0)
             return;
 
-        ViewCompat.offsetLeftAndRight(mContainerContent, delta);
+        if (getMenuDirection().isHorizontal())
+            ViewCompat.offsetLeftAndRight(mContainerContent, delta);
+        else
+            ViewCompat.offsetTopAndBottom(mContainerContent, delta);
+
         updateLockEvent();
 
         if (mOnViewPositionChangeCallback != null)
