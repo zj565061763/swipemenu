@@ -220,9 +220,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             if (mIsDebug)
                 Log.i(SwipeMenu.class.getSimpleName(), "setScrollState:" + state);
 
-            if (state == ScrollState.Idle)
-                mMenuDirection = null;
-
             if (mOnScrollStateChangeCallback != null)
                 mOnScrollStateChangeCallback.onScrollStateChanged(state, this);
         }
