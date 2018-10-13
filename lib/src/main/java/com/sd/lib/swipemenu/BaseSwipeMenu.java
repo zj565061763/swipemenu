@@ -726,7 +726,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             if (child == mContainerContent)
                 continue;
 
-            measureChild(child, widthMenuSpec, heightMenuSpec);
+            child.measure(widthMenuSpec, heightMenuSpec);
         }
 
         width = Utils.getMeasureSize(width, widthMeasureSpec);
