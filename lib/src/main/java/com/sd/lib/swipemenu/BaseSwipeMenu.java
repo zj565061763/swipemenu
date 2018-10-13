@@ -193,12 +193,18 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         boolean changed = false;
         if (oldState != state)
         {
-            mState = state;
-
+            Direction direction = null;
             if (state == State.Close)
-                setMenuDirection(stateToMenuDirection(oldState));
+                direction = stateToMenuDirection(oldState);
             else
-                setMenuDirection(stateToMenuDirection(state));
+                direction = stateToMenuDirection(state);
+
+            final View view = getMenuViewForMenuDirection(direction);
+            if (view == null)
+                throw new IllegalArgumentException("Illegal state:" + state);
+
+            mState = state;
+            setMenuDirection(direction);
 
             updateLockEvent();
             updateViewByState(anim);
