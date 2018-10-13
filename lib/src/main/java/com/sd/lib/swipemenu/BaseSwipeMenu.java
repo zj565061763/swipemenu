@@ -742,7 +742,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             left = mContainerContent.getLeft();
             top = mContainerContent.getTop();
         }
-        mContainerContent.layout(left, top, left + mContainerContent.getMeasuredWidth(), top + mContainerContent.getMeasuredHeight());
+        mContainerContent.layout(left, top,
+                left + mContainerContent.getMeasuredWidth(), top + mContainerContent.getMeasuredHeight());
 
         float maxZ = 0;
 
@@ -753,6 +754,39 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                     mContainerMenuLeft.getMeasuredWidth(), mContainerMenuLeft.getMeasuredHeight());
 
             final float menuZ = ViewCompat.getZ(mContainerMenuLeft);
+            if (menuZ > maxZ)
+                maxZ = menuZ;
+        }
+
+        // top
+        if (mContainerMenuTop != null)
+        {
+            mContainerMenuTop.layout(0, 0,
+                    mContainerMenuTop.getMeasuredWidth(), mContainerMenuTop.getMeasuredHeight());
+
+            final float menuZ = ViewCompat.getZ(mContainerMenuTop);
+            if (menuZ > maxZ)
+                maxZ = menuZ;
+        }
+
+        // right
+        if (mContainerMenuRight != null)
+        {
+            mContainerMenuRight.layout(0, 0,
+                    mContainerMenuRight.getMeasuredWidth(), mContainerMenuRight.getMeasuredHeight());
+
+            final float menuZ = ViewCompat.getZ(mContainerMenuRight);
+            if (menuZ > maxZ)
+                maxZ = menuZ;
+        }
+
+        // bottom
+        if (mContainerMenuBottom != null)
+        {
+            mContainerMenuBottom.layout(0, 0,
+                    mContainerMenuBottom.getMeasuredWidth(), mContainerMenuBottom.getMeasuredHeight());
+
+            final float menuZ = ViewCompat.getZ(mContainerMenuBottom);
             if (menuZ > maxZ)
                 maxZ = menuZ;
         }
