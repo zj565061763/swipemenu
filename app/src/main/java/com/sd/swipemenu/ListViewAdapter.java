@@ -8,8 +8,8 @@ import android.widget.Toast;
 
 import com.sd.lib.adapter.FSimpleAdapter;
 import com.sd.lib.swipemenu.SwipeMenu;
-import com.sd.lib.swipemenu.utils.SwipeMenuHolder;
 import com.sd.lib.swipemenu.utils.SingleModeSwipeMenuHolder;
+import com.sd.lib.swipemenu.utils.SwipeMenuHolder;
 
 public class ListViewAdapter extends FSimpleAdapter<DataModel>
 {
@@ -36,13 +36,13 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel>
             public void onClick(View v)
             {
                 if (swipeMenu.getScrollPercent() != 0)
-                    swipeMenu.setOpened(false, true);
+                    swipeMenu.setState(SwipeMenu.State.Close, true);
                 else
                     Toast.makeText(getContext(), "click " + model, Toast.LENGTH_SHORT).show();
             }
         });
 
-        final Button btn_delete = swipeMenu.getMenuView().findViewById(R.id.btn_delete);
+        final Button btn_delete = swipeMenu.getMenuView(SwipeMenu.Direction.Right).findViewById(R.id.btn_delete);
         btn_delete.setOnClickListener(new View.OnClickListener()
         {
             @Override

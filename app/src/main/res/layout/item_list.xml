@@ -9,15 +9,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/textview"
+        <FrameLayout
+            android:id="@id/lib_swipemenu_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/darker_gray"
-            android:gravity="center"
-            android:minHeight="50dp" />
+            android:layout_height="wrap_content">
 
-        <include layout="@layout/item_swipe_menu_view" />
+            <TextView
+                android:id="@+id/textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/darker_gray"
+                android:gravity="center"
+                android:minHeight="50dp" />
+
+        </FrameLayout>
+
+        <include
+            android:id="@id/lib_swipemenu_menu_right"
+            layout="@layout/item_swipe_menu_view" />
 
     </com.sd.lib.swipemenu.FSwipeMenu>
 

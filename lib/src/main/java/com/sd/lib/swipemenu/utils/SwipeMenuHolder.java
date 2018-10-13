@@ -34,12 +34,21 @@ public class SwipeMenuHolder implements SwipeMenu.OnStateChangeCallback
         SwipeMenuInfo info = mMapInfo.get(tag);
         if (info == null)
         {
-            swipeMenu.setOpened(false, false);
+            swipeMenu.setState(SwipeMenu.State.Close, false);
             mMapInfo.put(tag, new SwipeMenuInfo());
         } else
         {
-            swipeMenu.setOpened(info.mIsOpened, false);
+            swipeMenu.setState(info.mState, false);
         }
+    }
+
+    @Override
+    public void onStateChanged(SwipeMenu.State state, SwipeMenu swipeMenu)
+    {
+        final Object tag = mMapSwipeMenu.get(swipeMenu);
+        final SwipeMenuInfo info = mMapInfo.get(tag);
+        if (info != null)
+            info.mState = state;
     }
 
     /**
@@ -65,30 +74,22 @@ public class SwipeMenuHolder implements SwipeMenu.OnStateChangeCallback
     /**
      * 除了指定的菜单外，设置所有菜单的状态
      *
-     * @param opened
+     * @param state
      * @param anim
      * @param except
      */
-    public void setAllSwipeMenuOpenedExcept(boolean opened, boolean anim, SwipeMenu except)
+    public void setAllSwipeMenuStateExcept(SwipeMenu.State state, boolean anim, SwipeMenu except)
     {
         for (SwipeMenu item : getAllSwipeMenu())
         {
             if (item != except)
-                item.setOpened(opened, anim);
+                item.setState(state, anim);
         }
     }
 
-    @Override
-    public void onStateChanged(boolean isOpened, SwipeMenu swipeMenu)
-    {
-        final Object tag = mMapSwipeMenu.get(swipeMenu);
-        final SwipeMenuInfo info = mMapInfo.get(tag);
-        if (info != null)
-            info.mIsOpened = isOpened;
-    }
 
     private static class SwipeMenuInfo
     {
-        public boolean mIsOpened;
+        public SwipeMenu.State mState;
     }
 }

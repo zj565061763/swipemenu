@@ -11,21 +11,24 @@
 
         <!-- 内容view -->
         <FrameLayout
-            android:id="@+id/fl_content"
+            android:id="@id/lib_swipemenu_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/colorPrimary"
                 android:gravity="center"
+                android:onClick="onClick"
                 android:textColor="@android:color/white" />
 
         </FrameLayout>
 
         <!-- 菜单view -->
         <LinearLayout
+            android:id="@id/lib_swipemenu_menu_left"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal">

@@ -176,19 +176,17 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
-    public final View getMenuView(State state)
+    public final View getMenuView(Direction direction)
     {
-        switch (state)
+        switch (direction)
         {
-            case Close:
-                return null;
-            case OpenLeft:
+            case Left:
                 return mContainerMenuLeft == null ? null : mContainerMenuLeft.getContentView();
-            case OpenTop:
+            case Top:
                 return mContainerMenuTop == null ? null : mContainerMenuTop.getContentView();
-            case OpenRight:
+            case Right:
                 return mContainerMenuRight == null ? null : mContainerMenuRight.getContentView();
-            case OpenBottom:
+            case Bottom:
                 return mContainerMenuBottom == null ? null : mContainerMenuBottom.getContentView();
             default:
                 throw new RuntimeException();
@@ -656,19 +654,17 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected final int getMaxScrollDistance()
     {
-        final State state = mState;
-        final Direction direction = stateToMenuDirection(state);
-        if (direction == null)
+        if (mMenuDirection == null)
             return 0;
 
-        switch (direction)
+        switch (mMenuDirection)
         {
             case Left:
             case Right:
-                return getMenuView(state).getWidth();
+                return getMenuView(mMenuDirection).getWidth();
             case Top:
             case Bottom:
-                return getMenuView(state).getHeight();
+                return getMenuView(mMenuDirection).getHeight();
             default:
                 throw new RuntimeException();
         }

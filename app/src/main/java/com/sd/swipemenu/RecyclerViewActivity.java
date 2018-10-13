@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.sd.lib.swipemenu.SwipeMenu;
+
 public class RecyclerViewActivity extends AppCompatActivity
 {
     private RecyclerView mRecyclerView;
@@ -26,7 +28,7 @@ public class RecyclerViewActivity extends AppCompatActivity
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState)
             {
-                mAdapter.mAdapterSwipeMenuHolder.setAllSwipeMenuOpenedExcept(false, true, null);
+                mAdapter.mAdapterSwipeMenuHolder.setAllSwipeMenuStateExcept(SwipeMenu.State.Close, true, null);
             }
         });
     }

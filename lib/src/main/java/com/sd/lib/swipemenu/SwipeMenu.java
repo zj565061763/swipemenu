@@ -44,10 +44,10 @@ public interface SwipeMenu
     /**
      * 返回菜单view
      *
-     * @param state
+     * @param direction {@link Direction}
      * @return
      */
-    View getMenuView(State state);
+    View getMenuView(Direction direction);
 
     /**
      * 返回当前菜单的状态
@@ -81,7 +81,10 @@ public interface SwipeMenu
 
     enum Direction
     {
-        Left, Top, Right, Bottom;
+        Left,
+        Top,
+        Right,
+        Bottom;
 
         public final boolean isHorizontal()
         {

@@ -31,20 +31,19 @@ public class RecyclerViewAdapter extends FSimpleRecyclerAdapter<DataModel>
         final SwipeMenu swipeMenu = holder.get(R.id.swipemenu);
         mAdapterSwipeMenuHolder.bind(swipeMenu, model);
 
-        swipeMenu.setMenuGravity(SwipeMenu.Gravity.Left);
         swipeMenu.getContentView().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 if (swipeMenu.getScrollPercent() != 0)
-                    swipeMenu.setOpened(false, true);
+                    swipeMenu.setState(SwipeMenu.State.Close, true);
                 else
                     Toast.makeText(getContext(), "click " + model, Toast.LENGTH_SHORT).show();
             }
         });
 
-        final Button btn_delete = swipeMenu.getMenuView().findViewById(R.id.btn_delete);
+        final Button btn_delete = swipeMenu.getMenuView(SwipeMenu.Direction.Right).findViewById(R.id.btn_delete);
         btn_delete.setOnClickListener(new View.OnClickListener()
         {
             @Override

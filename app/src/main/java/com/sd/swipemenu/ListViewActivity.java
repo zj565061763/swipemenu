@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
+import com.sd.lib.swipemenu.SwipeMenu;
+
 public class ListViewActivity extends AppCompatActivity
 {
     private ListView mListView;
@@ -25,7 +27,7 @@ public class ListViewActivity extends AppCompatActivity
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState)
             {
-                mAdapter.mAdapterSwipeMenuHolder.setAllSwipeMenuOpenedExcept(false, true, null);
+                mAdapter.mAdapterSwipeMenuHolder.setAllSwipeMenuStateExcept(SwipeMenu.State.Close, true, null);
             }
 
             @Override
