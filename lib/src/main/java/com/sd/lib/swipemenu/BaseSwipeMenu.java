@@ -711,23 +711,22 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
-        measureChildren(widthMeasureSpec, heightMeasureSpec);
+        measureChild(mContainerContent, widthMeasureSpec, heightMeasureSpec);
 
-        int width = 0;
-        int height = 0;
+        int width = mContainerContent.getMeasuredWidth();
+        int height = mContainerContent.getMeasuredHeight();
+
+        final int widthMenuSpec = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
+        final int heightMenuSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
 
         final int count = getChildCount();
         for (int i = 0; i < count; i++)
         {
             final View child = getChildAt(i);
-            final int childWidth = child.getMeasuredWidth();
-            final int childHeight = child.getMeasuredHeight();
+            if (child == mContainerContent)
+                continue;
 
-            if (childWidth > width)
-                width = childWidth;
-
-            if (childHeight > height)
-                height = childHeight;
+            measureChild(child, widthMenuSpec, heightMenuSpec);
         }
 
         width = Utils.getMeasureSize(width, widthMeasureSpec);
