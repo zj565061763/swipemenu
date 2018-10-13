@@ -85,8 +85,11 @@ public class FSwipeMenu extends BaseSwipeMenu
                     if (hasConsumeEvent)
                     {
                         velocityTracker.computeCurrentVelocity(1000);
-                        final int velocityX = (int) velocityTracker.getXVelocity();
-                        dealDragFinish(velocityX);
+                        final int velocity = getMenuDirection().isHorizontal()
+                                ? (int) velocityTracker.getXVelocity()
+                                : (int) velocityTracker.getYVelocity();
+
+                        dealDragFinish(velocity);
                     }
                 }
             });
