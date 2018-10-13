@@ -28,6 +28,7 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel>
         textView.setText(model.name);
 
         final SwipeMenu swipeMenu = get(R.id.swipemenu, convertView);
+        swipeMenu.setDebug(true);
         mAdapterSwipeMenuHolder.bind(swipeMenu, model);
 
         swipeMenu.getContentView().setOnClickListener(new View.OnClickListener()

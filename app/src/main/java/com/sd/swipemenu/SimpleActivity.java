@@ -22,6 +22,8 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_simple);
         mSwipeMenu = findViewById(R.id.swipemenu);
 
+        mSwipeMenu.setDebug(true);
+
         // 设置状态变化回调
         mSwipeMenu.setOnStateChangeCallback(new SwipeMenu.OnStateChangeCallback()
         {
