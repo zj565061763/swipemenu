@@ -122,9 +122,59 @@ public class FSwipeMenu extends BaseSwipeMenu
 
     private boolean canPull()
     {
-        // 为了调试方便，让每个条件都执行后把值都列出来
-
         final boolean checkViewIdle = isViewIdle();
+        if (!checkViewIdle)
+            return false;
+
+        final boolean checkPullCondition = checkPullCondition();
+        if (!checkPullCondition)
+            return false;
+
+        final double degreeX = getGestureManager().getTouchHelper().getDegreeXFromDown();
+        if (degreeX < 45)
+        {
+            // horizontal
+            final State state = getState();
+            if (state == State.OpenTop || state == State.OpenBottom)
+                return false;
+
+            final int deltaX = (int) getGestureManager().getTouchHelper().getDeltaXFromDown();
+            if (Math.abs(deltaX) < mTouchSlop)
+                return false;
+
+            if (deltaX < 0)
+            {
+                // drag left
+                if (state == State.OpenRight)
+                    return false;
+
+                if (!FTouchHelper.isScrollToRight(getContentView()))
+                    return false;
+
+                if (state == State.Close)
+                    setOpenDirection(Direction.Right);
+                else if (state == State.OpenLeft)
+                    setOpenDirection(Direction.Left);
+
+                return true;
+            } else
+            {
+                // drag right
+                if (state == State.OpenLeft)
+                    return false;
+
+                if (!FTouchHelper.isScrollToLeft(getContentView()))
+                    return false;
+
+                return true;
+            }
+
+        } else
+        {
+            // vertical
+        }
+
+
         final boolean checkDegree = getGestureManager().getTouchHelper().getDegreeXFromDown() < 30;
 
         final int deltaX = (int) getGestureManager().getTouchHelper().getDeltaXFromDown();

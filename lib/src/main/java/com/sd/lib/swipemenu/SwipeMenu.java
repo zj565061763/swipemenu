@@ -74,6 +74,8 @@ public interface SwipeMenu
      */
     Gravity getMenuGravity();
 
+    State getState();
+
     /**
      * 返回滚动状态
      *
@@ -114,6 +116,20 @@ public interface SwipeMenu
          * 菜单靠右边
          */
         Right
+    }
+
+    enum Direction
+    {
+        Top, Left, Bottom, Right
+    }
+
+    enum State
+    {
+        Close,
+        OpenLeft,
+        OpenTop,
+        OpenRight,
+        OpenBottom
     }
 
     enum ScrollState

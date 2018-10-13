@@ -14,6 +14,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     private final ContentContainer mContentContainer;
     private final MenuContainer mMenuContainer;
 
+    private State mState = State.Close;
+    private Direction mOpenDirection;
+
     private boolean mIsOpened;
     private ScrollState mScrollState = ScrollState.Idle;
 
@@ -95,6 +98,12 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     public final Gravity getMenuGravity()
     {
         return mMenuContainer.getMenuGravity();
+    }
+
+    @Override
+    public final State getState()
+    {
+        return mState;
     }
 
     @Override
@@ -205,6 +214,33 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             throw new RuntimeException("you can not remove:" + child);
     }
 
+    /**
+     * 设置拖动方向
+     *
+     * @param direction
+     */
+    protected final void setOpenDirection(Direction direction)
+    {
+        if (direction == null)
+        {
+            mOpenDirection = null;
+        } else
+        {
+            if (mOpenDirection == null)
+                mOpenDirection = direction;
+        }
+    }
+
+    /**
+     * 返回拖动方向
+     *
+     * @return
+     */
+    protected final Direction getOpenDirection()
+    {
+        return mOpenDirection;
+    }
+
     private void updateLockEvent()
     {
         if (mIsOpened)
@@ -217,7 +253,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         }
     }
 
-    private boolean checkPullCondition()
+    protected final boolean checkPullCondition()
     {
         return mPullCondition == null ? true : mPullCondition.canPull(this);
     }
