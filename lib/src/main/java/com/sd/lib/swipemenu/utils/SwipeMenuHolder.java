@@ -18,7 +18,7 @@ public class SwipeMenuHolder implements SwipeMenu.OnStateChangeCallback
      * 绑定某个菜单的状态
      *
      * @param swipeMenu
-     * @param tag       如果在有复用机制的列表中使用，建议tag传入每一项对应的实体
+     * @param tag       唯一标识，如果在有复用机制的列表中使用，tag可以传入每一项对应的实体
      */
     public void bind(SwipeMenu swipeMenu, Object tag)
     {
@@ -86,7 +86,6 @@ public class SwipeMenuHolder implements SwipeMenu.OnStateChangeCallback
                 item.setState(state, anim);
         }
     }
-
 
     private static class SwipeMenuInfo
     {

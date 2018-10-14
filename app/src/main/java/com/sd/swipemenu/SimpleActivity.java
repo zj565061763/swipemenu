@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.sd.lib.swipemenu.FSwipeMenu;
 import com.sd.lib.swipemenu.SwipeMenu;
@@ -57,26 +56,6 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v)
     {
-        switch (v.getId())
-        {
-            case R.id.tv_content:
-                Toast.makeText(this, "click content", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.tv_menu_left:
-                Toast.makeText(this, "click menu left", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.tv_menu_right:
-                Toast.makeText(this, "click menu right", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.tv_menu_top:
-                Toast.makeText(this, "click menu top", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.tv_menu_bottom:
-                Toast.makeText(this, "click menu bottom", Toast.LENGTH_SHORT).show();
-                break;
-            default:
-                Toast.makeText(this, String.valueOf(v), Toast.LENGTH_SHORT).show();
-                break;
-        }
+        Log.i(TAG, "onClick:" + v);
     }
 }
