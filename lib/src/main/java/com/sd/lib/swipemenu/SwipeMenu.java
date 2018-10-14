@@ -91,7 +91,7 @@ public interface SwipeMenu
     ScrollState getScrollState();
 
     /**
-     * 返回当前view滚动的百分比[0-1]
+     * 返回当前内容view滚动的百分比[0-1]
      *
      * @return
      */
