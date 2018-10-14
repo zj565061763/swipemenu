@@ -604,7 +604,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         final int boundMin = getContentBoundMin();
         final int boundMax = getContentBoundMax();
 
-        final int minFlingVelocity = ViewConfiguration.get(getContext()).getScaledMinimumFlingVelocity();
+        final int minFlingVelocity = ViewConfiguration.get(getContext()).getScaledMinimumFlingVelocity() * 10;
 
         int boundEnd = 0;
         if (Math.abs(velocity) > minFlingVelocity)
