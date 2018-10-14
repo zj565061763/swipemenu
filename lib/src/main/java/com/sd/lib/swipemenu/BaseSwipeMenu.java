@@ -20,7 +20,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 {
     protected boolean mIsDebug;
 
-    private final ContentContainer mContainerContent;
+    private final ContentContainer mContentContainer;
     private MenuContainer mContainerMenuLeft;
     private MenuContainer mContainerMenuTop;
     private MenuContainer mContainerMenuRight;
@@ -44,8 +44,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     {
         super(context, attrs);
 
-        mContainerContent = new ContentContainer(getContext());
-        addView(mContainerContent);
+        mContentContainer = new ContentContainer(getContext());
+        addView(mContentContainer);
 
         mMinFlingVelocity = ViewConfiguration.get(context).getScaledMinimumFlingVelocity();
     }
@@ -191,7 +191,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     public final View getContentView()
     {
-        return mContainerContent.getContentView();
+        return mContentContainer.getContentView();
     }
 
     @Override
@@ -359,13 +359,13 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         for (View item : list)
         {
-            if (item == mContainerContent)
+            if (item == mContentContainer)
                 continue;
 
             final int childId = item.getId();
             if (childId == R.id.lib_swipemenu_content)
             {
-                mContainerContent.setContentView(item);
+                mContentContainer.setContentView(item);
             } else if (childId == R.id.lib_swipemenu_menu_left)
             {
                 getContainerMenuLeft().setContentView(item);
@@ -487,10 +487,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         {
             case Left:
             case Right:
-                return mContainerContent.getLeft();
+                return mContentContainer.getLeft();
             case Top:
             case Bottom:
-                return mContainerContent.getTop();
+                return mContentContainer.getTop();
             default:
                 throw new RuntimeException();
         }
@@ -588,9 +588,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             return;
 
         if (getMenuDirection().isHorizontal())
-            ViewCompat.offsetLeftAndRight(mContainerContent, delta);
+            ViewCompat.offsetLeftAndRight(mContentContainer, delta);
         else
-            ViewCompat.offsetTopAndBottom(mContainerContent, delta);
+            ViewCompat.offsetTopAndBottom(mContentContainer, delta);
 
         if (mOnViewPositionChangeCallback != null)
             mOnViewPositionChangeCallback.onViewPositionChanged(isDrag, this);
@@ -696,10 +696,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
-        measureChild(mContainerContent, widthMeasureSpec, heightMeasureSpec);
+        measureChild(mContentContainer, widthMeasureSpec, heightMeasureSpec);
 
-        int width = mContainerContent.getMeasuredWidth();
-        int height = mContainerContent.getMeasuredHeight();
+        int width = mContentContainer.getMeasuredWidth();
+        int height = mContentContainer.getMeasuredHeight();
 
         final int widthMenuSpec = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
         final int heightMenuSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
@@ -708,7 +708,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         for (int i = 0; i < count; i++)
         {
             final View child = getChildAt(i);
-            if (child == mContainerContent)
+            if (child == mContentContainer)
                 continue;
 
             child.measure(widthMenuSpec, heightMenuSpec);
@@ -742,11 +742,11 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             top = 0;
         } else
         {
-            left = mContainerContent.getLeft();
-            top = mContainerContent.getTop();
+            left = mContentContainer.getLeft();
+            top = mContentContainer.getTop();
         }
-        mContainerContent.layout(left, top,
-                left + mContainerContent.getMeasuredWidth(), top + mContainerContent.getMeasuredHeight());
+        mContentContainer.layout(left, top,
+                left + mContentContainer.getMeasuredWidth(), top + mContentContainer.getMeasuredHeight());
 
         float maxZ = 0;
 
@@ -794,8 +794,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 maxZ = menuZ;
         }
 
-        if (ViewCompat.getZ(mContainerContent) <= maxZ)
-            ViewCompat.setZ(mContainerContent, maxZ + 1);
+        if (ViewCompat.getZ(mContentContainer) <= maxZ)
+            ViewCompat.setZ(mContentContainer, maxZ + 1);
 
         hideContainerMenuIfNeed();
     }
