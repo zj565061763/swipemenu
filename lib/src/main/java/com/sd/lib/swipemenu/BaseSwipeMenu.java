@@ -590,7 +590,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             ViewCompat.offsetTopAndBottom(mContentContainer, delta);
 
         if (mOnViewPositionChangeCallback != null)
-            mOnViewPositionChangeCallback.onViewPositionChanged(delta, isDrag, this);
+            mOnViewPositionChangeCallback.onViewPositionChanged(isDrag, this);
     }
 
     /**
