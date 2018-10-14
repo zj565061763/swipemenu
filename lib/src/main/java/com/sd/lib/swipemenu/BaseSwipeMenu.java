@@ -330,6 +330,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
             if (anim)
             {
+                checkMenuDirection();
                 if (onSmoothScroll(boundCurrent, boundState))
                 {
                     setScrollState(ScrollState.Fling);
