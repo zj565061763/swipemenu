@@ -37,7 +37,7 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
         mSwipeMenu.setOnViewPositionChangeCallback(new SwipeMenu.OnViewPositionChangeCallback()
         {
             @Override
-            public void onViewPositionChanged(int delta, boolean isDrag, SwipeMenu swipeMenu)
+            public void onViewPositionChanged(boolean isDrag, SwipeMenu swipeMenu)
             {
 
             }

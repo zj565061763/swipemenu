@@ -4,13 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_under"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorAccent"
-        android:onClick="onClick" />
-
     <com.sd.lib.swipemenu.FSwipeMenu
         android:id="@+id/swipemenu"
         android:layout_width="match_parent"
