@@ -26,7 +26,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     private MenuContainer mContainerMenuRight;
     private MenuContainer mContainerMenuBottom;
 
-    private final Map<Direction, MenuContainer> mMapContainerMenu = new HashMap<>();
+    private final Map<Direction, MenuContainer> mMapMenuContainer = new HashMap<>();
 
     private State mState = State.Close;
     private Direction mMenuDirection;
@@ -65,12 +65,12 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                         if (mState == State.OpenLeft)
                             setState(State.Close, false);
 
-                        mMapContainerMenu.remove(Direction.Left);
+                        mMapMenuContainer.remove(Direction.Left);
                         mContainerMenuLeft = null;
                     }
                 }
             };
-            mMapContainerMenu.put(Direction.Left, mContainerMenuLeft);
+            mMapMenuContainer.put(Direction.Left, mContainerMenuLeft);
             mContainerMenuLeft.setGravity(Gravity.LEFT);
             addView(mContainerMenuLeft);
         }
@@ -92,12 +92,12 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                         if (mState == State.OpenTop)
                             setState(State.Close, false);
 
-                        mMapContainerMenu.remove(Direction.Top);
+                        mMapMenuContainer.remove(Direction.Top);
                         mContainerMenuTop = null;
                     }
                 }
             };
-            mMapContainerMenu.put(Direction.Top, mContainerMenuTop);
+            mMapMenuContainer.put(Direction.Top, mContainerMenuTop);
             mContainerMenuTop.setGravity(Gravity.TOP);
             addView(mContainerMenuTop);
         }
@@ -119,12 +119,12 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                         if (mState == State.OpenRight)
                             setState(State.Close, false);
 
-                        mMapContainerMenu.remove(Direction.Right);
+                        mMapMenuContainer.remove(Direction.Right);
                         mContainerMenuRight = null;
                     }
                 }
             };
-            mMapContainerMenu.put(Direction.Right, mContainerMenuRight);
+            mMapMenuContainer.put(Direction.Right, mContainerMenuRight);
             mContainerMenuRight.setGravity(Gravity.RIGHT);
             addView(mContainerMenuRight);
         }
@@ -146,12 +146,12 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                         if (mState == State.OpenBottom)
                             setState(State.Close, false);
 
-                        mMapContainerMenu.remove(Direction.Bottom);
+                        mMapMenuContainer.remove(Direction.Bottom);
                         mContainerMenuBottom = null;
                     }
                 }
             };
-            mMapContainerMenu.put(Direction.Bottom, mContainerMenuBottom);
+            mMapMenuContainer.put(Direction.Bottom, mContainerMenuBottom);
             mContainerMenuBottom.setGravity(Gravity.BOTTOM);
             addView(mContainerMenuBottom);
         }
@@ -197,7 +197,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     public final View getMenuView(Direction direction)
     {
-        final MenuContainer container = mMapContainerMenu.get(direction);
+        final MenuContainer container = mMapMenuContainer.get(direction);
         if (container == null)
             return null;
 
@@ -246,7 +246,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         {
             if (mState == State.Close && getScrollPercent() == 0)
             {
-                for (MenuContainer item : mMapContainerMenu.values())
+                for (MenuContainer item : mMapMenuContainer.values())
                 {
                     item.setVisibility(INVISIBLE);
                 }
@@ -389,7 +389,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     public void onViewRemoved(View child)
     {
         super.onViewRemoved(child);
-        for (MenuContainer item : mMapContainerMenu.values())
+        for (MenuContainer item : mMapMenuContainer.values())
         {
             if (item == child)
                 throw new RuntimeException("you can not remove view this way");
@@ -406,7 +406,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (direction == null)
             throw new NullPointerException();
 
-        final MenuContainer container = mMapContainerMenu.get(direction);
+        final MenuContainer container = mMapMenuContainer.get(direction);
         if (container == null)
             throw new RuntimeException("MenuContainer not found for direction:" + direction);
         container.setVisibility(VISIBLE);
