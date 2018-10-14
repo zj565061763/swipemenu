@@ -37,10 +37,9 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
         mSwipeMenu.setOnViewPositionChangeCallback(new SwipeMenu.OnViewPositionChangeCallback()
         {
             @Override
-            public void onViewPositionChanged(boolean isDrag, SwipeMenu swipeMenu)
+            public void onViewPositionChanged(int delta, boolean isDrag, SwipeMenu swipeMenu)
             {
-                // 获得滚动百分比
-                final float scrollPercent = swipeMenu.getScrollPercent();
+
             }
         });
         // 设置滚动状态变化回调

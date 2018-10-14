@@ -50,6 +50,13 @@ public interface SwipeMenu
     View getMenuView(Direction direction);
 
     /**
+     * 返回菜显示方向
+     *
+     * @return
+     */
+    Direction getMenuDirection();
+
+    /**
      * 返回当前菜单的状态
      *
      * @return
@@ -133,10 +140,11 @@ public interface SwipeMenu
         /**
          * view位置变化回调，侧滑菜单滑动或者拖动
          *
+         * @param delta     移动的偏移量
          * @param isDrag    true-拖动，false-惯性滚动
          * @param swipeMenu
          */
-        void onViewPositionChanged(boolean isDrag, SwipeMenu swipeMenu);
+        void onViewPositionChanged(int delta, boolean isDrag, SwipeMenu swipeMenu);
     }
 
     interface OnScrollStateChangeCallback

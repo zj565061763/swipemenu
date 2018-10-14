@@ -205,6 +205,12 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
+    public final Direction getMenuDirection()
+    {
+        return mMenuDirection;
+    }
+
+    @Override
     public final State getState()
     {
         return mState;
@@ -422,15 +428,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         }
     }
 
-    /**
-     * 返回菜显示方向
-     *
-     * @return
-     */
-    protected final Direction getMenuDirection()
-    {
-        return mMenuDirection;
-    }
 
     private Direction stateToMenuDirection(State state)
     {
@@ -594,7 +591,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             ViewCompat.offsetTopAndBottom(mContentContainer, delta);
 
         if (mOnViewPositionChangeCallback != null)
-            mOnViewPositionChangeCallback.onViewPositionChanged(isDrag, this);
+            mOnViewPositionChangeCallback.onViewPositionChanged(delta, isDrag, this);
     }
 
     /**
