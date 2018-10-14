@@ -443,6 +443,14 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         }
     }
 
+    @Override
+    public void onViewRemoved(View child)
+    {
+        super.onViewRemoved(child);
+        if (mIsDebug)
+            Log.i(SwipeMenu.class.getSimpleName(), "onViewRemoved:" + child);
+    }
+
     /**
      * 设置菜单显示方向
      *
