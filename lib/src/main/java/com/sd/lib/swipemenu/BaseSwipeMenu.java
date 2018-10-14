@@ -188,6 +188,37 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
+    public final void setContentView(View view)
+    {
+        mContentContainer.setContentView(view);
+    }
+
+    @Override
+    public final void setMenuView(View view, Direction direction)
+    {
+        if (direction == null)
+            return;
+
+        switch (direction)
+        {
+            case Left:
+                getMenuContainerLeft().setContentView(view);
+                break;
+            case Top:
+                getMenuContainerTop().setContentView(view);
+                break;
+            case Right:
+                getMenuContainerRight().setContentView(view);
+                break;
+            case Bottom:
+                getMenuContainerBottom().setContentView(view);
+                break;
+            default:
+                throw new RuntimeException();
+        }
+    }
+
+    @Override
     public final View getContentView()
     {
         return mContentContainer.getContentView();
@@ -360,30 +391,31 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         final List<View> list = new ArrayList<>(5);
         for (int i = 0; i < count; i++)
         {
-            list.add(getChildAt(i));
+            final View child = getChildAt(i);
+            if (child == mContentContainer)
+                continue;
+
+            list.add(child);
         }
 
         for (View item : list)
         {
-            if (item == mContentContainer)
-                continue;
-
             final int childId = item.getId();
             if (childId == R.id.lib_swipemenu_content)
             {
-                mContentContainer.setContentView(item);
+                setContentView(item);
             } else if (childId == R.id.lib_swipemenu_menu_left)
             {
-                getMenuContainerLeft().setContentView(item);
+                setMenuView(item, Direction.Left);
             } else if (childId == R.id.lib_swipemenu_menu_top)
             {
-                getMenuContainerTop().setContentView(item);
+                setMenuView(item, Direction.Top);
             } else if (childId == R.id.lib_swipemenu_menu_right)
             {
-                getMenuContainerRight().setContentView(item);
+                setMenuView(item, Direction.Right);
             } else if (childId == R.id.lib_swipemenu_menu_bottom)
             {
-                getMenuContainerBottom().setContentView(item);
+                setMenuView(item, Direction.Bottom);
             } else
             {
                 throw new RuntimeException("Illegal child:" + item);
