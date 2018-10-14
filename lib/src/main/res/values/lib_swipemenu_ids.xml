@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- 内容view的id -->
     <item name="lib_swipemenu_content" type="id" />
+
+    <!-- 左边菜单view的id -->
     <item name="lib_swipemenu_menu_left" type="id" />
+
+    <!-- 顶部菜单view的id -->
     <item name="lib_swipemenu_menu_top" type="id" />
+
+    <!-- 右边菜单view的id -->
     <item name="lib_swipemenu_menu_right" type="id" />
+
+    <!-- 底部菜单view的id -->
     <item name="lib_swipemenu_menu_bottom" type="id" />
 
 </resources>
