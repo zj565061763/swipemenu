@@ -341,7 +341,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
             final View view = getMenuView(direction);
             if (view == null)
-                throw new IllegalArgumentException("Illegal state:" + state);
+                throw new IllegalArgumentException("Illegal state:" + state + ". menu view was not found for direction " + direction);
 
             mState = state;
 
