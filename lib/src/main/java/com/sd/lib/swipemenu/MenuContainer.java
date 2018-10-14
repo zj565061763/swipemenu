@@ -47,4 +47,10 @@ class MenuContainer extends BaseContainer
         if (mDirection == null)
             throw new NullPointerException();
     }
+
+    @Override
+    public String toString()
+    {
+        return super.toString() + " " + mDirection;
+    }
 }
