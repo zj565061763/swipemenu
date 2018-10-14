@@ -59,13 +59,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 {
                     super.onContentViewChanged(view);
                     if (view == null)
-                    {
-                        if (mState == State.OpenLeft)
-                            setState(State.Close, false);
-
                         removeMenuContainer(Direction.Left);
-                        mMenuContainerLeft = null;
-                    }
                 }
             };
 
@@ -85,13 +79,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 {
                     super.onContentViewChanged(view);
                     if (view == null)
-                    {
-                        if (mState == State.OpenTop)
-                            setState(State.Close, false);
-
                         removeMenuContainer(Direction.Top);
-                        mMenuContainerTop = null;
-                    }
                 }
             };
 
@@ -111,13 +99,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 {
                     super.onContentViewChanged(view);
                     if (view == null)
-                    {
-                        if (mState == State.OpenRight)
-                            setState(State.Close, false);
-
                         removeMenuContainer(Direction.Right);
-                        mMenuContainerRight = null;
-                    }
                 }
             };
 
@@ -137,13 +119,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 {
                     super.onContentViewChanged(view);
                     if (view == null)
-                    {
-                        if (mState == State.OpenBottom)
-                            setState(State.Close, false);
-
                         removeMenuContainer(Direction.Bottom);
-                        mMenuContainerBottom = null;
-                    }
                 }
             };
 
@@ -171,6 +147,35 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             throw new RuntimeException();
 
         removeView(container);
+
+        if (mMenuContainerLeft == container)
+        {
+            if (mState == State.OpenLeft)
+                setState(State.Close, false);
+            mMenuContainerLeft = null;
+
+        } else if (mMenuContainerTop == container)
+        {
+            if (mState == State.OpenTop)
+                setState(State.Close, false);
+            mMenuContainerTop = null;
+
+        } else if (mMenuContainerRight == container)
+        {
+            if (mState == State.OpenRight)
+                setState(State.Close, false);
+            mMenuContainerRight = null;
+
+        } else if (mMenuContainerBottom == container)
+        {
+            if (mState == State.OpenBottom)
+                setState(State.Close, false);
+            mMenuContainerBottom = null;
+
+        } else
+        {
+            throw new RuntimeException();
+        }
     }
 
     @Override
