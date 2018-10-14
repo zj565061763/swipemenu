@@ -769,9 +769,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         {
             item.layout(0, 0, item.getMeasuredWidth(), item.getMeasuredHeight());
 
-            final float menuZ = ViewCompat.getZ(item);
-            if (menuZ > maxZ)
-                maxZ = menuZ;
+            maxZ = Math.max(maxZ, ViewCompat.getZ(item));
         }
 
         if (ViewCompat.getZ(mContentContainer) <= maxZ)
