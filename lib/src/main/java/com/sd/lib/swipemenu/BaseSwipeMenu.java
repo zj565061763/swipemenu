@@ -750,47 +750,11 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 left + mContentContainer.getMeasuredWidth(), top + mContentContainer.getMeasuredHeight());
 
         float maxZ = 0;
-
-        // left
-        if (mMenuContainerLeft != null)
+        for (MenuContainer item : mMapMenuContainer.values())
         {
-            mMenuContainerLeft.layout(0, 0,
-                    mMenuContainerLeft.getMeasuredWidth(), mMenuContainerLeft.getMeasuredHeight());
+            item.layout(0, 0, item.getMeasuredWidth(), item.getMeasuredHeight());
 
-            final float menuZ = ViewCompat.getZ(mMenuContainerLeft);
-            if (menuZ > maxZ)
-                maxZ = menuZ;
-        }
-
-        // top
-        if (mMenuContainerTop != null)
-        {
-            mMenuContainerTop.layout(0, 0,
-                    mMenuContainerTop.getMeasuredWidth(), mMenuContainerTop.getMeasuredHeight());
-
-            final float menuZ = ViewCompat.getZ(mMenuContainerTop);
-            if (menuZ > maxZ)
-                maxZ = menuZ;
-        }
-
-        // right
-        if (mMenuContainerRight != null)
-        {
-            mMenuContainerRight.layout(0, 0,
-                    mMenuContainerRight.getMeasuredWidth(), mMenuContainerRight.getMeasuredHeight());
-
-            final float menuZ = ViewCompat.getZ(mMenuContainerRight);
-            if (menuZ > maxZ)
-                maxZ = menuZ;
-        }
-
-        // bottom
-        if (mMenuContainerBottom != null)
-        {
-            mMenuContainerBottom.layout(0, 0,
-                    mMenuContainerBottom.getMeasuredWidth(), mMenuContainerBottom.getMeasuredHeight());
-
-            final float menuZ = ViewCompat.getZ(mMenuContainerBottom);
+            final float menuZ = ViewCompat.getZ(item);
             if (menuZ > maxZ)
                 maxZ = menuZ;
         }
