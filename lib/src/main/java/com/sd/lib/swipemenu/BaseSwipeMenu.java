@@ -33,6 +33,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
     private ScrollState mScrollState = ScrollState.Idle;
 
+    private final float[] mContentContainerPosition = {0, 0};
     private final int mMinFlingVelocity;
 
     private OnStateChangeCallback mOnStateChangeCallback;
@@ -589,8 +590,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         else
             ViewCompat.offsetTopAndBottom(mContentContainer, delta);
 
-        if (mOnViewPositionChangeCallback != null)
-            mOnViewPositionChangeCallback.onViewPositionChanged(isDrag, this);
+        notifyViewPositionChangeIfNeed(isDrag);
     }
 
     /**
@@ -724,6 +724,21 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected abstract boolean isViewIdle();
 
+    private void notifyViewPositionChangeIfNeed(boolean isDrag)
+    {
+        final float x = mContentContainer.getX();
+        final float y = mContentContainer.getY();
+
+        if (mContentContainerPosition[0] != x || mContentContainerPosition[1] != y)
+        {
+            mContentContainerPosition[0] = x;
+            mContentContainerPosition[1] = y;
+
+            if (mOnViewPositionChangeCallback != null)
+                mOnViewPositionChangeCallback.onViewPositionChanged(isDrag, this);
+        }
+    }
+
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
@@ -775,5 +790,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             ViewCompat.setZ(mContentContainer, maxZ + 1);
 
         hideMenuContainerIfNeed();
+        notifyViewPositionChangeIfNeed(false);
     }
 }
