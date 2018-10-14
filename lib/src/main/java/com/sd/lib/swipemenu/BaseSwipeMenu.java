@@ -33,8 +33,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
     private ScrollState mScrollState = ScrollState.Idle;
 
-    private final float[] mContentContainerPosition = {0, 0};
-    private final int mMinFlingVelocity;
+    private int mContentContainerLeft;
+    private int mContentContainerTop;
 
     private OnStateChangeCallback mOnStateChangeCallback;
     private OnViewPositionChangeCallback mOnViewPositionChangeCallback;
@@ -47,8 +47,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         mContentContainer = new ContentContainer(getContext());
         addView(mContentContainer);
-
-        mMinFlingVelocity = ViewConfiguration.get(context).getScaledMinimumFlingVelocity();
     }
 
     private MenuContainer getMenuContainerLeft()
@@ -606,8 +604,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         final int boundMin = getContentBoundMin();
         final int boundMax = getContentBoundMax();
 
+        final int minFlingVelocity = ViewConfiguration.get(getContext()).getScaledMinimumFlingVelocity();
+
         int boundEnd = 0;
-        if (Math.abs(velocity) > mMinFlingVelocity)
+        if (Math.abs(velocity) > minFlingVelocity)
         {
             boundEnd = velocity > 0 ? boundMax : boundMin;
         } else
@@ -726,16 +726,16 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
     private void notifyViewPositionChangeIfNeed(boolean isDrag)
     {
-        final float x = mContentContainer.getX();
-        final float y = mContentContainer.getY();
+        final int left = mContentContainer.getLeft();
+        final int top = mContentContainer.getTop();
 
-        if (mContentContainerPosition[0] != x || mContentContainerPosition[1] != y)
+        if (mContentContainerLeft != left || mContentContainerTop != top)
         {
-            mContentContainerPosition[0] = x;
-            mContentContainerPosition[1] = y;
+            mContentContainerLeft = left;
+            mContentContainerTop = top;
 
             if (mOnViewPositionChangeCallback != null)
-                mOnViewPositionChangeCallback.onViewPositionChanged(isDrag, this);
+                mOnViewPositionChangeCallback.onViewPositionChanged(left, top, isDrag, this);
         }
     }
 

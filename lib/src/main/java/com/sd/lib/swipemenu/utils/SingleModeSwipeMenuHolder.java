@@ -29,7 +29,7 @@ public class SingleModeSwipeMenuHolder extends SwipeMenuHolder implements
     }
 
     @Override
-    public void onViewPositionChanged(boolean isDrag, SwipeMenu swipeMenu)
+    public void onViewPositionChanged(int left, int top, boolean isDrag, SwipeMenu swipeMenu)
     {
         if (isDrag)
             setAllSwipeMenuStateExcept(SwipeMenu.State.Close, true, swipeMenu);
