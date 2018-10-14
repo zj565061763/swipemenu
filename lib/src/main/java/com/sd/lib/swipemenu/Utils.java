@@ -2,6 +2,7 @@ package com.sd.lib.swipemenu;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 class Utils
 {
@@ -32,11 +33,13 @@ class Utils
         if (view == null)
             return;
 
-        if (view.getParent() == null)
+        final ViewParent parent = view.getParent();
+        if (parent == null)
             return;
+
         try
         {
-            ((ViewGroup) view.getParent()).removeView(view);
+            ((ViewGroup) parent).removeView(view);
         } catch (Exception e)
         {
             e.printStackTrace();
