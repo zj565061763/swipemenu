@@ -623,7 +623,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         final State state = getStateForBoundEnd(boundEnd);
 
         if (mIsDebug)
-            Log.i(SwipeMenu.class.getSimpleName(), "dealDragFinish:" + boundCurrent + "," + boundEnd + " " + state);
+            Log.i(SwipeMenu.class.getSimpleName(), "dealDragFinish should be state:" + state);
 
         if (!setState(state, true))
             updateViewByState(true);
