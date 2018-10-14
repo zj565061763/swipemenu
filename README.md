@@ -12,6 +12,13 @@ Android侧滑菜单，详细请参考demo
 public interface SwipeMenu
 {
     /**
+     * 设置调试模式，会有日志输出，日志tag：SwipeMenu
+     *
+     * @param debug
+     */
+    void setDebug(boolean debug);
+
+    /**
      * 设置状态变化回调
      *
      * @param callback
@@ -40,27 +47,6 @@ public interface SwipeMenu
     void setPullCondition(PullCondition pullCondition);
 
     /**
-     * 设置内容view
-     *
-     * @param view
-     */
-    void setContentView(View view);
-
-    /**
-     * 设置菜单view
-     *
-     * @param view
-     */
-    void setMenuView(View view);
-
-    /**
-     * 设置菜单的位置{@link Gravity}，默认靠右边
-     *
-     * @param gravity
-     */
-    void setMenuGravity(Gravity gravity);
-
-    /**
      * 返回内容view
      *
      * @return
@@ -68,18 +54,26 @@ public interface SwipeMenu
     View getContentView();
 
     /**
-     * 返回菜单view
+     * 返回指定方向的菜单view
+     *
+     * @param direction {@link Direction}
+     * @return
+     */
+    View getMenuView(Direction direction);
+
+    /**
+     * 返回菜显示方向
      *
      * @return
      */
-    View getMenuView();
+    Direction getMenuDirection();
 
     /**
-     * 返回菜单位置
+     * 返回当前菜单的状态
      *
-     * @return {@link Gravity}
+     * @return
      */
-    Gravity getMenuGravity();
+    State getState();
 
     /**
      * 返回滚动状态
@@ -96,31 +90,34 @@ public interface SwipeMenu
     float getScrollPercent();
 
     /**
-     * 是否处于打开状态
+     * 设置菜单状态
      *
+     * @param state {@link State}
+     * @param anim  true-动画效果，false-无动画
      * @return
      */
-    boolean isOpened();
+    boolean setState(State state, boolean anim);
 
-    /**
-     * 打开或者关闭菜单
-     *
-     * @param opened true-打开，false-关闭
-     * @param anim   true-动画效果，false-无动画
-     * @return
-     */
-    boolean setOpened(boolean opened, boolean anim);
-
-    enum Gravity
+    enum Direction
     {
-        /**
-         * 菜单靠左边
-         */
         Left,
-        /**
-         * 菜单靠右边
-         */
-        Right
+        Top,
+        Right,
+        Bottom;
+
+        public final boolean isHorizontal()
+        {
+            return this == Left || this == Right;
+        }
+    }
+
+    enum State
+    {
+        Close,
+        OpenLeft,
+        OpenTop,
+        OpenRight,
+        OpenBottom
     }
 
     enum ScrollState
@@ -144,10 +141,10 @@ public interface SwipeMenu
         /**
          * 状态变更回调
          *
-         * @param isOpened
+         * @param state
          * @param swipeMenu
          */
-        void onStateChanged(boolean isOpened, SwipeMenu swipeMenu);
+        void onStateChanged(State state, SwipeMenu swipeMenu);
     }
 
     interface OnViewPositionChangeCallback
