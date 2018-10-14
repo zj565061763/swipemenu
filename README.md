@@ -47,6 +47,21 @@ public interface SwipeMenu
     void setPullCondition(PullCondition pullCondition);
 
     /**
+     * 设置内容view
+     *
+     * @param view
+     */
+    void setContentView(View view);
+
+    /**
+     * 设置某个方向的菜单view
+     *
+     * @param view
+     * @param direction
+     */
+    void setMenuView(View view, Direction direction);
+
+    /**
      * 返回内容view
      *
      * @return
