@@ -418,16 +418,15 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             throw new RuntimeException("MenuContainer not found for direction:" + direction);
         container.setVisibility(VISIBLE);
 
+        if (mIsDebug)
+            Log.e(SwipeMenu.class.getSimpleName(), "setMenuDirection:" + direction);
+
         if (mMenuDirection != direction)
         {
             mMenuDirection = direction;
-            if (mIsDebug)
-                Log.e(SwipeMenu.class.getSimpleName(), "setMenuDirection:" + direction);
-
             onMenuDirectionChanged(direction);
         }
     }
-
 
     private Direction stateToMenuDirection(State state)
     {
