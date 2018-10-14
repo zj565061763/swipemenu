@@ -36,10 +36,10 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel>
             @Override
             public void onClick(View v)
             {
-                if (swipeMenu.getScrollPercent() != 0)
-                    swipeMenu.setState(SwipeMenu.State.Close, true);
-                else
+                if (swipeMenu.getScrollPercent() == 0)
                     Toast.makeText(getContext(), "click " + model, Toast.LENGTH_SHORT).show();
+                else
+                    swipeMenu.setState(SwipeMenu.State.Close, true);
             }
         });
 
