@@ -736,8 +736,26 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         if (isViewIdle())
         {
-            left = getContentBoundState(state);
-            top = 0;
+            final int boundState = getContentBoundState(state);
+            switch (state)
+            {
+                case Close:
+                    left = 0;
+                    top = 0;
+                    break;
+                case OpenLeft:
+                case OpenRight:
+                    left = boundState;
+                    top = 0;
+                    break;
+                case OpenTop:
+                case OpenBottom:
+                    left = 0;
+                    top = boundState;
+                    break;
+                default:
+                    throw new RuntimeException();
+            }
         } else
         {
             left = mContentContainer.getLeft();
