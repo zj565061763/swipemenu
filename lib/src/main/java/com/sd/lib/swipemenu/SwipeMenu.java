@@ -4,6 +4,11 @@ import android.view.View;
 
 public interface SwipeMenu
 {
+    /**
+     * 设置调试模式，会有日志输出，日志tag：SwipeMenu
+     *
+     * @param debug
+     */
     void setDebug(boolean debug);
 
     /**
@@ -42,7 +47,7 @@ public interface SwipeMenu
     View getContentView();
 
     /**
-     * 返回菜单view
+     * 返回指定方向的菜单view
      *
      * @param direction {@link Direction}
      * @return
