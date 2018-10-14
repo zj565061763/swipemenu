@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
@@ -69,9 +68,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                     }
                 }
             };
-            mMapMenuContainer.put(Direction.Left, mMenuContainerLeft);
-            mMenuContainerLeft.setGravity(Gravity.LEFT);
-            addView(mMenuContainerLeft);
+
+            addMenuContainer(mMenuContainerLeft, Direction.Left);
         }
         return mMenuContainerLeft;
     }
@@ -96,9 +94,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                     }
                 }
             };
-            mMapMenuContainer.put(Direction.Top, mMenuContainerTop);
-            mMenuContainerTop.setGravity(Gravity.TOP);
-            addView(mMenuContainerTop);
+
+            addMenuContainer(mMenuContainerTop, Direction.Top);
         }
         return mMenuContainerTop;
     }
@@ -123,9 +120,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                     }
                 }
             };
-            mMapMenuContainer.put(Direction.Right, mMenuContainerRight);
-            mMenuContainerRight.setGravity(Gravity.RIGHT);
-            addView(mMenuContainerRight);
+
+            addMenuContainer(mMenuContainerRight, Direction.Right);
         }
         return mMenuContainerRight;
     }
@@ -150,11 +146,22 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                     }
                 }
             };
-            mMapMenuContainer.put(Direction.Bottom, mMenuContainerBottom);
-            mMenuContainerBottom.setGravity(Gravity.BOTTOM);
-            addView(mMenuContainerBottom);
+
+            addMenuContainer(mMenuContainerBottom, Direction.Bottom);
         }
         return mMenuContainerBottom;
+    }
+
+    private void addMenuContainer(MenuContainer container, Direction direction)
+    {
+        if (container == null || direction == null)
+            throw new NullPointerException();
+        if (container.getParent() != null || mMapMenuContainer.containsKey(direction))
+            throw new IllegalArgumentException("Illegal MenuContainer:" + container);
+
+        mMapMenuContainer.put(direction, container);
+        container.setDirection(direction);
+        addView(container);
     }
 
     @Override
