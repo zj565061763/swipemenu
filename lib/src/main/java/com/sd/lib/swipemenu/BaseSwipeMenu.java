@@ -297,7 +297,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             if (mIsDebug)
                 Log.i(SwipeMenu.class.getSimpleName(), "setState:" + state);
 
-            updateLockEvent();
             updateViewByState(anim);
 
             if (mOnStateChangeCallback != null)
@@ -451,40 +450,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         }
     }
 
-    private void updateLockEvent()
-    {
-        final State state = mState;
-        final boolean totalState = getContentBoundCurrent() == getContentBoundState(state);
-
-        switch (state)
-        {
-            case Close:
-                for (MenuContainer item : mMapContainerMenu.values())
-                {
-                    item.setLockEvent(true);
-                }
-                break;
-            case OpenLeft:
-                if (mContainerMenuLeft != null)
-                    mContainerMenuLeft.setLockEvent(!totalState);
-                break;
-            case OpenTop:
-                if (mContainerMenuTop != null)
-                    mContainerMenuTop.setLockEvent(!totalState);
-                break;
-            case OpenRight:
-                if (mContainerMenuRight != null)
-                    mContainerMenuRight.setLockEvent(!totalState);
-                break;
-            case OpenBottom:
-                if (mContainerMenuBottom != null)
-                    mContainerMenuBottom.setLockEvent(!totalState);
-                break;
-            default:
-                throw new RuntimeException();
-        }
-    }
-
     protected final boolean checkPullCondition()
     {
         return mPullCondition == null ? true : mPullCondition.canPull(this);
@@ -626,8 +591,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             ViewCompat.offsetLeftAndRight(mContainerContent, delta);
         else
             ViewCompat.offsetTopAndBottom(mContainerContent, delta);
-
-        updateLockEvent();
 
         if (mOnViewPositionChangeCallback != null)
             mOnViewPositionChangeCallback.onViewPositionChanged(isDrag, this);
@@ -834,7 +797,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (ViewCompat.getZ(mContainerContent) <= maxZ)
             ViewCompat.setZ(mContainerContent, maxZ + 1);
 
-        updateLockEvent();
         hideContainerMenuIfNeed();
     }
 }

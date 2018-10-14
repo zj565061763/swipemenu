@@ -5,12 +5,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
-abstract class LockContainer extends LinearLayout
+abstract class BaseContainer extends LinearLayout
 {
     private boolean mLockEvent;
     private View mContentView;
 
-    public LockContainer(Context context)
+    public BaseContainer(Context context)
     {
         super(context);
         setPadding(0, 0, 0, 0);
