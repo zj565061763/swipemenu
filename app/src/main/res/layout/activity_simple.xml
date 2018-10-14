@@ -99,4 +99,12 @@
 
     </com.sd.lib.swipemenu.FSwipeMenu>
 
+    <Button
+        android:id="@+id/btn_follow_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="follow content"
+        android:textAllCaps="false" />
+
 </FrameLayout>

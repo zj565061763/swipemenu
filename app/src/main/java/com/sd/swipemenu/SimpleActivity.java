@@ -1,6 +1,7 @@
 package com.sd.swipemenu;
 
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -36,10 +37,21 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
         // 设置view位置变化回调
         mSwipeMenu.setOnViewPositionChangeCallback(new SwipeMenu.OnViewPositionChangeCallback()
         {
-            @Override
-            public void onViewPositionChanged(boolean isDrag, SwipeMenu swipeMenu)
-            {
+            private int mLastLeft;
+            private int mLastTop;
 
+            @Override
+            public void onViewPositionChanged(int left, int top, boolean isDrag, SwipeMenu swipeMenu)
+            {
+                final int deltaLeft = left - mLastLeft;
+                final int deltaTop = top - mLastTop;
+
+                mLastLeft = left;
+                mLastTop = top;
+
+                final View viewFollow = findViewById(R.id.btn_follow_content);
+                ViewCompat.offsetLeftAndRight(viewFollow, deltaLeft);
+                ViewCompat.offsetTopAndBottom(viewFollow, deltaTop);
             }
         });
         // 设置滚动状态变化回调
