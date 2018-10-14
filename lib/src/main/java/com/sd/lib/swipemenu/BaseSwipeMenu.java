@@ -63,7 +63,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                         if (mState == State.OpenLeft)
                             setState(State.Close, false);
 
-                        mMapMenuContainer.remove(Direction.Left);
+                        removeMenuContainer(Direction.Left);
                         mMenuContainerLeft = null;
                     }
                 }
@@ -89,7 +89,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                         if (mState == State.OpenTop)
                             setState(State.Close, false);
 
-                        mMapMenuContainer.remove(Direction.Top);
+                        removeMenuContainer(Direction.Top);
                         mMenuContainerTop = null;
                     }
                 }
@@ -115,7 +115,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                         if (mState == State.OpenRight)
                             setState(State.Close, false);
 
-                        mMapMenuContainer.remove(Direction.Right);
+                        removeMenuContainer(Direction.Right);
                         mMenuContainerRight = null;
                     }
                 }
@@ -141,7 +141,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                         if (mState == State.OpenBottom)
                             setState(State.Close, false);
 
-                        mMapMenuContainer.remove(Direction.Bottom);
+                        removeMenuContainer(Direction.Bottom);
                         mMenuContainerBottom = null;
                     }
                 }
@@ -162,6 +162,15 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         mMapMenuContainer.put(direction, container);
         container.setDirection(direction);
         addView(container);
+    }
+
+    private void removeMenuContainer(Direction direction)
+    {
+        final MenuContainer container = mMapMenuContainer.remove(direction);
+        if (container == null)
+            throw new RuntimeException();
+
+        removeView(container);
     }
 
     @Override
