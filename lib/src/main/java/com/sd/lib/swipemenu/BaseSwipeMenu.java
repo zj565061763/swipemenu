@@ -237,7 +237,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             mScrollState = state;
 
             if (mIsDebug)
-                Log.i(SwipeMenu.class.getSimpleName(), "setScrollState:" + state);
+                Log.i(SwipeMenu.class.getSimpleName(), "setScrollState:" + state + " " + getScrollPercent());
 
             hideMenuContainerIfNeed();
 
