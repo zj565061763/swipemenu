@@ -524,24 +524,27 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         }
     }
 
+    /**
+     * 返回内容view当前的边界值
+     *
+     * @return
+     */
     private int getContentBoundCurrent()
     {
         if (mMenuDirection == null)
             return 0;
 
-        switch (mMenuDirection)
-        {
-            case Left:
-            case Right:
-                return mContentContainer.getLeft();
-            case Top:
-            case Bottom:
-                return mContentContainer.getTop();
-            default:
-                throw new RuntimeException();
-        }
+        if (mMenuDirection.isHorizontal())
+            return mContentContainer.getLeft();
+        else
+            return mContentContainer.getTop();
     }
 
+    /**
+     * 返回内容view可移动范围的最小边界值
+     *
+     * @return
+     */
     private int getContentBoundMin()
     {
         if (mMenuDirection == null)
@@ -562,6 +565,11 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         }
     }
 
+    /**
+     * 返回内容view可移动范围的最大边界值
+     *
+     * @return
+     */
     private int getContentBoundMax()
     {
         if (mMenuDirection == null)
