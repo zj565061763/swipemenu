@@ -21,10 +21,10 @@ public class SingleModeSwipeMenuHolder extends SwipeMenuHolder implements
     }
 
     @Override
-    public void onStateChanged(SwipeMenu.State state, SwipeMenu swipeMenu)
+    public void onStateChanged(SwipeMenu.State oldState, SwipeMenu.State newState, SwipeMenu swipeMenu)
     {
-        super.onStateChanged(state, swipeMenu);
-        if (state != SwipeMenu.State.Close)
+        super.onStateChanged(oldState, newState, swipeMenu);
+        if (newState != SwipeMenu.State.Close)
             setAllSwipeMenuStateExcept(SwipeMenu.State.Close, true, swipeMenu);
     }
 

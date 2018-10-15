@@ -43,12 +43,12 @@ public class SwipeMenuHolder implements SwipeMenu.OnStateChangeCallback
     }
 
     @Override
-    public void onStateChanged(SwipeMenu.State state, SwipeMenu swipeMenu)
+    public void onStateChanged(SwipeMenu.State oldState, SwipeMenu.State newState, SwipeMenu swipeMenu)
     {
         final Object tag = mMapSwipeMenu.get(swipeMenu);
         final SwipeMenuInfo info = mMapInfo.get(tag);
         if (info != null)
-            info.mState = state;
+            info.mState = newState;
     }
 
     /**

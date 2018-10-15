@@ -31,9 +31,9 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
         mSwipeMenu.setOnStateChangeCallback(new SwipeMenu.OnStateChangeCallback()
         {
             @Override
-            public void onStateChanged(SwipeMenu.State state, SwipeMenu swipeMenu)
+            public void onStateChanged(SwipeMenu.State oldState, SwipeMenu.State newState, SwipeMenu swipeMenu)
             {
-                Log.e(TAG, "onStateChanged:" + state);
+                Log.e(TAG, "onStateChanged:" + oldState + "----->" + newState);
             }
         });
         // 设置view位置变化回调
