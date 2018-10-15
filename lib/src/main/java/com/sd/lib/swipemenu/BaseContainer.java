@@ -64,12 +64,21 @@ abstract class BaseContainer extends LinearLayout
     }
 
     @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev)
+    {
+        if (mLockEvent)
+            return true;
+
+        return super.onInterceptTouchEvent(ev);
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent event)
     {
         if (mLockEvent)
-            return false;
-        else
-            return super.onTouchEvent(event);
+            return true;
+
+        return super.onTouchEvent(event);
     }
 
     @Override

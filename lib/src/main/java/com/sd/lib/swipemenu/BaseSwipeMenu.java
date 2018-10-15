@@ -767,8 +767,20 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             mContentContainerLeft = left;
             mContentContainerTop = top;
 
+            updateLockEvent();
+
             if (mOnViewPositionChangeCallback != null)
                 mOnViewPositionChangeCallback.onViewPositionChanged(left, top, isDrag, this);
+        }
+    }
+
+    private void updateLockEvent()
+    {
+        final MenuContainer container = mMapMenuContainer.get(mMenuDirection);
+        if (container != null)
+        {
+            final boolean lockEvent = getScrollPercent() < 1.0f;
+            container.setLockEvent(lockEvent);
         }
     }
 
