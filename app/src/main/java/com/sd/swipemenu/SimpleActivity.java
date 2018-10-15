@@ -70,7 +70,7 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onClick(View v)
             {
-
+                Toast.makeText(SimpleActivity.this, "btn_follow_content", Toast.LENGTH_SHORT).show();
             }
         });
     }

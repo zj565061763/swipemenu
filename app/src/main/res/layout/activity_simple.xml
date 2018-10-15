@@ -21,6 +21,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/colorPrimary"
                 android:gravity="center"
+                android:onClick="onClick"
                 android:textColor="@android:color/white" />
 
         </FrameLayout>
