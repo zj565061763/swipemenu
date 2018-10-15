@@ -776,12 +776,13 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
     private void updateLockEvent()
     {
+        final float percent = getScrollPercent();
+
         final MenuContainer container = mMapMenuContainer.get(mMenuDirection);
         if (container != null)
-        {
-            final boolean lockEvent = getScrollPercent() < 1.0f;
-            container.setLockEvent(lockEvent);
-        }
+            container.setLockEvent(percent < 1.0f);
+
+        mContentContainer.setLockEvent(percent > 0 && percent < 1.0f);
     }
 
     @Override
