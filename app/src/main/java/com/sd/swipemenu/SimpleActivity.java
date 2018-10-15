@@ -15,6 +15,7 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
     public static final String TAG = SimpleActivity.class.getSimpleName();
 
     private FSwipeMenu mSwipeMenu;
+    private View btn_follow_content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -22,6 +23,7 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple);
         mSwipeMenu = findViewById(R.id.swipemenu);
+        btn_follow_content = findViewById(R.id.btn_follow_content);
 
         mSwipeMenu.setDebug(true);
 
@@ -49,9 +51,8 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
                 mLastLeft = left;
                 mLastTop = top;
 
-                final View viewFollow = findViewById(R.id.btn_follow_content);
-                ViewCompat.offsetLeftAndRight(viewFollow, deltaLeft);
-                ViewCompat.offsetTopAndBottom(viewFollow, deltaTop);
+                ViewCompat.offsetLeftAndRight(btn_follow_content, deltaLeft);
+                ViewCompat.offsetTopAndBottom(btn_follow_content, deltaTop);
             }
         });
         // 设置滚动状态变化回调
@@ -61,6 +62,15 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
             public void onScrollStateChanged(SwipeMenu.ScrollState state, SwipeMenu swipeMenu)
             {
                 Log.i(TAG, "onScrollStateChanged:" + state);
+            }
+        });
+
+        btn_follow_content.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
             }
         });
     }
