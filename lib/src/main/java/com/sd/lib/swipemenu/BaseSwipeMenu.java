@@ -132,8 +132,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     {
         if (container == null || direction == null)
             throw new NullPointerException();
-        if (container.getParent() != null || mMapMenuContainer.containsKey(direction))
-            throw new IllegalArgumentException("Illegal MenuContainer:" + container);
 
         mMapMenuContainer.put(direction, container);
         container.setDirection(direction);
