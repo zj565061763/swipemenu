@@ -333,9 +333,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (getContentView() == null)
             return false;
 
-        final State oldState = mState;
+        final State stateOld = mState;
         boolean changed = false;
-        if (oldState != state)
+        if (stateOld != state)
         {
             mState = state;
             changed = true;
@@ -345,11 +345,19 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
             if (state != State.Close)
             {
+                final Direction directionOld = stateToMenuDirection(stateOld);
                 final Direction direction = stateToMenuDirection(state);
-                final View view = getMenuView(direction);
 
+                if (directionOld != null)
+                {
+                    if (directionOld.isHorizontal() != direction.isHorizontal())
+                        anim = false;
+                }
+
+                final View view = getMenuView(direction);
                 if (view == null)
                     throw new IllegalArgumentException("Illegal state:" + state + ". menu view was not found for direction " + direction);
+
                 setMenuDirection(direction);
             }
 
