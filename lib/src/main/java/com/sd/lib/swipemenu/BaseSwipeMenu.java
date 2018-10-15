@@ -732,6 +732,13 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     protected abstract void onMenuDirectionChanged(Direction direction);
 
     /**
+     * view是否处于空闲状态（静止且未被拖动状态）
+     *
+     * @return
+     */
+    protected abstract boolean isViewIdle();
+
+    /**
      * 停止滑动动画
      */
     protected abstract void abortAnimation();
@@ -744,6 +751,26 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      * @return
      */
     protected abstract boolean onSmoothScroll(int start, int end);
+
+    /**
+     * 通知内容view位置变化
+     *
+     * @param isDrag
+     */
+    private void notifyViewPositionChangeIfNeed(boolean isDrag)
+    {
+        final int left = mContentContainer.getLeft();
+        final int top = mContentContainer.getTop();
+
+        if (mContentContainerLeft != left || mContentContainerTop != top)
+        {
+            mContentContainerLeft = left;
+            mContentContainerTop = top;
+
+            if (mOnViewPositionChangeCallback != null)
+                mOnViewPositionChangeCallback.onViewPositionChanged(left, top, isDrag, this);
+        }
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
@@ -770,28 +797,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         height = Utils.getMeasureSize(height, heightMeasureSpec);
 
         setMeasuredDimension(width, height);
-    }
-
-    /**
-     * view是否处于空闲状态（静止且未被拖动状态）
-     *
-     * @return
-     */
-    protected abstract boolean isViewIdle();
-
-    private void notifyViewPositionChangeIfNeed(boolean isDrag)
-    {
-        final int left = mContentContainer.getLeft();
-        final int top = mContentContainer.getTop();
-
-        if (mContentContainerLeft != left || mContentContainerTop != top)
-        {
-            mContentContainerLeft = left;
-            mContentContainerTop = top;
-
-            if (mOnViewPositionChangeCallback != null)
-                mOnViewPositionChangeCallback.onViewPositionChanged(left, top, isDrag, this);
-        }
     }
 
     @Override
