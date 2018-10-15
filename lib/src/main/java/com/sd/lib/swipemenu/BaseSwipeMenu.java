@@ -216,7 +216,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     public final void setMenuView(View view, Direction direction)
     {
         if (direction == null)
-            return;
+            throw new NullPointerException("direction is null");
 
         switch (direction)
         {
