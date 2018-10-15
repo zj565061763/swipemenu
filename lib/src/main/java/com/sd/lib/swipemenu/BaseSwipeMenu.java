@@ -714,17 +714,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (view == null)
             return 0;
 
-        switch (mMenuDirection)
-        {
-            case Left:
-            case Right:
-                return view.getWidth();
-            case Top:
-            case Bottom:
-                return view.getHeight();
-            default:
-                throw new RuntimeException();
-        }
+        if (mMenuDirection.isHorizontal())
+            return view.getWidth();
+        else
+            return view.getHeight();
     }
 
     /**
