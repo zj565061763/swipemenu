@@ -400,7 +400,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 }
             } else
             {
-                requestLayout();
+                layoutInternal();
             }
         }
     }
@@ -823,6 +823,13 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
+        if (mIsDebug)
+            Log.i(SwipeMenu.class.getSimpleName(), "onLayout");
+        layoutInternal();
+    }
+
+    private void layoutInternal()
+    {
         final State state = mState;
 
         // content
@@ -861,7 +868,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         if (mIsDebug)
         {
-            Log.i(SwipeMenu.class.getSimpleName(), "onLayout state:" + state + " isViewIdle:" + isViewIdle()
+            Log.i(SwipeMenu.class.getSimpleName(), "layoutInternal state:" + state + " isViewIdle:" + isViewIdle()
                     + " [" + mContentContainer.getLeft() + "," + mContentContainer.getTop() + "," + mContentContainer.getRight() + "," + mContentContainer.getBottom() + "]");
         }
 
