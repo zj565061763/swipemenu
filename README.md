@@ -6,7 +6,8 @@ Android侧滑菜单，详细请参考demo
 
 # 简单效果
 ![](https://raw.githubusercontent.com/zj565061763/swipemenu/master/screenshot/swipemenu_list.gif)
-![](https://raw.githubusercontent.com/zj565061763/swipemenu/master/screenshot/swipemenu_ltrb.gif)
+![](https://raw.githubusercontent.com/zj565061763/swipemenu/master/screenshot/swipemenu_ltrb_overlay.gif)
+![](https://raw.githubusercontent.com/zj565061763/swipemenu/master/screenshot/swipemenu_ltrb_drawer.gif)
 
 # SwipeMenu接口
 ```java
