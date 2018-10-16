@@ -55,6 +55,13 @@ public interface SwipeMenu
     void setMenuView(View view, Direction direction);
 
     /**
+     * 设置菜单模式，默认覆盖模式{@link Mode#Overlay}
+     *
+     * @param mode {@link Mode}
+     */
+    void setMode(Mode mode);
+
+    /**
      * 返回内容view
      *
      * @return
@@ -106,6 +113,15 @@ public interface SwipeMenu
      */
     boolean setState(State state, boolean anim);
 
+    enum State
+    {
+        Close,
+        OpenLeft,
+        OpenTop,
+        OpenRight,
+        OpenBottom
+    }
+
     enum Direction
     {
         Left,
@@ -119,13 +135,16 @@ public interface SwipeMenu
         }
     }
 
-    enum State
+    enum Mode
     {
-        Close,
-        OpenLeft,
-        OpenTop,
-        OpenRight,
-        OpenBottom
+        /**
+         * 覆盖模式
+         */
+        Overlay,
+        /**
+         * 抽屉拉开模式
+         */
+        Drawer
     }
 
     enum ScrollState

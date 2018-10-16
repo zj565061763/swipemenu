@@ -27,6 +27,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
     private final Map<Direction, MenuContainer> mMapMenuContainer = new HashMap<>();
 
+    private Mode mMode = Mode.Overlay;
     private State mState = State.Close;
     private Direction mMenuDirection;
 
@@ -234,6 +235,22 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 break;
             default:
                 throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public final void setMode(Mode mode)
+    {
+        if (mode == null)
+            throw new NullPointerException();
+
+        if (mMode != mode)
+        {
+            if (!isViewIdle())
+                throw new RuntimeException("mode can not be change when view is busy");
+
+            mMode = mode;
+            requestLayout();
         }
     }
 
@@ -654,9 +671,18 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             return;
 
         if (getMenuDirection().isHorizontal())
+        {
             ViewCompat.offsetLeftAndRight(mContentContainer, delta);
-        else
+
+            if (mMode == Mode.Drawer)
+                ViewCompat.offsetLeftAndRight(mMapMenuContainer.get(mMenuDirection), delta);
+        } else
+        {
             ViewCompat.offsetTopAndBottom(mContentContainer, delta);
+
+            if (mMode == Mode.Drawer)
+                ViewCompat.offsetTopAndBottom(mMapMenuContainer.get(mMenuDirection), delta);
+        }
 
         notifyViewPositionChangeIfNeed(isDrag);
     }
@@ -870,18 +896,76 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         if (mIsDebug)
         {
-            Log.i(SwipeMenu.class.getSimpleName(), "layoutInternal state:" + state + " isViewIdle:" + isViewIdle()
+            Log.i(SwipeMenu.class.getSimpleName(), "layoutInternal state:" + state + " isViewIdle:" + isViewIdle() + " mode:" + mMode
                     + " [" + mContentContainer.getLeft() + "," + mContentContainer.getTop() + "," + mContentContainer.getRight() + "," + mContentContainer.getBottom() + "]");
+        }
+
+        if (mMode == Mode.Overlay)
+        {
+            for (MenuContainer item : mMapMenuContainer.values())
+            {
+                left = 0;
+                top = 0;
+                item.layout(left, top,
+                        left + item.getMeasuredWidth(), top + item.getMeasuredHeight());
+            }
+        } else
+        {
+            if (isViewIdle())
+            {
+                if (mMenuContainerLeft != null)
+                {
+                    left = mContentContainer.getLeft() - mMenuContainerLeft.getMeasuredWidth();
+                    top = 0;
+
+                    mMenuContainerLeft.layout(left, top,
+                            left + mMenuContainerLeft.getMeasuredWidth(), top + mMenuContainerLeft.getMeasuredHeight());
+                }
+
+                if (mMenuContainerTop != null)
+                {
+                    left = 0;
+                    top = mContentContainer.getTop() - mMenuContainerTop.getMeasuredHeight();
+
+                    mMenuContainerTop.layout(left, top,
+                            left + mMenuContainerTop.getMeasuredWidth(), top + mMenuContainerTop.getMeasuredHeight());
+                }
+
+                if (mMenuContainerRight != null)
+                {
+                    left = mContentContainer.getRight();
+                    top = 0;
+
+                    mMenuContainerRight.layout(left, top,
+                            left + mMenuContainerRight.getMeasuredWidth(), top + mMenuContainerRight.getMeasuredHeight());
+                }
+
+                if (mMenuContainerBottom != null)
+                {
+                    left = 0;
+                    top = mContentContainer.getBottom();
+
+                    mMenuContainerBottom.layout(left, top,
+                            left + mMenuContainerBottom.getMeasuredWidth(), top + mMenuContainerBottom.getMeasuredHeight());
+                }
+
+            } else
+            {
+                for (MenuContainer item : mMapMenuContainer.values())
+                {
+                    left = item.getLeft();
+                    top = item.getTop();
+                    item.layout(left, top,
+                            left + item.getMeasuredWidth(), top + item.getMeasuredHeight());
+                }
+            }
         }
 
         float maxZ = 0;
         for (MenuContainer item : mMapMenuContainer.values())
         {
-            item.layout(0, 0, item.getMeasuredWidth(), item.getMeasuredHeight());
-
             maxZ = Math.max(maxZ, ViewCompat.getZ(item));
         }
-
         if (ViewCompat.getZ(mContentContainer) <= maxZ)
             ViewCompat.setZ(mContentContainer, maxZ + 1);
 
