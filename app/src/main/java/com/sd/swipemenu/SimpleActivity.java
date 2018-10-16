@@ -27,6 +27,9 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
 
         mSwipeMenu.setDebug(true);
 
+        // 设置抽屉拉开模式
+        mSwipeMenu.setMode(SwipeMenu.Mode.Drawer);
+
         // 设置状态变化回调
         mSwipeMenu.setOnStateChangeCallback(new SwipeMenu.OnStateChangeCallback()
         {
