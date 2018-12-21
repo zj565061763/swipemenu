@@ -311,7 +311,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 if (onSmoothScroll(boundCurrent, boundState))
                 {
                     setScrollState(ScrollState.Fling);
-                    invalidate();
+                    ViewCompat.postInvalidateOnAnimation(this);
                 }
             } else
             {
@@ -618,8 +618,13 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (mIsDebug)
             Log.i(SwipeMenu.class.getSimpleName(), "dealDragFinish should be state:" + state);
 
-        if (!setState(state, true))
+        if (setState(state, true))
+        {
+            // 状态更新成功，会触发刷新view位置
+        } else
+        {
             updateViewByState(true);
+        }
 
         if (mScrollState == ScrollState.Drag)
             setScrollState(ScrollState.Idle);

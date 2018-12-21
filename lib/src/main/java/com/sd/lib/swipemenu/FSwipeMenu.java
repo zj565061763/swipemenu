@@ -1,6 +1,7 @@
 package com.sd.lib.swipemenu;
 
 import android.content.Context;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -186,7 +187,7 @@ public class FSwipeMenu extends BaseSwipeMenu
     public void computeScroll()
     {
         if (getScroller().computeScrollOffset())
-            invalidate();
+            ViewCompat.postInvalidateOnAnimation(this);
     }
 
     @Override
