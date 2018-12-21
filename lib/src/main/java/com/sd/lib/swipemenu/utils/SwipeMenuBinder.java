@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-public class SwipeMenuHolder implements SwipeMenu.OnStateChangeCallback
+public class SwipeMenuBinder implements SwipeMenu.OnStateChangeCallback
 {
     private final Map<SwipeMenu, Object> mMapSwipeMenu = new WeakHashMap<>();
     private final Map<Object, SwipeMenuInfo> mMapInfo = new HashMap<>();
@@ -69,6 +69,17 @@ public class SwipeMenuHolder implements SwipeMenu.OnStateChangeCallback
     public Set<SwipeMenu> getAllSwipeMenu()
     {
         return mMapSwipeMenu.keySet();
+    }
+
+    /**
+     * 设置所有菜单的状态
+     *
+     * @param state
+     * @param anim
+     */
+    public void setAllSwipeMenuState(SwipeMenu.State state, boolean anim)
+    {
+        setAllSwipeMenuStateExcept(state, anim, null);
     }
 
     /**

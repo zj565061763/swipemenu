@@ -8,12 +8,12 @@ import android.widget.Toast;
 
 import com.sd.lib.adapter.FSimpleAdapter;
 import com.sd.lib.swipemenu.SwipeMenu;
-import com.sd.lib.swipemenu.utils.SingleModeSwipeMenuHolder;
-import com.sd.lib.swipemenu.utils.SwipeMenuHolder;
+import com.sd.lib.swipemenu.utils.SingleModeSwipeMenuBinder;
+import com.sd.lib.swipemenu.utils.SwipeMenuBinder;
 
 public class ListViewAdapter extends FSimpleAdapter<DataModel>
 {
-    public final SwipeMenuHolder mAdapterSwipeMenuHolder = new SingleModeSwipeMenuHolder();
+    public final SwipeMenuBinder mSingleModeSwipeMenuBinder = new SingleModeSwipeMenuBinder();
 
     @Override
     public int getLayoutId(int position, View convertView, ViewGroup parent)
@@ -29,7 +29,7 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel>
 
         final SwipeMenu swipeMenu = get(R.id.swipemenu, convertView);
         swipeMenu.setDebug(true);
-        mAdapterSwipeMenuHolder.bind(swipeMenu, model);
+        mSingleModeSwipeMenuBinder.bind(swipeMenu, model);
 
         swipeMenu.getContentView().setOnClickListener(new View.OnClickListener()
         {
@@ -49,7 +49,7 @@ public class ListViewAdapter extends FSimpleAdapter<DataModel>
             @Override
             public void onClick(View v)
             {
-                mAdapterSwipeMenuHolder.remove(model);
+                mSingleModeSwipeMenuBinder.remove(model);
                 getDataHolder().removeData(model);
             }
         });

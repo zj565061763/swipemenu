@@ -2,7 +2,7 @@ package com.sd.lib.swipemenu.utils;
 
 import com.sd.lib.swipemenu.SwipeMenu;
 
-public class SingleModeSwipeMenuHolder extends SwipeMenuHolder implements SwipeMenu.OnViewPositionChangeCallback
+public class SingleModeSwipeMenuBinder extends SwipeMenuBinder implements SwipeMenu.OnViewPositionChangeCallback
 {
     @Override
     public void bind(SwipeMenu swipeMenu, Object tag)
