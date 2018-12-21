@@ -40,7 +40,16 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     {
         super(context, attrs);
 
-        mContentContainer = new ContentContainer(getContext());
+        mContentContainer = new ContentContainer(getContext())
+        {
+            @Override
+            protected void onContentViewChanged(View view)
+            {
+                super.onContentViewChanged(view);
+                if (view == null)
+                    setState(State.Close, false);
+            }
+        };
         addView(mContentContainer);
     }
 
