@@ -20,11 +20,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     protected boolean mIsDebug;
 
     private final ContentContainer mContentContainer;
-    private MenuContainer mMenuContainerLeft;
-    private MenuContainer mMenuContainerTop;
-    private MenuContainer mMenuContainerRight;
-    private MenuContainer mMenuContainerBottom;
-
     private final Map<Direction, MenuContainer> mMapMenuContainer = new HashMap<>();
 
     private Mode mMode = Mode.Overlay;
@@ -49,94 +44,29 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         addView(mContentContainer);
     }
 
-    private MenuContainer getMenuContainerLeft()
+    private MenuContainer getMenuContainer(final Direction direction)
     {
-        if (mMenuContainerLeft == null)
+        if (direction == null)
+            throw new NullPointerException("direction is null");
+
+        MenuContainer container = mMapMenuContainer.get(direction);
+        if (container == null)
         {
-            mMenuContainerLeft = new MenuContainer(getContext())
+            container = new MenuContainer(getContext())
             {
                 @Override
                 protected void onContentViewChanged(View view)
                 {
                     super.onContentViewChanged(view);
                     if (view == null)
-                        removeMenuContainer(Direction.Left);
+                        removeMenuContainer(direction);
                 }
             };
-
-            addMenuContainer(mMenuContainerLeft, Direction.Left);
+            mMapMenuContainer.put(direction, container);
+            container.setDirection(direction);
+            addView(container);
         }
-        return mMenuContainerLeft;
-    }
-
-    private MenuContainer getMenuContainerTop()
-    {
-        if (mMenuContainerTop == null)
-        {
-            mMenuContainerTop = new MenuContainer(getContext())
-            {
-                @Override
-                protected void onContentViewChanged(View view)
-                {
-                    super.onContentViewChanged(view);
-                    if (view == null)
-                        removeMenuContainer(Direction.Top);
-                }
-            };
-
-            addMenuContainer(mMenuContainerTop, Direction.Top);
-        }
-        return mMenuContainerTop;
-    }
-
-    private MenuContainer getMenuContainerRight()
-    {
-        if (mMenuContainerRight == null)
-        {
-            mMenuContainerRight = new MenuContainer(getContext())
-            {
-                @Override
-                protected void onContentViewChanged(View view)
-                {
-                    super.onContentViewChanged(view);
-                    if (view == null)
-                        removeMenuContainer(Direction.Right);
-                }
-            };
-
-            addMenuContainer(mMenuContainerRight, Direction.Right);
-        }
-        return mMenuContainerRight;
-    }
-
-    private MenuContainer getMenuContainerBottom()
-    {
-        if (mMenuContainerBottom == null)
-        {
-            mMenuContainerBottom = new MenuContainer(getContext())
-            {
-                @Override
-                protected void onContentViewChanged(View view)
-                {
-                    super.onContentViewChanged(view);
-                    if (view == null)
-                        removeMenuContainer(Direction.Bottom);
-                }
-            };
-
-            addMenuContainer(mMenuContainerBottom, Direction.Bottom);
-        }
-        return mMenuContainerBottom;
-    }
-
-    private void addMenuContainer(MenuContainer container, Direction direction)
-    {
-        if (container == null || direction == null)
-            throw new NullPointerException();
-
-        mMapMenuContainer.put(direction, container);
-        container.setDirection(direction);
-        addView(container);
+        return container;
     }
 
     private void removeMenuContainer(Direction direction)
@@ -147,33 +77,24 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         removeView(container);
 
-        if (mMenuContainerLeft == container)
+        switch (direction)
         {
-            if (mState == State.OpenLeft)
-                setState(State.Close, false);
-            mMenuContainerLeft = null;
-
-        } else if (mMenuContainerTop == container)
-        {
-            if (mState == State.OpenTop)
-                setState(State.Close, false);
-            mMenuContainerTop = null;
-
-        } else if (mMenuContainerRight == container)
-        {
-            if (mState == State.OpenRight)
-                setState(State.Close, false);
-            mMenuContainerRight = null;
-
-        } else if (mMenuContainerBottom == container)
-        {
-            if (mState == State.OpenBottom)
-                setState(State.Close, false);
-            mMenuContainerBottom = null;
-
-        } else
-        {
-            throw new RuntimeException();
+            case Left:
+                if (mState == State.OpenLeft)
+                    setState(State.Close, false);
+                break;
+            case Top:
+                if (mState == State.OpenTop)
+                    setState(State.Close, false);
+                break;
+            case Right:
+                if (mState == State.OpenRight)
+                    setState(State.Close, false);
+                break;
+            case Bottom:
+                if (mState == State.OpenBottom)
+                    setState(State.Close, false);
+                break;
         }
     }
 
@@ -216,26 +137,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     public final void setMenuView(View view, Direction direction)
     {
-        if (direction == null)
-            throw new NullPointerException("direction is null");
-
-        switch (direction)
-        {
-            case Left:
-                getMenuContainerLeft().setContentView(view);
-                break;
-            case Top:
-                getMenuContainerTop().setContentView(view);
-                break;
-            case Right:
-                getMenuContainerRight().setContentView(view);
-                break;
-            case Bottom:
-                getMenuContainerBottom().setContentView(view);
-                break;
-            default:
-                throw new RuntimeException();
-        }
+        getMenuContainer(direction).setContentView(view);
     }
 
     @Override
@@ -371,10 +273,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                         anim = false;
                 }
 
-                final View view = getMenuView(direction);
-                if (view == null)
-                    throw new IllegalArgumentException("Illegal state:" + state + ". menu view was not found for direction " + direction);
-
                 setMenuDirection(direction);
             }
 
@@ -487,6 +385,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         final MenuContainer container = mMapMenuContainer.get(direction);
         if (container == null)
             throw new RuntimeException("MenuContainer was not found for direction:" + direction);
+
+        if (container.getContentView() == null)
+            throw new RuntimeException("MenuContainer contentView was not found for direction:" + direction);
 
         for (MenuContainer item : mMapMenuContainer.values())
         {
@@ -859,12 +760,13 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     private void layoutInternal()
     {
         final State state = mState;
+        final boolean isViewIdle = isViewIdle();
 
-        // content
         int left = 0;
         int top = 0;
 
-        if (isViewIdle())
+        // ---------- Content ----------
+        if (isViewIdle)
         {
             final int boundState = getContentBoundState(state);
             switch (state)
@@ -900,6 +802,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                     + " [" + mContentContainer.getLeft() + "," + mContentContainer.getTop() + "," + mContentContainer.getRight() + "," + mContentContainer.getBottom() + "]");
         }
 
+        // ---------- Menu ----------
         if (mMode == Mode.Overlay)
         {
             for (MenuContainer item : mMapMenuContainer.values())
@@ -911,53 +814,37 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             }
         } else
         {
-            if (isViewIdle())
+            for (MenuContainer item : mMapMenuContainer.values())
             {
-                if (mMenuContainerLeft != null)
+                if (isViewIdle)
                 {
-                    left = mContentContainer.getLeft() - mMenuContainerLeft.getMeasuredWidth();
-                    top = 0;
-
-                    mMenuContainerLeft.layout(left, top,
-                            left + mMenuContainerLeft.getMeasuredWidth(), top + mMenuContainerLeft.getMeasuredHeight());
-                }
-
-                if (mMenuContainerTop != null)
-                {
-                    left = 0;
-                    top = mContentContainer.getTop() - mMenuContainerTop.getMeasuredHeight();
-
-                    mMenuContainerTop.layout(left, top,
-                            left + mMenuContainerTop.getMeasuredWidth(), top + mMenuContainerTop.getMeasuredHeight());
-                }
-
-                if (mMenuContainerRight != null)
-                {
-                    left = mContentContainer.getRight();
-                    top = 0;
-
-                    mMenuContainerRight.layout(left, top,
-                            left + mMenuContainerRight.getMeasuredWidth(), top + mMenuContainerRight.getMeasuredHeight());
-                }
-
-                if (mMenuContainerBottom != null)
-                {
-                    left = 0;
-                    top = mContentContainer.getBottom();
-
-                    mMenuContainerBottom.layout(left, top,
-                            left + mMenuContainerBottom.getMeasuredWidth(), top + mMenuContainerBottom.getMeasuredHeight());
-                }
-
-            } else
-            {
-                for (MenuContainer item : mMapMenuContainer.values())
+                    switch (item.getDirection())
+                    {
+                        case Left:
+                            left = mContentContainer.getLeft() - item.getMeasuredWidth();
+                            top = 0;
+                            break;
+                        case Top:
+                            left = 0;
+                            top = mContentContainer.getTop() - item.getMeasuredHeight();
+                            break;
+                        case Right:
+                            left = mContentContainer.getRight();
+                            top = 0;
+                            break;
+                        case Bottom:
+                            left = 0;
+                            top = mContentContainer.getBottom();
+                            break;
+                    }
+                } else
                 {
                     left = item.getLeft();
                     top = item.getTop();
-                    item.layout(left, top,
-                            left + item.getMeasuredWidth(), top + item.getMeasuredHeight());
                 }
+
+                item.layout(left, top,
+                        left + item.getMeasuredWidth(), top + item.getMeasuredHeight());
             }
         }
 

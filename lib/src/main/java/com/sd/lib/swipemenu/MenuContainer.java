@@ -12,6 +12,11 @@ class MenuContainer extends BaseContainer
         super(context);
     }
 
+    public final SwipeMenu.Direction getDirection()
+    {
+        return mDirection;
+    }
+
     /**
      * 设置菜单方向
      *
