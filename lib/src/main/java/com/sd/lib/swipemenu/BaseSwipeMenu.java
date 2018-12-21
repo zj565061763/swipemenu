@@ -731,7 +731,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (container != null)
             container.setLockEvent(percent < 1.0f);
 
-        mContentContainer.setLockEvent(percent > 0 && percent < 1.0f);
+        mContentContainer.setLockEvent(percent > 0);
     }
 
     @Override
