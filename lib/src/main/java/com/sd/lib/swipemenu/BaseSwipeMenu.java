@@ -289,7 +289,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 mOnStateChangeCallback.onStateChanged(stateOld, state, this);
         }
 
-        if (!changed && state == State.Close)
+        if (!changed && state == State.Close && mScrollState == ScrollState.Fling)
             anim = false;
 
         updateViewByState(anim);
@@ -307,25 +307,25 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         final int boundCurrent = getContentBoundCurrent();
         final int boundState = getContentBoundState(mState);
 
-        if (boundCurrent != boundState)
+        if (boundCurrent == boundState)
+            return;
+
+        if (mIsDebug)
+            Log.i(SwipeMenu.class.getSimpleName(), "updateViewByState:" + boundCurrent + "," + boundState + " anim:" + anim);
+
+        abortAnimation();
+
+        if (anim)
         {
-            abortAnimation();
-
-            if (mIsDebug)
-                Log.i(SwipeMenu.class.getSimpleName(), "updateViewByState:" + boundCurrent + "," + boundState + " anim:" + anim);
-
-            if (anim)
+            checkMenuDirection();
+            if (onSmoothScroll(boundCurrent, boundState))
             {
-                checkMenuDirection();
-                if (onSmoothScroll(boundCurrent, boundState))
-                {
-                    setScrollState(ScrollState.Fling);
-                    ViewCompat.postInvalidateOnAnimation(this);
-                }
-            } else
-            {
-                layoutInternal();
+                setScrollState(ScrollState.Fling);
+                ViewCompat.postInvalidateOnAnimation(this);
             }
+        } else
+        {
+            layoutInternal();
         }
     }
 
@@ -627,13 +627,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (mIsDebug)
             Log.i(SwipeMenu.class.getSimpleName(), "dealDragFinish should be state:" + state);
 
-        if (setState(state, true))
-        {
-            // 状态更新成功，会触发刷新view位置
-        } else
-        {
-            updateViewByState(true);
-        }
+        setState(state, true);
 
         if (mScrollState == ScrollState.Drag)
             setScrollState(ScrollState.Idle);
