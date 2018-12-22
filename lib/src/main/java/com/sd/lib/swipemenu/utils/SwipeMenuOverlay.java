@@ -1,18 +1,25 @@
 package com.sd.lib.swipemenu.utils;
 
+import android.content.Context;
+import android.util.AttributeSet;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.sd.lib.swipemenu.SwipeMenu;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.WeakHashMap;
 
-public class SwipeMenuBinder implements SwipeMenu.OnStateChangeCallback
+public class SwipeMenuOverlay extends FrameLayout implements SwipeMenu.OnStateChangeCallback
 {
     private final Map<SwipeMenu, Object> mMapSwipeMenu = new WeakHashMap<>();
     private final Map<Object, SwipeMenuInfo> mMapInfo = new HashMap<>();
+
+    public SwipeMenuOverlay(Context context, AttributeSet attrs)
+    {
+        super(context, attrs);
+    }
 
     /**
      * 绑定某个菜单的状态
@@ -42,6 +49,33 @@ public class SwipeMenuBinder implements SwipeMenu.OnStateChangeCallback
         swipeMenu.setState(info.mState, false);
     }
 
+    /**
+     * 移除某个tag对应的菜单状态
+     *
+     * @param tag
+     */
+    public final void remove(Object tag)
+    {
+        mMapInfo.remove(tag);
+    }
+
+    /**
+     * 遍历菜单
+     *
+     * @param callback
+     */
+    public final void foreach(ForeachCallback callback)
+    {
+        if (callback == null)
+            return;
+
+        for (SwipeMenu item : mMapSwipeMenu.keySet())
+        {
+            if (callback.onNext(item))
+                break;
+        }
+    }
+
     @Override
     public void onStateChanged(SwipeMenu.State oldState, SwipeMenu.State newState, SwipeMenu swipeMenu)
     {
@@ -51,55 +85,13 @@ public class SwipeMenuBinder implements SwipeMenu.OnStateChangeCallback
             info.mState = newState;
     }
 
-    /**
-     * 移除某个tag对应的菜单状态
-     *
-     * @param tag
-     */
-    public void remove(Object tag)
-    {
-        mMapInfo.remove(tag);
-    }
-
-    /**
-     * 得到所有菜单
-     *
-     * @return
-     */
-    public Set<SwipeMenu> getAllSwipeMenu()
-    {
-        return mMapSwipeMenu.keySet();
-    }
-
-    /**
-     * 设置所有菜单的状态
-     *
-     * @param state
-     * @param anim
-     */
-    public void setAllSwipeMenuState(SwipeMenu.State state, boolean anim)
-    {
-        setAllSwipeMenuStateExcept(state, anim, null);
-    }
-
-    /**
-     * 除了指定的菜单外，设置所有菜单的状态
-     *
-     * @param state
-     * @param anim
-     * @param except
-     */
-    public void setAllSwipeMenuStateExcept(SwipeMenu.State state, boolean anim, SwipeMenu except)
-    {
-        for (SwipeMenu item : getAllSwipeMenu())
-        {
-            if (item != except)
-                item.setState(state, anim);
-        }
-    }
-
     private static class SwipeMenuInfo
     {
         public SwipeMenu.State mState;
+    }
+
+    public interface ForeachCallback
+    {
+        boolean onNext(SwipeMenu swipeMenu);
     }
 }
