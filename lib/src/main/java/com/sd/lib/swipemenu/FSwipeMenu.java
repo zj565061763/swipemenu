@@ -221,7 +221,7 @@ public class FSwipeMenu extends BaseSwipeMenu
             if (contentView == null)
                 return false;
 
-            if (Math.abs(delta) < mTouchSlop)
+            if (delta == 0 || Math.abs(delta) < mTouchSlop)
                 return false;
 
             final boolean pullToStart = delta < 0;
@@ -236,6 +236,9 @@ public class FSwipeMenu extends BaseSwipeMenu
                 direction = getMenuDirectionForCloseState(pullToStart);
             else if (state == getOpenStateCanPull(pullToStart))
                 direction = getMenuDirectionForOpenState(state);
+
+            if (direction == null)
+                throw new NullPointerException("direction was not found when start pull");
 
             final View view = getMenuView(direction);
             if (view == null)
