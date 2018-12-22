@@ -85,6 +85,10 @@ abstract class BaseContainer extends LinearLayout
     public void onViewAdded(View child)
     {
         super.onViewAdded(child);
+
+        if (getChildCount() > 1)
+            throw new RuntimeException("you can not add view to container");
+
         if (mContentView != child)
             throw new RuntimeException("you can not add view this way");
     }
