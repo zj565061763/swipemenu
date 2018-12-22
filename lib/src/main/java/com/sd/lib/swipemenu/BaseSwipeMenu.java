@@ -631,6 +631,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         if (mScrollState == ScrollState.Drag)
             setScrollState(ScrollState.Idle);
+
+        setIdleIfNeed();
     }
 
     /**
@@ -644,10 +646,15 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             Log.i(SwipeMenu.class.getSimpleName(), "dealScrollFinish isViewIdle:" + isViewIdle);
 
         if (isViewIdle)
-        {
             updateViewByState(false);
+
+        setIdleIfNeed();
+    }
+
+    private void setIdleIfNeed()
+    {
+        if (mScrollState != ScrollState.Idle && isViewIdle())
             setScrollState(ScrollState.Idle);
-        }
     }
 
     /**
