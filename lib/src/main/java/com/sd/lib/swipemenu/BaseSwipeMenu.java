@@ -216,25 +216,11 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             if (mIsDebug)
                 Log.i(SwipeMenu.class.getSimpleName(), "setScrollState:" + state + " " + getScrollPercent());
 
-            hideMenuContainerIfNeed();
+            if (state == ScrollState.Idle && mState == State.Close)
+                layoutInternal();
 
             if (mOnScrollStateChangeCallback != null)
                 mOnScrollStateChangeCallback.onScrollStateChanged(state, this);
-        }
-    }
-
-    private void hideMenuContainerIfNeed()
-    {
-        if (mScrollState == ScrollState.Idle && mState == State.Close)
-        {
-            for (MenuContainer item : mMapMenuContainer.values())
-            {
-                if (item.getVisibility() != INVISIBLE)
-                    item.setVisibility(INVISIBLE);
-            }
-
-            if (mIsDebug)
-                Log.i(SwipeMenu.class.getSimpleName(), "hide all menu container");
         }
     }
 
@@ -873,5 +859,20 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         hideMenuContainerIfNeed();
         notifyViewPositionChangeIfNeed(false);
+    }
+
+    private void hideMenuContainerIfNeed()
+    {
+        if (mScrollState == ScrollState.Idle && mState == State.Close)
+        {
+            for (MenuContainer item : mMapMenuContainer.values())
+            {
+                if (item.getVisibility() != INVISIBLE)
+                    item.setVisibility(INVISIBLE);
+            }
+
+            if (mIsDebug)
+                Log.i(SwipeMenu.class.getSimpleName(), "hide all menu container");
+        }
     }
 }
