@@ -279,6 +279,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             anim = false;
 
         updateViewByState(anim);
+        setIdleIfNeed();
 
         return changed;
     }
