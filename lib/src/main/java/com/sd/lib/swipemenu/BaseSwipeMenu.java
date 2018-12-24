@@ -635,7 +635,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
     private void setIdleIfNeed()
     {
-        if (mScrollState != ScrollState.Idle && isViewIdle())
+        if (isViewIdle() && mScrollState != ScrollState.Idle)
             setScrollState(ScrollState.Idle);
     }
 
