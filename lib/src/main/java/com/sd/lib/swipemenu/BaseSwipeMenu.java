@@ -291,25 +291,25 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         final int boundCurrent = getContentBoundCurrent();
         final int boundState = getContentBoundState(mState);
 
-        if (boundCurrent == boundState)
-            return;
-
-        if (mIsDebug)
-            Log.i(SwipeMenu.class.getSimpleName(), "updateViewByState:" + boundCurrent + "," + boundState + " anim:" + anim);
-
-        abortAnimation();
-
-        if (anim)
+        if (boundCurrent != boundState)
         {
-            checkMenuDirection();
-            if (onSmoothScroll(boundCurrent, boundState))
+            if (mIsDebug)
+                Log.i(SwipeMenu.class.getSimpleName(), "updateViewByState:" + boundCurrent + "," + boundState + " anim:" + anim);
+
+            abortAnimation();
+
+            if (anim)
             {
-                setScrollState(ScrollState.Fling);
-                ViewCompat.postInvalidateOnAnimation(this);
+                checkMenuDirection();
+                if (onSmoothScroll(boundCurrent, boundState))
+                {
+                    setScrollState(ScrollState.Fling);
+                    ViewCompat.postInvalidateOnAnimation(this);
+                }
+            } else
+            {
+                layoutInternal();
             }
-        } else
-        {
-            layoutInternal();
         }
     }
 
@@ -565,6 +565,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             return;
 
         final Direction direction = getMenuDirection();
+
         if (direction.isHorizontal())
         {
             ViewCompat.offsetLeftAndRight(mContentContainer, delta);
