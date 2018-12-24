@@ -157,11 +157,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         if (mMode != mode)
         {
-            if (!isViewIdle())
-                throw new RuntimeException("mode can not be change when view is busy");
-
             mMode = mode;
-            requestLayout();
+            setState(getState(), false);
         }
     }
 
