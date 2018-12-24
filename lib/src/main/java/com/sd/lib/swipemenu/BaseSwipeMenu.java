@@ -248,14 +248,14 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         }
 
         final State stateOld = mState;
-        boolean changed = false;
+        final boolean changed = stateOld != state;
+
+        if (mIsDebug)
+            Log.i(SwipeMenu.class.getSimpleName(), "setState:" + stateOld + " -> " + state);
+
         if (stateOld != state)
         {
             mState = state;
-            changed = true;
-
-            if (mIsDebug)
-                Log.i(SwipeMenu.class.getSimpleName(), "setState:" + state);
 
             if (state != State.Close)
             {
