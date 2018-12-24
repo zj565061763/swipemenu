@@ -10,9 +10,8 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.sd.lib.gesture.FGestureManager;
+import com.sd.lib.gesture.FScroller;
 import com.sd.lib.gesture.FTouchHelper;
-import com.sd.lib.gesture.scroller.FScroller;
-import com.sd.lib.gesture.scroller.SimpleScrollerApi;
 import com.sd.lib.gesture.tag.TagHolder;
 
 public class FSwipeMenu extends BaseSwipeMenu
@@ -31,23 +30,25 @@ public class FSwipeMenu extends BaseSwipeMenu
     {
         if (mScroller == null)
         {
-            mScroller = new FScroller(new SimpleScrollerApi(getContext()));
-            mScroller.setCallback(new FScroller.Callback()
+            mScroller = new FScroller(getContext())
             {
                 @Override
-                public void onScrollStateChanged(boolean isFinished)
-                {
-                    if (isFinished)
-                        dealScrollFinish();
-                }
-
-                @Override
-                public void onScroll(int lastX, int lastY, int currX, int currY)
+                protected void onScrollCompute(int lastX, int lastY, int currX, int currY)
                 {
                     final int delta = getMenuDirection().isHorizontal() ? (currX - lastX) : (currY - lastY);
                     moveViews(delta, false);
                 }
-            });
+
+                @Override
+                protected void onScrollFinish(boolean isAbort)
+                {
+                    if (mIsDebug)
+                        Log.i(SwipeMenu.class.getSimpleName(), "onScrollFinish: isAbort:" + isAbort);
+
+                    if (!isAbort)
+                        dealScrollFinish();
+                }
+            };
         }
         return mScroller;
     }
@@ -92,9 +93,12 @@ public class FSwipeMenu extends BaseSwipeMenu
                 }
 
                 @Override
-                public void onEventFinish(boolean hasConsumeEvent, VelocityTracker velocityTracker, MotionEvent event)
+                public void onEventFinish(FGestureManager.FinishParams params, VelocityTracker velocityTracker, MotionEvent event)
                 {
-                    if (hasConsumeEvent)
+                    if (params.isCancelTouchEvent)
+                        return;
+
+                    if (params.hasConsumeEvent)
                     {
                         velocityTracker.computeCurrentVelocity(1000);
                         final int velocity = getMenuDirection().isHorizontal()
@@ -123,6 +127,13 @@ public class FSwipeMenu extends BaseSwipeMenu
             });
         }
         return mGestureManager;
+    }
+
+    @Override
+    public boolean setState(State state, boolean anim)
+    {
+        getGestureManager().setCancelTouchEvent();
+        return super.setState(state, anim);
     }
 
     @Override

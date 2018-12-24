@@ -21,7 +21,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.github.zj565061763:gesture:1.1.2'
+    implementation 'com.github.zj565061763:gesture:d47c12d308'
     implementation 'com.android.support:support-compat:27.1.1'
 }
 
