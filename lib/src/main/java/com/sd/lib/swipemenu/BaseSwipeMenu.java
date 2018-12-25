@@ -34,7 +34,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     private OnStateChangeCallback mOnStateChangeCallback;
     private OnViewPositionChangeCallback mOnViewPositionChangeCallback;
     private OnScrollStateChangeCallback mOnScrollStateChangeCallback;
-    private PullCondition mPullCondition;
 
     public BaseSwipeMenu(Context context, AttributeSet attrs)
     {
@@ -129,12 +128,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     public final void setOnScrollStateChangeCallback(OnScrollStateChangeCallback callback)
     {
         mOnScrollStateChangeCallback = callback;
-    }
-
-    @Override
-    public final void setPullCondition(PullCondition pullCondition)
-    {
-        mPullCondition = pullCondition;
     }
 
     @Override
@@ -391,11 +384,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             default:
                 throw new RuntimeException();
         }
-    }
-
-    protected final boolean checkPullCondition()
-    {
-        return mPullCondition == null ? true : mPullCondition.canPull(this);
     }
 
     private int getContentBoundState(State state)

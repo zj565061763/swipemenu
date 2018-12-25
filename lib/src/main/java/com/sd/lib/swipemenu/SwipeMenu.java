@@ -33,13 +33,6 @@ public interface SwipeMenu
     void setOnScrollStateChangeCallback(OnScrollStateChangeCallback callback);
 
     /**
-     * 设置拖动限制条件
-     *
-     * @param pullCondition
-     */
-    void setPullCondition(PullCondition pullCondition);
-
-    /**
      * 设置内容view
      *
      * @param view
@@ -198,16 +191,5 @@ public interface SwipeMenu
          * @param swipeMenu
          */
         void onScrollStateChanged(ScrollState oldState, ScrollState newState, SwipeMenu swipeMenu);
-    }
-
-    interface PullCondition
-    {
-        /**
-         * 要开始拖动的时候会回调此方法
-         *
-         * @param swipeMenu
-         * @return true-可以拖动，false-不能拖动
-         */
-        boolean canPull(SwipeMenu swipeMenu);
     }
 }

@@ -163,10 +163,6 @@ public class FSwipeMenu extends BaseSwipeMenu
         if (!checkViewIdle)
             return false;
 
-        final boolean checkPullCondition = checkPullCondition();
-        if (!checkPullCondition)
-            return false;
-
         final double degreeX = getGestureManager().getTouchHelper().getDegreeXFromDown();
         if (degreeX < 45)
         {
