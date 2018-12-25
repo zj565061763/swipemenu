@@ -204,15 +204,7 @@ public class FSwipeMenu extends BaseSwipeMenu
     @Override
     protected boolean isViewIdle()
     {
-        final boolean checkScrollerFinished = getScroller().isFinished();
-        if (!checkScrollerFinished)
-            return false;
-
-        final boolean checkNotDragging = !getGestureManager().getTagHolder().isTagConsume();
-        if (!checkNotDragging)
-            return false;
-
-        return true;
+        return getScroller().isFinished() && !getGestureManager().getTagHolder().isTagConsume();
     }
 
     @Override
