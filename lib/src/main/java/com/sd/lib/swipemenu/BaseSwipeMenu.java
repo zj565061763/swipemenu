@@ -326,10 +326,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         for (int i = 0; i < count; i++)
         {
             final View child = getChildAt(i);
-            if (child == mContentContainer)
-                continue;
-
-            list.add(child);
+            if (child != mContentContainer)
+                list.add(child);
         }
 
         for (View item : list)
@@ -337,18 +335,23 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             final int childId = item.getId();
             if (childId == R.id.lib_swipemenu_content)
             {
+                removeView(item);
                 setContentView(item);
             } else if (childId == R.id.lib_swipemenu_menu_left)
             {
+                removeView(item);
                 setMenuView(item, Direction.Left);
             } else if (childId == R.id.lib_swipemenu_menu_top)
             {
+                removeView(item);
                 setMenuView(item, Direction.Top);
             } else if (childId == R.id.lib_swipemenu_menu_right)
             {
+                removeView(item);
                 setMenuView(item, Direction.Right);
             } else if (childId == R.id.lib_swipemenu_menu_bottom)
             {
+                removeView(item);
                 setMenuView(item, Direction.Bottom);
             } else
             {
@@ -753,10 +756,32 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             child.measure(widthMenuSpec, heightMenuSpec);
         }
 
-        width = Utils.getMeasureSize(width, widthMeasureSpec);
-        height = Utils.getMeasureSize(height, heightMeasureSpec);
+        width = getMeasureSize(width, widthMeasureSpec);
+        height = getMeasureSize(height, heightMeasureSpec);
 
         setMeasuredDimension(width, height);
+    }
+
+    private static int getMeasureSize(int size, int measureSpec)
+    {
+        int result = 0;
+
+        final int specMode = MeasureSpec.getMode(measureSpec);
+        final int specSize = MeasureSpec.getSize(measureSpec);
+
+        switch (specMode)
+        {
+            case View.MeasureSpec.UNSPECIFIED:
+                result = size;
+                break;
+            case View.MeasureSpec.EXACTLY:
+                result = specSize;
+                break;
+            case View.MeasureSpec.AT_MOST:
+                result = Math.min(size, specSize);
+                break;
+        }
+        return result;
     }
 
     @Override
