@@ -35,6 +35,9 @@ public class FSwipeMenu extends BaseSwipeMenu
                 @Override
                 protected void onScrollStart()
                 {
+                    if (mIsDebug)
+                        Log.i(SwipeMenu.class.getSimpleName(), "onScrollStart");
+
                     setScrollState(ScrollState.Fling);
                     ViewCompat.postInvalidateOnAnimation(FSwipeMenu.this);
                 }
