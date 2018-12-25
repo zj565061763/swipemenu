@@ -691,39 +691,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected abstract boolean onSmoothScroll(int start, int end);
 
-    /**
-     * 通知内容view位置变化
-     *
-     * @param isDrag
-     */
-    private void notifyViewPositionChangeIfNeed(boolean isDrag)
-    {
-        final int left = mContentContainer.getLeft();
-        final int top = mContentContainer.getTop();
-
-        if (mContentContainerLeft != left || mContentContainerTop != top)
-        {
-            mContentContainerLeft = left;
-            mContentContainerTop = top;
-
-            updateLockEvent();
-
-            if (mOnViewPositionChangeCallback != null)
-                mOnViewPositionChangeCallback.onViewPositionChanged(left, top, isDrag, this);
-        }
-    }
-
-    private void updateLockEvent()
-    {
-        final float percent = getScrollPercent();
-
-        final MenuContainer container = mMapMenuContainer.get(mMenuDirection);
-        if (container != null)
-            container.setLockEvent(percent < 1.0f);
-
-        mContentContainer.setLockEvent(percent > 0 && percent < 1.0f);
-    }
-
     @Override
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec)
     {
@@ -899,5 +866,38 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             if (mIsDebug)
                 Log.i(SwipeMenu.class.getSimpleName(), "hide all menu container");
         }
+    }
+
+    /**
+     * 通知内容view位置变化
+     *
+     * @param isDrag
+     */
+    private void notifyViewPositionChangeIfNeed(boolean isDrag)
+    {
+        final int left = mContentContainer.getLeft();
+        final int top = mContentContainer.getTop();
+
+        if (mContentContainerLeft != left || mContentContainerTop != top)
+        {
+            mContentContainerLeft = left;
+            mContentContainerTop = top;
+
+            updateLockEvent();
+
+            if (mOnViewPositionChangeCallback != null)
+                mOnViewPositionChangeCallback.onViewPositionChanged(left, top, isDrag, this);
+        }
+    }
+
+    private void updateLockEvent()
+    {
+        final float percent = getScrollPercent();
+
+        final MenuContainer container = mMapMenuContainer.get(mMenuDirection);
+        if (container != null)
+            container.setLockEvent(percent < 1.0f);
+
+        mContentContainer.setLockEvent(percent > 0 && percent < 1.0f);
     }
 }
