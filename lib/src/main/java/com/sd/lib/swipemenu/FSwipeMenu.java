@@ -69,23 +69,13 @@ public class FSwipeMenu extends BaseSwipeMenu
                 @Override
                 public boolean shouldInterceptEvent(MotionEvent event)
                 {
-                    final boolean result = canPull();
-
-                    if (mIsDebug)
-                        Log.i(SwipeMenu.class.getSimpleName(), "shouldInterceptEvent:" + result + " " + event.getAction());
-
-                    return result;
+                    return canPull();
                 }
 
                 @Override
                 public boolean shouldConsumeEvent(MotionEvent event)
                 {
-                    final boolean result = canPull();
-
-                    if (mIsDebug)
-                        Log.i(SwipeMenu.class.getSimpleName(), "shouldConsumeEvent:" + result + " " + event.getAction());
-
-                    return result;
+                    return canPull();
                 }
 
                 @Override
