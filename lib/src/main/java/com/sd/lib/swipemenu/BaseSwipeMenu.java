@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
-import com.sd.lib.gesture.FTouchHelper;
+import com.sd.lib.swipemenu.gesture.FTouchHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;

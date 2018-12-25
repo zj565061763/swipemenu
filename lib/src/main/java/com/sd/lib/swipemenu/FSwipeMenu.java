@@ -9,10 +9,10 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 
-import com.sd.lib.gesture.FGestureManager;
-import com.sd.lib.gesture.FScroller;
-import com.sd.lib.gesture.FTouchHelper;
-import com.sd.lib.gesture.tag.TagHolder;
+import com.sd.lib.swipemenu.gesture.FGestureManager;
+import com.sd.lib.swipemenu.gesture.FScroller;
+import com.sd.lib.swipemenu.gesture.FTouchHelper;
+
 
 public class FSwipeMenu extends BaseSwipeMenu
 {
@@ -32,6 +32,12 @@ public class FSwipeMenu extends BaseSwipeMenu
         {
             mScroller = new FScroller(getContext())
             {
+                @Override
+                protected void onScrollStart()
+                {
+
+                }
+
                 @Override
                 protected void onScrollCompute(int lastX, int lastY, int currX, int currY)
                 {
@@ -109,7 +115,7 @@ public class FSwipeMenu extends BaseSwipeMenu
                     }
                 }
             });
-            mGestureManager.getTagHolder().setCallback(new TagHolder.Callback()
+            mGestureManager.getTagHolder().setCallback(new FGestureManager.FTagHolder.Callback()
             {
                 @Override
                 public void onTagInterceptChanged(boolean tag)
