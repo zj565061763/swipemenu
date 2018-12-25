@@ -62,9 +62,9 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
         mSwipeMenu.setOnScrollStateChangeCallback(new SwipeMenu.OnScrollStateChangeCallback()
         {
             @Override
-            public void onScrollStateChanged(SwipeMenu.ScrollState state, SwipeMenu swipeMenu)
+            public void onScrollStateChanged(SwipeMenu.ScrollState oldState, SwipeMenu.ScrollState newState, SwipeMenu swipeMenu)
             {
-                Log.i(TAG, "onScrollStateChanged:" + state);
+                Log.i(TAG, "onScrollStateChanged:" + oldState + " -> " + newState);
             }
         });
 

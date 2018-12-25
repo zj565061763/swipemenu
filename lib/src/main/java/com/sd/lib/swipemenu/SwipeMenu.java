@@ -193,10 +193,11 @@ public interface SwipeMenu
         /**
          * 滚动状态变化回调
          *
-         * @param state
+         * @param oldState
+         * @param newState
          * @param swipeMenu
          */
-        void onScrollStateChanged(ScrollState state, SwipeMenu swipeMenu);
+        void onScrollStateChanged(ScrollState oldState, ScrollState newState, SwipeMenu swipeMenu);
     }
 
     interface PullCondition
