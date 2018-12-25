@@ -196,32 +196,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         return mScrollState;
     }
 
-    /**
-     * 设置滚动状态
-     *
-     * @param state
-     */
-    protected final void setScrollState(ScrollState state)
-    {
-        if (state == null)
-            throw new NullPointerException();
-
-        final ScrollState old = mScrollState;
-        if (old != state)
-        {
-            mScrollState = state;
-
-            if (mIsDebug)
-                Log.i(SwipeMenu.class.getSimpleName(), "setScrollState:" + state);
-
-            if (state == ScrollState.Idle && mState == State.Close)
-                layoutInternal();
-
-            if (mOnScrollStateChangeCallback != null)
-                mOnScrollStateChangeCallback.onScrollStateChanged(old, state, this);
-        }
-    }
-
     @Override
     public float getScrollPercent()
     {
@@ -653,6 +627,32 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 Log.e(SwipeMenu.class.getSimpleName(), "setIdleIfNeed success:" + mState);
 
             setScrollState(ScrollState.Idle);
+        }
+    }
+
+    /**
+     * 设置滚动状态
+     *
+     * @param state
+     */
+    protected final void setScrollState(ScrollState state)
+    {
+        if (state == null)
+            throw new NullPointerException();
+
+        final ScrollState old = mScrollState;
+        if (old != state)
+        {
+            mScrollState = state;
+
+            if (mIsDebug)
+                Log.i(SwipeMenu.class.getSimpleName(), "setScrollState:" + state);
+
+            if (state == ScrollState.Idle && mState == State.Close)
+                layoutInternal();
+
+            if (mOnScrollStateChangeCallback != null)
+                mOnScrollStateChangeCallback.onScrollStateChanged(old, state, this);
         }
     }
 
