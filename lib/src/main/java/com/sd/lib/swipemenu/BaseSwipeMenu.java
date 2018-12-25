@@ -276,11 +276,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             if (anim)
             {
                 checkMenuDirection();
-                if (onSmoothScroll(boundCurrent, boundState))
-                {
-                    setScrollState(ScrollState.Fling);
-                    ViewCompat.postInvalidateOnAnimation(this);
-                }
+                onSmoothScroll(boundCurrent, boundState);
             } else
             {
                 layoutInternal();
@@ -603,8 +599,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         if (mScrollState == ScrollState.Drag)
             setScrollState(ScrollState.Idle);
-
-        setIdleIfNeed();
     }
 
     /**
@@ -612,10 +606,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected final void dealScrollFinish()
     {
-        if (mIsDebug)
-            Log.i(SwipeMenu.class.getSimpleName(), "dealScrollFinish isViewIdle:" + isViewIdle());
-
-        updateViewByState(false);
         setIdleIfNeed();
     }
 
