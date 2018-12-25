@@ -78,7 +78,7 @@ public class FSwipeMenu extends BaseSwipeMenu
                 @Override
                 public boolean shouldConsumeEvent(MotionEvent event)
                 {
-                    return canPull();
+                    return mGestureManager.getTagHolder().isTagIntercept() || canPull();
                 }
 
                 @Override
