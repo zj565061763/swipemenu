@@ -712,15 +712,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             return mMapMenuContainer.get(mDirection);
         }
 
-        public final View getMenuView()
-        {
-            final MenuContainer menuContainer = getMenuContainer();
-            if (menuContainer == null)
-                return null;
-
-            return menuContainer.getContentView();
-        }
-
         public final void updateView(State state, boolean anim)
         {
             final int boundCurrent = getContentBoundCurrent();
@@ -888,7 +879,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
             if (mMode == Mode.Drawer)
             {
-                final View view = getMenuView();
+                final View view = getMenuContainer();
                 if (view != null)
                     ViewCompat.offsetLeftAndRight(view, delta);
             }
@@ -917,7 +908,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
             if (mMode == Mode.Drawer)
             {
-                final View view = getMenuView();
+                final View view = getMenuContainer();
                 if (view != null)
                     ViewCompat.offsetTopAndBottom(view, delta);
             }
