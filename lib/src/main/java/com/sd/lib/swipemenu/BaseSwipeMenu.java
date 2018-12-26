@@ -702,7 +702,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             if (boundCurrent != boundState)
             {
                 if (mIsDebug)
-                    Log.i(SwipeMenu.class.getSimpleName(), "updateView:" + boundCurrent + "," + boundState + " anim:" + anim);
+                    Log.i(SwipeMenu.class.getSimpleName(), "updateView:" + boundCurrent + "," + boundState + " anim:" + anim + " " + getClass().getSimpleName());
 
                 abortAnimation();
 
