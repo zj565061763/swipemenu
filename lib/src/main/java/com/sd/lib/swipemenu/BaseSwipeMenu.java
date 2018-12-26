@@ -54,6 +54,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         addView(mContentContainer);
 
         mDirectionHandler = new NullHandler();
+        mDirectionHandler.init();
     }
 
     private MenuContainer getOrCreateMenuContainer(final Direction direction)
@@ -642,23 +643,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (ViewCompat.getZ(mContentContainer) <= maxZ)
             ViewCompat.setZ(mContentContainer, maxZ + 1);
 
-        hideMenuContainerIfNeed();
         notifyViewPositionChangeIfNeed(false);
-    }
-
-    private void hideMenuContainerIfNeed()
-    {
-        if (mScrollState == ScrollState.Idle && mState == State.Close)
-        {
-            for (MenuContainer item : mMapMenuContainer.values())
-            {
-                if (item.getVisibility() != INVISIBLE)
-                    item.setVisibility(INVISIBLE);
-            }
-
-            if (mIsDebug)
-                Log.i(SwipeMenu.class.getSimpleName(), "hide all menu container");
-        }
     }
 
     /**
