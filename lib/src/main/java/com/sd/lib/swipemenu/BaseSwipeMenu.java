@@ -435,7 +435,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             if (state == ScrollState.Idle && mState == State.Close)
             {
                 setMenuDirection(null);
-                layoutInternal();
+                layoutInternal(mState);
             }
 
             if (mOnScrollStateChangeCallback != null)
@@ -537,12 +537,12 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     {
         if (mIsDebug)
             Log.i(SwipeMenu.class.getSimpleName(), "onLayout");
-        layoutInternal();
+
+        layoutInternal(mState);
     }
 
-    private void layoutInternal()
+    private void layoutInternal(State state)
     {
-        final State state = mState;
         final boolean isViewIdle = isViewIdle();
 
         int left = 0;
@@ -551,31 +551,28 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         // ---------- Content ----------
         if (isViewIdle)
         {
-            final int boundState = mDirectionHandler.getContentBound(state);
-            switch (state)
+            if (state == State.Close)
             {
-                case Close:
-                    left = 0;
-                    top = 0;
-                    break;
-                case OpenLeft:
-                case OpenRight:
-                    left = boundState;
-                    top = 0;
-                    break;
-                case OpenTop:
-                case OpenBottom:
-                    left = 0;
-                    top = boundState;
-                    break;
-                default:
-                    throw new RuntimeException();
+                left = 0;
+                top = 0;
+            } else if (state == State.OpenLeft || state == State.OpenRight)
+            {
+                left = mDirectionHandler.getContentBound(state);
+                top = 0;
+            } else if (state == State.OpenTop || state == State.OpenBottom)
+            {
+                left = 0;
+                top = mDirectionHandler.getContentBound(state);
+            } else
+            {
+                throw new RuntimeException();
             }
         } else
         {
             left = mContentContainer.getLeft();
             top = mContentContainer.getTop();
         }
+
         mContentContainer.layout(left, top,
                 left + mContentContainer.getMeasuredWidth(), top + mContentContainer.getMeasuredHeight());
 
@@ -707,7 +704,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                     onSmoothScroll(boundCurrent, boundState);
                 } else
                 {
-                    layoutInternal();
+                    layoutInternal(state);
                 }
             }
         }
