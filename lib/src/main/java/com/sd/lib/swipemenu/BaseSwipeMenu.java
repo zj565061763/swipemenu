@@ -780,6 +780,11 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             return delta / size;
         }
 
+        public final int getContentBoundSize()
+        {
+            return Math.abs(getContentBoundOpen() - getContentBoundClose());
+        }
+
         public final int getContentBound(State state)
         {
             if (state == State.Close)
@@ -810,11 +815,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             final int deltaClose = Math.abs(boundCurrent - getContentBoundClose());
 
             return deltaOpen < deltaClose ? getStateOpen() : State.Close;
-        }
-
-        protected int getContentBoundSize()
-        {
-            return Math.abs(getContentBoundOpen() - getContentBoundClose());
         }
     }
 
