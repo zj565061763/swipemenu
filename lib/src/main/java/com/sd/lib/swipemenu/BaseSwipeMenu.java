@@ -219,21 +219,17 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         if (stateOld != state)
         {
-            mState = state;
-
             if (state != State.Close)
             {
-                final Direction directionOld = stateToMenuDirection(stateOld);
                 final Direction direction = stateToMenuDirection(state);
 
-                if (directionOld != null && direction != null)
-                {
-                    if (directionOld.isHorizontal() != direction.isHorizontal())
-                        anim = false;
-                }
+                if (mDirectionHandler.mDirection != null && mDirectionHandler.mDirection != direction)
+                    mDirectionHandler.updateView(State.Close, false);
 
                 setMenuDirection(direction);
             }
+
+            mState = state;
 
             if (mOnStateChangeCallback != null)
                 mOnStateChangeCallback.onStateChanged(stateOld, state, this);
