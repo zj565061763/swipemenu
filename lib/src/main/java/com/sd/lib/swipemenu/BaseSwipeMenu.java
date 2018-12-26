@@ -842,6 +842,11 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
             if (container.getVisibility() != VISIBLE)
                 container.setVisibility(VISIBLE);
+
+            for (MenuContainer item : mMapMenuContainer.values())
+            {
+                item.setVisibility(item == container ? VISIBLE : INVISIBLE);
+            }
         }
 
         @Override
@@ -1005,7 +1010,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         @Override
         public void init()
         {
-
+            for (MenuContainer item : mMapMenuContainer.values())
+            {
+                item.setVisibility(INVISIBLE);
+            }
         }
 
         @Override
