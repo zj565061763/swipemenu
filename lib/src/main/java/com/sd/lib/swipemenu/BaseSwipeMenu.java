@@ -345,6 +345,12 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
             if (direction == null)
             {
+                if (!isViewIdle())
+                    throw new RuntimeException("direction can not be set to null when view is not idle");
+
+                if (mState != State.Close)
+                    throw new RuntimeException("direction can not be set to null when state is:" + mState);
+
                 mDirectionHandler = new NullHandler();
             } else if (direction == Direction.Left)
             {
