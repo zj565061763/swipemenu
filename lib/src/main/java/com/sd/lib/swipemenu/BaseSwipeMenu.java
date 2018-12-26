@@ -241,36 +241,73 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (!changed && state == State.Close && mScrollState == ScrollState.Fling)
             anim = false;
 
-        updateViewByState(anim);
+        updateView(state, anim);
         setIdleIfNeed();
 
         return changed;
     }
 
-    /**
-     * 根据状态更新view的位置
-     *
-     * @param anim
-     */
-    private void updateViewByState(boolean anim)
+    private Direction stateToMenuDirection(State state)
     {
-        final int boundCurrent = mDirectionHandler.getContentBoundCurrent();
-        final int boundState = mDirectionHandler.getContentBound(mState);
-
-        if (boundCurrent != boundState)
+        switch (state)
         {
-            if (mIsDebug)
-                Log.i(SwipeMenu.class.getSimpleName(), "updateViewByState:" + boundCurrent + "," + boundState + " anim:" + anim);
+            case Close:
+                return null;
+            case OpenLeft:
+                return Direction.Left;
+            case OpenTop:
+                return Direction.Top;
+            case OpenRight:
+                return Direction.Right;
+            case OpenBottom:
+                return Direction.Bottom;
+            default:
+                throw new RuntimeException();
+        }
+    }
 
-            abortAnimation();
+    /**
+     * 设置菜单显示方向
+     *
+     * @param direction
+     */
+    protected final void setMenuDirection(Direction direction)
+    {
+        if (mIsDebug)
+            Log.e(SwipeMenu.class.getSimpleName(), "setMenuDirection:" + direction);
 
-            if (anim)
+        if (mMenuDirection != direction)
+        {
+            mMenuDirection = direction;
+
+            if (direction == null)
             {
-                onSmoothScroll(boundCurrent, boundState);
+                if (!isViewIdle())
+                    throw new RuntimeException("direction can not be set to null when view is not idle");
+
+                if (mState != State.Close)
+                    throw new RuntimeException("direction can not be set to null when state is:" + mState);
+
+                mDirectionHandler = new NullHandler();
+            } else if (direction == Direction.Left)
+            {
+                mDirectionHandler = new LeftHandler(direction);
+            } else if (direction == Direction.Top)
+            {
+                mDirectionHandler = new TopHandler(direction);
+            } else if (direction == Direction.Right)
+            {
+                mDirectionHandler = new RightHandler(direction);
+            } else if (direction == Direction.Bottom)
+            {
+                mDirectionHandler = new BottomHandler(direction);
             } else
             {
-                layoutInternal();
+                throw new RuntimeException();
             }
+            mDirectionHandler.init();
+
+            onMenuDirectionChanged(direction);
         }
     }
 
@@ -330,67 +367,14 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     /**
-     * 设置菜单显示方向
+     * 根据状态刷新View
      *
-     * @param direction
+     * @param state
+     * @param anim
      */
-    protected final void setMenuDirection(Direction direction)
+    private void updateView(State state, boolean anim)
     {
-        if (mIsDebug)
-            Log.e(SwipeMenu.class.getSimpleName(), "setMenuDirection:" + direction);
-
-        if (mMenuDirection != direction)
-        {
-            mMenuDirection = direction;
-
-            if (direction == null)
-            {
-                if (!isViewIdle())
-                    throw new RuntimeException("direction can not be set to null when view is not idle");
-
-                if (mState != State.Close)
-                    throw new RuntimeException("direction can not be set to null when state is:" + mState);
-
-                mDirectionHandler = new NullHandler();
-            } else if (direction == Direction.Left)
-            {
-                mDirectionHandler = new LeftHandler(direction);
-            } else if (direction == Direction.Top)
-            {
-                mDirectionHandler = new TopHandler(direction);
-            } else if (direction == Direction.Right)
-            {
-                mDirectionHandler = new RightHandler(direction);
-            } else if (direction == Direction.Bottom)
-            {
-                mDirectionHandler = new BottomHandler(direction);
-            } else
-            {
-                throw new RuntimeException();
-            }
-            mDirectionHandler.init();
-
-            onMenuDirectionChanged(direction);
-        }
-    }
-
-    private Direction stateToMenuDirection(State state)
-    {
-        switch (state)
-        {
-            case Close:
-                return null;
-            case OpenLeft:
-                return Direction.Left;
-            case OpenTop:
-                return Direction.Top;
-            case OpenRight:
-                return Direction.Right;
-            case OpenBottom:
-                return Direction.Bottom;
-            default:
-                throw new RuntimeException();
-        }
+        mDirectionHandler.updateView(state, anim);
     }
 
     /**
@@ -399,7 +383,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      * @param delta
      * @param isDrag
      */
-    protected final void moveViews(int delta, boolean isDrag)
+    protected final void moveView(int delta, boolean isDrag)
     {
         mDirectionHandler.moveView(delta, isDrag);
     }
@@ -735,6 +719,28 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 return null;
 
             return menuContainer.getContentView();
+        }
+
+        public final void updateView(State state, boolean anim)
+        {
+            final int boundCurrent = getContentBoundCurrent();
+            final int boundState = getContentBound(state);
+
+            if (boundCurrent != boundState)
+            {
+                if (mIsDebug)
+                    Log.i(SwipeMenu.class.getSimpleName(), "updateView:" + boundCurrent + "," + boundState + " anim:" + anim);
+
+                abortAnimation();
+
+                if (anim)
+                {
+                    onSmoothScroll(boundCurrent, boundState);
+                } else
+                {
+                    layoutInternal();
+                }
+            }
         }
 
         public final void moveView(int delta, boolean isDrag)

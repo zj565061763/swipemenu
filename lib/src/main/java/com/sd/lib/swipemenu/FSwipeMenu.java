@@ -46,7 +46,7 @@ public class FSwipeMenu extends BaseSwipeMenu
                 protected void onScrollCompute(int lastX, int lastY, int currX, int currY)
                 {
                     final int delta = getMenuDirection().isHorizontal() ? (currX - lastX) : (currY - lastY);
-                    moveViews(delta, false);
+                    moveView(delta, false);
                 }
 
                 @Override
@@ -88,7 +88,7 @@ public class FSwipeMenu extends BaseSwipeMenu
                             ? (int) getGestureManager().getTouchHelper().getDeltaX()
                             : (int) getGestureManager().getTouchHelper().getDeltaY();
 
-                    moveViews(delta, true);
+                    moveView(delta, true);
                     return true;
                 }
 
