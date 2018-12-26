@@ -89,24 +89,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         removeView(container);
 
-        switch (direction)
+        if (direction == getMenuDirection())
         {
-            case Left:
-                if (getMenuDirection() == Direction.Left)
-                    setState(State.Close, false);
-                break;
-            case Top:
-                if (getMenuDirection() == Direction.Top)
-                    setState(State.Close, false);
-                break;
-            case Right:
-                if (getMenuDirection() == Direction.Right)
-                    setState(State.Close, false);
-                break;
-            case Bottom:
-                if (getMenuDirection() == Direction.Bottom)
-                    setState(State.Close, false);
-                break;
+            setState(State.Close, false);
+            setMenuDirection(null);
         }
     }
 
