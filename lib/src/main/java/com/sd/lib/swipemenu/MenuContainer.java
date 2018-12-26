@@ -39,7 +39,7 @@ class MenuContainer extends BaseContainer
         return mDirection;
     }
 
-    public int getContentBoundState()
+    public int getContentBoundOpen()
     {
         if (getContentView() == null)
             return 0;
