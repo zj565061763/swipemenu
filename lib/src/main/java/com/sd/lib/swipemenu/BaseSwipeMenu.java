@@ -24,7 +24,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
     private Mode mMode = Mode.Overlay;
     private State mState = State.Close;
+
     private Direction mMenuDirection;
+    private DirectionHandler mDirectionHandler;
 
     private ScrollState mScrollState = ScrollState.Idle;
 
@@ -50,9 +52,11 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             }
         };
         addView(mContentContainer);
+
+        mDirectionHandler = new NullHandler();
     }
 
-    private MenuContainer getMenuContainer(final Direction direction)
+    private MenuContainer getOrCreateMenuContainer(final Direction direction)
     {
         if (direction == null)
             throw new NullPointerException("direction is null");
@@ -60,7 +64,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         MenuContainer container = mMapMenuContainer.get(direction);
         if (container == null)
         {
-            container = new MenuContainer(getContext())
+            container = new MenuContainer(direction, getContext())
             {
                 @Override
                 protected void onContentViewChanged(View view)
@@ -71,7 +75,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 }
             };
             mMapMenuContainer.put(direction, container);
-            container.setDirection(direction);
             addView(container);
         }
         return container;
@@ -139,7 +142,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     public final void setMenuView(View view, Direction direction)
     {
-        getMenuContainer(direction).setContentView(view);
+        getOrCreateMenuContainer(direction).setContentView(view);
     }
 
     @Override
@@ -192,12 +195,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     public float getScrollPercent()
     {
-        final float total = getMaxScrollDistance();
-        if (total <= 0)
-            return 0;
-
-        final int current = Math.abs(getContentBoundCurrent() - getContentBoundState(State.Close));
-        return current / total;
+        return mDirectionHandler.getScrollPercent();
     }
 
     @Override
@@ -227,7 +225,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 final Direction directionOld = stateToMenuDirection(stateOld);
                 final Direction direction = stateToMenuDirection(state);
 
-                if (directionOld != null)
+                if (directionOld != null && direction != null)
                 {
                     if (directionOld.isHorizontal() != direction.isHorizontal())
                         anim = false;
@@ -256,8 +254,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     private void updateViewByState(boolean anim)
     {
-        final int boundCurrent = getContentBoundCurrent();
-        final int boundState = getContentBoundState(mState);
+        final int boundCurrent = mDirectionHandler.getContentBoundCurrent();
+        final int boundState = mDirectionHandler.getContentBound(mState);
 
         if (boundCurrent != boundState)
         {
@@ -268,7 +266,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
             if (anim)
             {
-                checkMenuDirection();
                 onSmoothScroll(boundCurrent, boundState);
             } else
             {
@@ -339,30 +336,34 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected final void setMenuDirection(Direction direction)
     {
-        if (direction == null)
-            throw new NullPointerException();
-
-        final MenuContainer container = mMapMenuContainer.get(direction);
-        if (container == null)
-            throw new RuntimeException("MenuContainer was not found for direction:" + direction);
-
-        if (container.getContentView() == null)
-            throw new RuntimeException("MenuContainer contentView was not found for direction:" + direction);
-
-        for (MenuContainer item : mMapMenuContainer.values())
-        {
-            final int visibility = item == container ? VISIBLE : INVISIBLE;
-
-            if (item.getVisibility() != visibility)
-                item.setVisibility(visibility);
-        }
-
         if (mIsDebug)
             Log.e(SwipeMenu.class.getSimpleName(), "setMenuDirection:" + direction);
 
         if (mMenuDirection != direction)
         {
             mMenuDirection = direction;
+
+            if (direction == null)
+            {
+                mDirectionHandler = new NullHandler();
+            } else if (direction == Direction.Left)
+            {
+                mDirectionHandler = new LeftHandler(direction);
+            } else if (direction == Direction.Top)
+            {
+                mDirectionHandler = new TopHandler(direction);
+            } else if (direction == Direction.Right)
+            {
+                mDirectionHandler = new RightHandler(direction);
+            } else if (direction == Direction.Bottom)
+            {
+                mDirectionHandler = new BottomHandler(direction);
+            } else
+            {
+                throw new RuntimeException();
+            }
+            mDirectionHandler.init();
+
             onMenuDirectionChanged(direction);
         }
     }
@@ -386,125 +387,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         }
     }
 
-    private int getContentBoundState(State state)
-    {
-        final View menuView = getMenuView(stateToMenuDirection(state));
-        if (menuView == null)
-            return 0;
-
-        switch (state)
-        {
-            case Close:
-                return 0;
-            case OpenLeft:
-                return menuView.getWidth();
-            case OpenTop:
-                return menuView.getHeight();
-            case OpenRight:
-                return -menuView.getWidth();
-            case OpenBottom:
-                return -menuView.getHeight();
-            default:
-                throw new RuntimeException();
-        }
-    }
-
-    /**
-     * 返回内容view当前的边界值
-     *
-     * @return
-     */
-    private int getContentBoundCurrent()
-    {
-        if (mMenuDirection == null)
-            return 0;
-
-        if (mMenuDirection.isHorizontal())
-            return mContentContainer.getLeft();
-        else
-            return mContentContainer.getTop();
-    }
-
-    /**
-     * 返回内容view可移动范围的最小边界值
-     *
-     * @return
-     */
-    private int getContentBoundMin()
-    {
-        if (mMenuDirection == null)
-            return 0;
-
-        switch (mMenuDirection)
-        {
-            case Left:
-                return getContentBoundState(State.Close);
-            case Right:
-                return getContentBoundState(State.OpenRight);
-            case Top:
-                return getContentBoundState(State.Close);
-            case Bottom:
-                return getContentBoundState(State.OpenBottom);
-            default:
-                throw new RuntimeException();
-        }
-    }
-
-    /**
-     * 返回内容view可移动范围的最大边界值
-     *
-     * @return
-     */
-    private int getContentBoundMax()
-    {
-        if (mMenuDirection == null)
-            return 0;
-
-        switch (mMenuDirection)
-        {
-            case Left:
-                return getContentBoundState(State.OpenLeft);
-            case Right:
-                return getContentBoundState(State.Close);
-            case Top:
-                return getContentBoundState(State.OpenTop);
-            case Bottom:
-                return getContentBoundState(State.Close);
-            default:
-                throw new RuntimeException();
-        }
-    }
-
-    private State getStateForBoundEnd(int bound)
-    {
-        if (bound == getContentBoundState(State.Close))
-            return State.Close;
-
-        if (mMenuDirection.isHorizontal())
-        {
-            if (bound == getContentBoundState(State.OpenLeft))
-                return State.OpenLeft;
-            else if (bound == getContentBoundState(State.OpenRight))
-                return State.OpenRight;
-            else
-                throw new RuntimeException("Illegal bound end");
-        } else
-        {
-            if (bound == getContentBoundState(State.OpenTop))
-                return State.OpenTop;
-            else if (bound == getContentBoundState(State.OpenBottom))
-                return State.OpenBottom;
-            else
-                throw new RuntimeException("Illegal bound end");
-        }
-    }
-
-    private void checkMenuDirection()
-    {
-        if (mMenuDirection == null)
-            throw new RuntimeException("menu direction required");
-    }
-
     /**
      * 移动View
      *
@@ -513,44 +395,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected final void moveViews(int delta, boolean isDrag)
     {
-        if (delta == 0)
-            return;
-
-        checkMenuDirection();
-
-        final int boundCurrent = getContentBoundCurrent();
-        final int boundMin = getContentBoundMin();
-        final int boundMax = getContentBoundMax();
-
-        delta = FTouchHelper.getLegalDelta(boundCurrent, boundMin, boundMax, delta);
-        if (delta == 0)
-            return;
-
-        final Direction direction = getMenuDirection();
-
-        if (direction.isHorizontal())
-        {
-            ViewCompat.offsetLeftAndRight(mContentContainer, delta);
-
-            if (mMode == Mode.Drawer)
-            {
-                final View view = mMapMenuContainer.get(direction);
-                if (view != null)
-                    ViewCompat.offsetLeftAndRight(view, delta);
-            }
-        } else
-        {
-            ViewCompat.offsetTopAndBottom(mContentContainer, delta);
-
-            if (mMode == Mode.Drawer)
-            {
-                final View view = mMapMenuContainer.get(direction);
-                if (view != null)
-                    ViewCompat.offsetTopAndBottom(view, delta);
-            }
-        }
-
-        notifyViewPositionChangeIfNeed(isDrag);
+        mDirectionHandler.moveView(delta, isDrag);
     }
 
     /**
@@ -560,33 +405,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected final void dealDragFinish(int velocity)
     {
-        checkMenuDirection();
-
-        final int boundCurrent = getContentBoundCurrent();
-        final int boundMin = getContentBoundMin();
-        final int boundMax = getContentBoundMax();
-
-        final int minFlingVelocity = ViewConfiguration.get(getContext()).getScaledMinimumFlingVelocity() * 10;
-
-        int boundEnd = 0;
-        if (Math.abs(velocity) > minFlingVelocity)
-        {
-            boundEnd = velocity > 0 ? boundMax : boundMin;
-        } else
-        {
-            final int boundMiddle = (boundMin + boundMax) / 2;
-            boundEnd = boundCurrent >= boundMiddle ? boundMax : boundMin;
-        }
-
-        final State state = getStateForBoundEnd(boundEnd);
-
-        if (mIsDebug)
-            Log.i(SwipeMenu.class.getSimpleName(), "dealDragFinish should be state:" + state);
-
-        setState(state, true);
-
-        if (mScrollState == ScrollState.Drag)
-            setScrollState(ScrollState.Idle);
+        mDirectionHandler.dealDragFinish(velocity);
     }
 
     /**
@@ -627,7 +446,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 Log.i(SwipeMenu.class.getSimpleName(), "setScrollState:" + state);
 
             if (state == ScrollState.Idle && mState == State.Close)
+            {
+                setMenuDirection(null);
                 layoutInternal();
+            }
 
             if (mOnScrollStateChangeCallback != null)
                 mOnScrollStateChangeCallback.onScrollStateChanged(old, state, this);
@@ -641,14 +463,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected final int getMaxScrollDistance()
     {
-        final View view = getMenuView(mMenuDirection);
-        if (view == null)
-            return 0;
-
-        if (mMenuDirection.isHorizontal())
-            return view.getWidth();
-        else
-            return view.getHeight();
+        return mDirectionHandler.getContentBoundSize();
     }
 
     /**
@@ -749,7 +564,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         // ---------- Content ----------
         if (isViewIdle)
         {
-            final int boundState = getContentBoundState(state);
+            final int boundState = mDirectionHandler.getContentBound(state);
             switch (state)
             {
                 case Close:
@@ -888,4 +703,343 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         mContentContainer.setLockEvent(percent > 0 && percent < 1.0f);
     }
+
+    //---------- DirectionHandler start ----------
+
+    private abstract class DirectionHandler
+    {
+        protected final Direction mDirection;
+
+        public DirectionHandler(Direction direction)
+        {
+            mDirection = direction;
+        }
+
+        public abstract void init();
+
+        public final MenuContainer getMenuContainer()
+        {
+            return mMapMenuContainer.get(mDirection);
+        }
+
+        public final View getMenuView()
+        {
+            final MenuContainer menuContainer = getMenuContainer();
+            if (menuContainer == null)
+                return null;
+
+            return menuContainer.getContentView();
+        }
+
+        public final void moveView(int delta, boolean isDrag)
+        {
+            if (delta == 0)
+                return;
+
+            final int boundCurrent = getContentBoundCurrent();
+            final int boundOpen = getContentBoundOpen();
+            final int boundClose = getContentBoundClose();
+
+            delta = FTouchHelper.getLegalDelta(boundCurrent, Math.min(boundOpen, boundClose), Math.max(boundOpen, boundClose), delta);
+            if (delta == 0)
+                return;
+
+            moveViewImpl(delta, isDrag);
+            notifyViewPositionChangeIfNeed(isDrag);
+        }
+
+        public final void dealDragFinish(int velocity)
+        {
+            final int minFlingVelocity = ViewConfiguration.get(getContext()).getScaledMinimumFlingVelocity() * 10;
+
+            State state = null;
+            if (Math.abs(velocity) > minFlingVelocity)
+            {
+                state = getStateForDragFinishLegalVelocity(velocity);
+            } else
+            {
+                state = getStateForDragFinish();
+            }
+
+            if (mIsDebug)
+                Log.i(SwipeMenu.class.getSimpleName(), "dealDragFinish should be state:" + state);
+
+            setState(state, true);
+
+            if (mScrollState == ScrollState.Drag)
+                setScrollState(ScrollState.Idle);
+        }
+
+        public final float getScrollPercent()
+        {
+            final int size = getContentBoundSize();
+            if (size == 0)
+                return 0;
+
+            final int delta = Math.abs(getContentBoundCurrent() - getContentBoundClose());
+            return delta / size;
+        }
+
+        public final int getContentBound(State state)
+        {
+            if (state == State.Close)
+                return getContentBoundClose();
+
+            if (state == getStateOpen())
+                return getContentBoundOpen();
+
+            throw new RuntimeException();
+        }
+
+        public abstract int getContentBoundCurrent();
+
+        protected abstract int getContentBoundOpen();
+
+        protected abstract int getContentBoundClose();
+
+        protected abstract void moveViewImpl(int delta, boolean isDrag);
+
+        protected abstract State getStateOpen();
+
+        protected abstract State getStateForDragFinishLegalVelocity(int velocity);
+
+        protected final State getStateForDragFinish()
+        {
+            final int boundCurrent = getContentBoundCurrent();
+            final int deltaOpen = Math.abs(boundCurrent - getContentBoundOpen());
+            final int deltaClose = Math.abs(boundCurrent - getContentBoundClose());
+
+            return deltaOpen < deltaClose ? getStateOpen() : State.Close;
+        }
+
+        protected int getContentBoundSize()
+        {
+            return Math.abs(getContentBoundOpen() - getContentBoundClose());
+        }
+    }
+
+    private abstract class NoneNullHandler extends DirectionHandler
+    {
+        public NoneNullHandler(Direction direction)
+        {
+            super(direction);
+            if (direction == null)
+                throw new NullPointerException("direction is null");
+        }
+
+        @Override
+        public void init()
+        {
+            final MenuContainer container = getMenuContainer();
+            if (container == null)
+                throw new RuntimeException("MenuContainer was not found for direction:" + mDirection);
+
+            if (container.getContentView() == null)
+                throw new RuntimeException("MenuContainer contentView was not found for direction:" + mDirection);
+
+            if (container.getVisibility() != VISIBLE)
+                container.setVisibility(VISIBLE);
+        }
+
+        @Override
+        protected int getContentBoundOpen()
+        {
+            return getMenuContainer().getContentBoundState();
+        }
+
+        @Override
+        protected int getContentBoundClose()
+        {
+            return getMenuContainer().getContentBoundClose();
+        }
+    }
+
+    private abstract class HorizontalHandler extends NoneNullHandler
+    {
+        public HorizontalHandler(Direction direction)
+        {
+            super(direction);
+            if (!direction.isHorizontal())
+                throw new IllegalArgumentException("direction must be horizontal");
+        }
+
+        @Override
+        public final int getContentBoundCurrent()
+        {
+            return mContentContainer.getLeft();
+        }
+
+        @Override
+        protected final void moveViewImpl(int delta, boolean isDrag)
+        {
+            ViewCompat.offsetLeftAndRight(mContentContainer, delta);
+
+            if (mMode == Mode.Drawer)
+            {
+                final View view = getMenuView();
+                if (view != null)
+                    ViewCompat.offsetLeftAndRight(view, delta);
+            }
+        }
+    }
+
+    private abstract class VerticalHandler extends NoneNullHandler
+    {
+        public VerticalHandler(Direction direction)
+        {
+            super(direction);
+            if (direction.isHorizontal())
+                throw new IllegalArgumentException("direction must be vertical");
+        }
+
+        @Override
+        public final int getContentBoundCurrent()
+        {
+            return mContentContainer.getTop();
+        }
+
+        @Override
+        protected final void moveViewImpl(int delta, boolean isDrag)
+        {
+            ViewCompat.offsetTopAndBottom(mContentContainer, delta);
+
+            if (mMode == Mode.Drawer)
+            {
+                final View view = getMenuView();
+                if (view != null)
+                    ViewCompat.offsetTopAndBottom(view, delta);
+            }
+        }
+    }
+
+    private class LeftHandler extends HorizontalHandler
+    {
+        public LeftHandler(Direction direction)
+        {
+            super(direction);
+        }
+
+        @Override
+        protected State getStateOpen()
+        {
+            return State.OpenLeft;
+        }
+
+        @Override
+        protected State getStateForDragFinishLegalVelocity(int velocity)
+        {
+            return velocity > 0 ? getStateOpen() : State.Close;
+        }
+    }
+
+    private class TopHandler extends VerticalHandler
+    {
+        public TopHandler(Direction direction)
+        {
+            super(direction);
+        }
+
+        @Override
+        protected State getStateOpen()
+        {
+            return State.OpenTop;
+        }
+
+        @Override
+        protected State getStateForDragFinishLegalVelocity(int velocity)
+        {
+            return velocity > 0 ? getStateOpen() : State.Close;
+        }
+    }
+
+    private class RightHandler extends HorizontalHandler
+    {
+        public RightHandler(Direction direction)
+        {
+            super(direction);
+        }
+
+        @Override
+        protected State getStateOpen()
+        {
+            return State.OpenRight;
+        }
+
+        @Override
+        protected State getStateForDragFinishLegalVelocity(int velocity)
+        {
+            return velocity < 0 ? getStateOpen() : State.Close;
+        }
+    }
+
+    private class BottomHandler extends VerticalHandler
+    {
+        public BottomHandler(Direction direction)
+        {
+            super(direction);
+        }
+
+        @Override
+        protected State getStateOpen()
+        {
+            return State.OpenBottom;
+        }
+
+        @Override
+        protected State getStateForDragFinishLegalVelocity(int velocity)
+        {
+            return velocity < 0 ? getStateOpen() : State.Close;
+        }
+    }
+
+    private class NullHandler extends DirectionHandler
+    {
+        public NullHandler()
+        {
+            super(null);
+        }
+
+        @Override
+        public void init()
+        {
+
+        }
+
+        @Override
+        public int getContentBoundCurrent()
+        {
+            return 0;
+        }
+
+        @Override
+        protected int getContentBoundOpen()
+        {
+            return 0;
+        }
+
+        @Override
+        protected int getContentBoundClose()
+        {
+            return 0;
+        }
+
+        @Override
+        protected void moveViewImpl(int delta, boolean isDrag)
+        {
+            throw new RuntimeException();
+        }
+
+        @Override
+        protected State getStateOpen()
+        {
+            throw new RuntimeException();
+        }
+
+        @Override
+        protected State getStateForDragFinishLegalVelocity(int velocity)
+        {
+            throw new RuntimeException();
+        }
+    }
+    //---------- DirectionHandler end ----------
 }

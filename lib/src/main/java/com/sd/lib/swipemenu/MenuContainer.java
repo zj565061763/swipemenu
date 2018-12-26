@@ -5,11 +5,33 @@ import android.view.Gravity;
 
 class MenuContainer extends BaseContainer
 {
-    private SwipeMenu.Direction mDirection;
+    private final SwipeMenu.Direction mDirection;
 
-    public MenuContainer(Context context)
+    public MenuContainer(SwipeMenu.Direction direction, Context context)
     {
         super(context);
+        if (direction == null)
+            throw new NullPointerException();
+
+        mDirection = direction;
+
+        switch (direction)
+        {
+            case Left:
+                super.setGravity(Gravity.LEFT);
+                break;
+            case Top:
+                super.setGravity(Gravity.TOP);
+                break;
+            case Right:
+                super.setGravity(Gravity.RIGHT);
+                break;
+            case Bottom:
+                super.setGravity(Gravity.BOTTOM);
+                break;
+            default:
+                throw new RuntimeException();
+        }
     }
 
     public final SwipeMenu.Direction getDirection()
@@ -17,40 +39,34 @@ class MenuContainer extends BaseContainer
         return mDirection;
     }
 
-    /**
-     * 设置菜单方向
-     *
-     * @param direction
-     */
-    public final void setDirection(SwipeMenu.Direction direction)
+    public int getContentBoundState()
     {
-        mDirection = direction;
+        if (getContentView() == null)
+            return 0;
 
-        switch (direction)
+        switch (mDirection)
         {
             case Left:
-                setGravity(Gravity.LEFT);
-                break;
+                return getContentView().getWidth();
             case Top:
-                setGravity(Gravity.TOP);
-                break;
+                return getContentView().getHeight();
             case Right:
-                setGravity(Gravity.RIGHT);
-                break;
+                return -getContentView().getWidth();
             case Bottom:
-                setGravity(Gravity.BOTTOM);
-                break;
+                return -getContentView().getHeight();
             default:
                 throw new RuntimeException();
         }
     }
 
-    @Override
-    protected void onAttachedToWindow()
+    public int getContentBoundClose()
     {
-        super.onAttachedToWindow();
-        if (mDirection == null)
-            throw new NullPointerException();
+        return 0;
+    }
+
+    @Override
+    public void setGravity(int gravity)
+    {
     }
 
     @Override
