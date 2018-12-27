@@ -269,21 +269,27 @@ public abstract class FScroller
      *
      * @param dx          x方向移动距离
      * @param dy          y方向移动距离
-     * @param maxDistance 最大可以移动距离
-     * @param maxDuration 最大时长
-     * @param minDuration 最小时长
+     * @param distanceMax 最大可以移动距离
+     * @param durationMax 最大时长
+     * @param durationMin 最小时长
      * @return
      */
-    public static int computeDuration(int dx, int dy, int maxDistance, int maxDuration, int minDuration)
+    public static int computeDuration(int dx, int dy, int distanceMax, int durationMax, int durationMin)
     {
-        maxDistance = Math.abs(maxDistance);
-        if (maxDistance == 0)
-            return minDuration;
+        durationMax = Math.abs(durationMax);
+        durationMin = Math.abs(durationMin);
+        distanceMax = Math.abs(distanceMax);
+
+        if (distanceMax == 0)
+            return durationMin;
+
+        if (durationMin > durationMax)
+            throw new IllegalArgumentException();
 
         final float distance = (float) Math.sqrt(Math.abs(dx * dx) + Math.abs(dy * dy));
-        final float disPercent = distance / maxDistance;
-        final int duration = (int) ((disPercent * minDuration) + minDuration);
-        return Math.min(duration, maxDuration);
+        final float disPercent = Math.min(distance / distanceMax, 1.0f);
+        final int duration = (int) ((disPercent * durationMax) + durationMin);
+        return Math.min(duration, durationMax);
     }
 
     public interface ScrollerApi
