@@ -32,11 +32,11 @@ public abstract class FScroller
     /**
      * 最大滚动时长
      */
-    private int mMaxScrollDuration = 350;
+    private int mMaxScrollDuration = 400;
     /**
      * 最小滚动时长
      */
-    private int mMinScrollDuration = 150;
+    private int mMinScrollDuration = 200;
 
     private int mLastX;
     private int mLastY;
@@ -292,8 +292,12 @@ public abstract class FScroller
             throw new IllegalArgumentException();
 
         final float distance = (float) Math.sqrt(Math.abs(dx * dx) + Math.abs(dy * dy));
-        final float disPercent = Math.min(distance / distanceMax, 1.0f);
-        final int duration = (int) ((disPercent * durationMax) + durationMin);
+        if (distance == 0)
+            return 0;
+
+        final float disPercent = distance / distanceMax;
+        final int duration = (int) ((disPercent * durationMin) + durationMin);
+
         return Math.min(duration, durationMax);
     }
 
