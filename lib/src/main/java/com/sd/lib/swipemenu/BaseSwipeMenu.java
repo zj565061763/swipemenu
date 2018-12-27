@@ -75,7 +75,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     private MenuContainer getOrCreateMenuContainer(final Direction direction)
     {
         if (direction == null)
-            throw new NullPointerException("direction is null");
+            throw new NullPointerException();
 
         MenuContainer container = mMapMenuContainer.get(direction);
         if (container == null)
@@ -141,6 +141,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     public final void setMenuView(View view, Direction direction)
     {
+        if (direction == null)
+            throw new NullPointerException();
+
         getOrCreateMenuContainer(direction).setContentView(view);
     }
 
@@ -807,7 +810,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         {
             super(direction);
             if (direction == null)
-                throw new NullPointerException("direction is null");
+                throw new NullPointerException();
         }
 
         @Override
