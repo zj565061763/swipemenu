@@ -144,6 +144,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (direction == null)
             throw new NullPointerException();
 
+        if (view == null && !mMapMenuContainer.containsKey(direction))
+            return;
+
         getOrCreateMenuContainer(direction).setContentView(view);
     }
 
