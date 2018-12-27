@@ -32,11 +32,11 @@ public abstract class FScroller
     /**
      * 最大滚动时长
      */
-    private int mMaxScrollDuration = 500;
+    private int mMaxScrollDuration = 350;
     /**
      * 最小滚动时长
      */
-    private int mMinScrollDuration = 200;
+    private int mMinScrollDuration = 150;
 
     private int mLastX;
     private int mLastY;
