@@ -63,11 +63,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             {
                 super.onContentViewChanged(view);
                 if (view == null)
-                {
                     setState(State.Close, false);
-                    if (isNeedResetDirection())
-                        setMenuDirection(null);
-                }
             }
         };
         addView(mContentContainer);
@@ -109,11 +105,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         removeView(container);
 
         if (direction == getMenuDirection())
-        {
             setState(State.Close, false);
-            if (isNeedResetDirection())
-                setMenuDirection(null);
-        }
     }
 
     @Override
@@ -246,6 +238,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         updateView(state, anim);
         setIdleIfNeed();
+        resetDirectionIfNeed();
 
         return changed;
     }
@@ -269,9 +262,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         }
     }
 
-    private boolean isNeedResetDirection()
+    private void resetDirectionIfNeed()
     {
-        return isViewIdle() && mState == State.Close && mMenuDirection != null;
+        if (mState == State.Close && isViewIdle() && mMenuDirection != null)
+            setMenuDirection(null);
     }
 
     /**
