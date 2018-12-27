@@ -324,12 +324,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     {
         super.onFinishInflate();
 
-        final int count = getChildCount();
-        if (count <= 0)
-            return;
-
         final List<View> list = new ArrayList<>(5);
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < getChildCount(); i++)
         {
             final View child = getChildAt(i);
             if (child != mContentContainer)
