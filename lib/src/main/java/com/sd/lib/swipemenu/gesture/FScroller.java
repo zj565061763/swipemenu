@@ -100,6 +100,11 @@ public abstract class FScroller
         mMinScrollDuration = duration;
     }
 
+    public final void setFriction(float friction)
+    {
+        mScrollerApi.setFriction(friction);
+    }
+
     // scrollTo
     public final boolean scrollToX(int startX, int endX, int duration)
     {
@@ -294,6 +299,8 @@ public abstract class FScroller
 
     public interface ScrollerApi
     {
+        void setFriction(float friction);
+
         void startScroll(int startX, int startY, int dx, int dy, int duration);
 
         void fling(int startX, int startY, int velocityX, int velocityY, int minX, int maxX, int minY, int maxY);
@@ -321,6 +328,12 @@ public abstract class FScroller
         public SimpleScrollerApi(Context context, Interpolator interpolator)
         {
             mScroller = new Scroller(context, interpolator);
+        }
+
+        @Override
+        public void setFriction(float friction)
+        {
+            mScroller.setFriction(friction);
         }
 
         @Override
