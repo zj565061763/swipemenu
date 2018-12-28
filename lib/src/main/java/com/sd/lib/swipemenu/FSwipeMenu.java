@@ -18,21 +18,18 @@ package com.sd.lib.swipemenu;
 import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.sd.lib.swipemenu.gesture.FGestureManager;
-import com.sd.lib.swipemenu.gesture.FScroller;
 import com.sd.lib.swipemenu.gesture.FTouchHelper;
 
 
 public class FSwipeMenu extends BaseSwipeMenu
 {
     private FGestureManager mGestureManager;
-    private FScroller mScroller;
     private final int mTouchSlop;
 
     public FSwipeMenu(Context context, AttributeSet attrs)
@@ -41,48 +38,18 @@ public class FSwipeMenu extends BaseSwipeMenu
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
-    private FScroller getScroller()
+    @Override
+    public void setDebug(boolean debug)
     {
-        if (mScroller == null)
-        {
-            mScroller = new FScroller(getContext())
-            {
-                @Override
-                protected void onScrollStart()
-                {
-                    if (mIsDebug)
-                        Log.i(SwipeMenu.class.getSimpleName(), "onScrollStart");
-
-                    setScrollState(ScrollState.Fling);
-                    ViewCompat.postInvalidateOnAnimation(FSwipeMenu.this);
-                }
-
-                @Override
-                protected void onScrollCompute(int lastX, int lastY, int currX, int currY)
-                {
-                    final int delta = getMenuDirection().isHorizontal() ? (currX - lastX) : (currY - lastY);
-                    moveView(delta, false);
-                }
-
-                @Override
-                protected void onScrollFinish(boolean isAbort)
-                {
-                    if (mIsDebug)
-                        Log.i(SwipeMenu.class.getSimpleName(), "onScrollFinish: isAbort:" + isAbort);
-
-                    if (!isAbort)
-                        dealScrollFinish();
-                }
-            };
-        }
-        return mScroller;
+        super.setDebug(debug);
+        getGestureManager().setDebug(debug);
     }
 
     private FGestureManager getGestureManager()
     {
         if (mGestureManager == null)
         {
-            mGestureManager = new FGestureManager(new FGestureManager.Callback()
+            mGestureManager = new FGestureManager(this, new FGestureManager.Callback()
             {
                 @Override
                 public boolean shouldInterceptEvent(MotionEvent event)
@@ -93,27 +60,26 @@ public class FSwipeMenu extends BaseSwipeMenu
                 @Override
                 public boolean shouldConsumeEvent(MotionEvent event)
                 {
-                    return mGestureManager.getTagHolder().isTagIntercept() || canPull();
+                    return mGestureManager.getEventTag().isTagIntercept() || canPull();
                 }
 
                 @Override
-                public boolean onEventConsume(MotionEvent event)
+                public void onEventConsume(MotionEvent event)
                 {
                     final int delta = getMenuDirection().isHorizontal()
                             ? (int) getGestureManager().getTouchHelper().getDeltaX()
                             : (int) getGestureManager().getTouchHelper().getDeltaY();
 
                     moveView(delta, true);
-                    return true;
                 }
 
                 @Override
-                public void onEventFinish(FGestureManager.FinishParams params, VelocityTracker velocityTracker, MotionEvent event)
+                public void onEventFinish(VelocityTracker velocityTracker, MotionEvent event)
                 {
-                    if (params.isCancelTouchEvent)
+                    if (mGestureManager.getLifecycleInfo().cancelConsumeEvent())
                         return;
 
-                    if (params.hasConsumeEvent)
+                    if (mGestureManager.getLifecycleInfo().hasConsumeEvent())
                     {
                         velocityTracker.computeCurrentVelocity(1000);
                         final int velocity = getMenuDirection().isHorizontal()
@@ -123,21 +89,30 @@ public class FSwipeMenu extends BaseSwipeMenu
                         dealDragFinish(velocity);
                     }
                 }
-            });
-            mGestureManager.getTagHolder().setCallback(new FGestureManager.FTagHolder.Callback()
-            {
+
                 @Override
-                public void onTagInterceptChanged(boolean tag)
+                public void onStateChanged(FGestureManager.State oldState, FGestureManager.State newState)
                 {
-                    FTouchHelper.requestDisallowInterceptTouchEvent(FSwipeMenu.this, tag);
+                    switch (newState)
+                    {
+                        case Consume:
+                            setScrollState(ScrollState.Drag);
+                            break;
+                        case Fling:
+                            setScrollState(ScrollState.Fling);
+                            ViewCompat.postInvalidateOnAnimation(FSwipeMenu.this);
+                            break;
+                        case Idle:
+                            setScrollState(ScrollState.Idle);
+                            break;
+                    }
                 }
 
                 @Override
-                public void onTagConsumeChanged(boolean tag)
+                public void onScrollerCompute(int lastX, int lastY, int currX, int currY)
                 {
-                    FTouchHelper.requestDisallowInterceptTouchEvent(FSwipeMenu.this, tag);
-                    if (tag)
-                        setScrollState(ScrollState.Drag);
+                    final int delta = getMenuDirection().isHorizontal() ? (currX - lastX) : (currY - lastY);
+                    moveView(delta, false);
                 }
             });
         }
@@ -147,29 +122,29 @@ public class FSwipeMenu extends BaseSwipeMenu
     @Override
     public boolean setState(State state, boolean anim)
     {
-        getGestureManager().setCancelTouchEvent();
+        getGestureManager().cancelConsumeEvent();
         return super.setState(state, anim);
     }
 
     @Override
     protected void onMenuDirectionChanged(Direction direction)
     {
-        getScroller().setMaxScrollDistance(getMaxScrollDistance());
+        getGestureManager().getScroller().setMaxScrollDistance(getMaxScrollDistance());
     }
 
     @Override
     protected void abortAnimation()
     {
-        getScroller().abortAnimation();
+        getGestureManager().getScroller().abortAnimation();
     }
 
     @Override
     protected boolean onSmoothScroll(int start, int end)
     {
         if (getMenuDirection().isHorizontal())
-            return getScroller().scrollToX(start, end, -1);
+            return getGestureManager().getScroller().scrollToX(start, end, -1);
         else
-            return getScroller().scrollToY(start, end, -1);
+            return getGestureManager().getScroller().scrollToY(start, end, -1);
     }
 
     private boolean canPull()
@@ -208,21 +183,21 @@ public class FSwipeMenu extends BaseSwipeMenu
     @Override
     public void computeScroll()
     {
-        if (getScroller().computeScrollOffset())
+        if (getGestureManager().getScroller().computeScrollOffset())
             ViewCompat.postInvalidateOnAnimation(this);
     }
 
     @Override
     protected boolean isViewIdle()
     {
-        return getScroller().isFinished() && !getGestureManager().getTagHolder().isTagConsume();
+        return getGestureManager().getState() == FGestureManager.State.Idle;
     }
 
     @Override
     protected void onDetachedFromWindow()
     {
         super.onDetachedFromWindow();
-        getScroller().abortAnimation();
+        getGestureManager().getScroller().abortAnimation();
     }
 
     //---------- PullHelper Start ----------

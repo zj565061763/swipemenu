@@ -109,7 +109,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
-    public final void setDebug(boolean debug)
+    public void setDebug(boolean debug)
     {
         mIsDebug = debug;
     }
@@ -243,8 +243,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             anim = false;
 
         updateView(state, anim);
-        setIdleIfNeed();
-        resetDirectionIfNeed();
 
         return changed;
     }
@@ -266,12 +264,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             default:
                 throw new RuntimeException();
         }
-    }
-
-    private void resetDirectionIfNeed()
-    {
-        if (mState == State.Close && isViewIdle() && mMenuDirection != null)
-            setMenuDirection(null);
     }
 
     /**
@@ -400,25 +392,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     protected final void dealDragFinish(int velocity)
     {
         mDirectionHandler.dealDragFinish(velocity);
-    }
-
-    /**
-     * view惯性滚动结束需要执行的逻辑
-     */
-    protected final void dealScrollFinish()
-    {
-        setIdleIfNeed();
-    }
-
-    private void setIdleIfNeed()
-    {
-        if (isViewIdle() && mScrollState != ScrollState.Idle)
-        {
-            if (mIsDebug)
-                Log.e(SwipeMenu.class.getSimpleName(), "setIdleIfNeed success:" + mState);
-
-            setScrollState(ScrollState.Idle);
-        }
     }
 
     /**
@@ -747,12 +720,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             }
 
             if (mIsDebug)
-                Log.i(SwipeMenu.class.getSimpleName(), "dealDragFinish try state -> " + state);
+                Log.i(SwipeMenu.class.getSimpleName(), "dealDragFinish try state:" + state);
 
             setState(state, true);
-
-            if (mScrollState == ScrollState.Drag)
-                setScrollState(ScrollState.Idle);
         }
 
         public final float getScrollPercent()
