@@ -25,7 +25,7 @@ public class FGestureManager
     private final ViewGroup mViewGroup;
 
     private FTouchHelper mTouchHelper;
-    private final EventTag mEventTag;
+    private final TagHolder mTagHolder;
     private final FScroller mScroller;
 
     private State mState = State.Idle;
@@ -46,7 +46,7 @@ public class FGestureManager
         mViewGroup = viewGroup;
         mCallback = callback;
 
-        mEventTag = new EventTag()
+        mTagHolder = new TagHolder()
         {
             @Override
             protected void onTagConsumeChanged(boolean tag)
@@ -83,7 +83,11 @@ public class FGestureManager
                 if (mDebug)
                     Log.e(FGestureManager.class.getSimpleName(), "onScrollerFinish isAbort:" + isAbort);
 
-                setIdleIfNeed();
+                if (mTagHolder.isTagConsume())
+                    setState(State.Consume);
+                else
+                    postIdleRunnable();
+
                 super.onScrollerFinish(isAbort);
             }
         };
@@ -101,9 +105,9 @@ public class FGestureManager
         return mTouchHelper;
     }
 
-    public EventTag getEventTag()
+    public TagHolder getTagHolder()
     {
-        return mEventTag;
+        return mTagHolder;
     }
 
     public FScroller getScroller()
@@ -157,14 +161,11 @@ public class FGestureManager
         }
     }
 
-    private void setIdleIfNeed()
+    private void postIdleRunnable()
     {
-        if (getScroller().isFinished() && !mEventTag.isTagConsume())
-        {
-            cancelIdleRunnable();
-            mIdleRunnable = new IdleRunnable(mState);
-            mIdleRunnable.post();
-        }
+        cancelIdleRunnable();
+        mIdleRunnable = new IdleRunnable(mState);
+        mIdleRunnable.post();
     }
 
     private void cancelIdleRunnable()
@@ -181,15 +182,18 @@ public class FGestureManager
      */
     public void cancelConsumeEvent()
     {
-        if (mEventTag.isTagConsume())
+        if (mTagHolder.isTagConsume())
         {
             if (mDebug)
                 Log.i(FGestureManager.class.getSimpleName(), "cancelConsumeEvent");
 
             getLifecycleInfo().setCancelConsumeEvent(true);
-            mEventTag.reset();
+            mTagHolder.reset();
+
+            if (getScroller().isFinished())
+                postIdleRunnable();
+
             mCallback.onCancelConsumeEvent();
-            setIdleIfNeed();
         }
     }
 
@@ -213,11 +217,11 @@ public class FGestureManager
             if (action == MotionEvent.ACTION_DOWN)
                 onEventStart(event);
 
-            if (!mEventTag.isTagIntercept())
-                mEventTag.setTagIntercept(mCallback.shouldInterceptEvent(event));
+            if (!mTagHolder.isTagIntercept())
+                mTagHolder.setTagIntercept(mCallback.shouldInterceptEvent(event));
         }
 
-        return mEventTag.isTagIntercept();
+        return mTagHolder.isTagIntercept();
     }
 
     /**
@@ -243,9 +247,9 @@ public class FGestureManager
         {
             if (!getLifecycleInfo().cancelConsumeEvent())
             {
-                if (!mEventTag.isTagConsume())
+                if (!mTagHolder.isTagConsume())
                 {
-                    mEventTag.setTagConsume(mCallback.shouldConsumeEvent(event));
+                    mTagHolder.setTagConsume(mCallback.shouldConsumeEvent(event));
                 } else
                 {
                     mCallback.onEventConsume(event);
@@ -254,7 +258,7 @@ public class FGestureManager
             }
         }
 
-        return mEventTag.isTagConsume();
+        return mTagHolder.isTagConsume();
     }
 
     private void onEventStart(MotionEvent event)
@@ -264,7 +268,7 @@ public class FGestureManager
 
     private void onEventFinish(MotionEvent event)
     {
-        mEventTag.reset();
+        mTagHolder.reset();
         mCallback.onEventFinish(getVelocityTracker(), event);
 
         if (mState == State.Consume)
@@ -287,6 +291,7 @@ public class FGestureManager
         @Override
         public void run()
         {
+            mPost = false;
             if (mIdleRunnable == this)
                 mIdleRunnable = null;
 
@@ -435,9 +440,9 @@ public class FGestureManager
         }
     }
 
-    //---------- EventTag Start ----------
+    //---------- TagHolder Start ----------
 
-    public static class EventTag
+    public static class TagHolder
     {
         /**
          * 是否需要拦截事件标识(用于onInterceptTouchEvent方法)
@@ -450,7 +455,7 @@ public class FGestureManager
 
         private Callback mCallback;
 
-        private EventTag()
+        private TagHolder()
         {
         }
 
@@ -527,5 +532,5 @@ public class FGestureManager
         }
     }
 
-    //---------- EventTag Start ----------
+    //---------- TagHolder Start ----------
 }
