@@ -77,7 +77,7 @@ public class FSwipeMenu extends BaseSwipeMenu
                 @Override
                 public void onEventFinish(VelocityTracker velocityTracker, MotionEvent event)
                 {
-                    if (mGestureManager.getLifecycleInfo().cancelConsumeEvent())
+                    if (mGestureManager.getLifecycleInfo().isCancelConsumeEvent())
                         return;
 
                     if (mGestureManager.getLifecycleInfo().hasConsumeEvent())
