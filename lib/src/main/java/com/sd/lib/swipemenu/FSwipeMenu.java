@@ -18,6 +18,7 @@ package com.sd.lib.swipemenu;
 import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -88,6 +89,13 @@ public class FSwipeMenu extends BaseSwipeMenu
 
                         dealDragFinish(velocity);
                     }
+                }
+
+                @Override
+                public void onCancelConsumeEvent()
+                {
+                    if (mIsDebug)
+                        Log.i(SwipeMenu.class.getSimpleName(), "onCancelConsumeEvent isViewIdle:" + isViewIdle());
                 }
 
                 @Override
