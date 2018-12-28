@@ -245,7 +245,7 @@ public class FGestureManager
             return mCallback.onEventActionDown(event);
         } else
         {
-            if (!getLifecycleInfo().cancelConsumeEvent())
+            if (!getLifecycleInfo().isCancelConsumeEvent())
             {
                 if (!mTagHolder.isTagConsume())
                 {
@@ -328,8 +328,8 @@ public class FGestureManager
 
     public static final class LifecycleInfo
     {
-        private boolean hasConsumeEvent;
-        private boolean cancelConsumeEvent;
+        private boolean mHasConsumeEvent;
+        private boolean mIsCancelConsumeEvent;
 
         /**
          * 从按下到当前{@link Callback#onEventConsume(MotionEvent)}方法是否消费过事件
@@ -338,7 +338,7 @@ public class FGestureManager
          */
         public boolean hasConsumeEvent()
         {
-            return hasConsumeEvent;
+            return mHasConsumeEvent;
         }
 
         /**
@@ -346,25 +346,25 @@ public class FGestureManager
          *
          * @return
          */
-        public boolean cancelConsumeEvent()
+        public boolean isCancelConsumeEvent()
         {
-            return cancelConsumeEvent;
+            return mIsCancelConsumeEvent;
         }
 
-        void setHasConsumeEvent(boolean hasConsumeEvent)
+        void setHasConsumeEvent(boolean has)
         {
-            this.hasConsumeEvent = hasConsumeEvent;
+            mHasConsumeEvent = has;
         }
 
-        void setCancelConsumeEvent(boolean cancelConsumeEvent)
+        void setCancelConsumeEvent(boolean cancel)
         {
-            this.cancelConsumeEvent = cancelConsumeEvent;
+            mIsCancelConsumeEvent = cancel;
         }
 
         void reset()
         {
-            this.hasConsumeEvent = false;
-            this.cancelConsumeEvent = false;
+            mHasConsumeEvent = false;
+            mIsCancelConsumeEvent = false;
         }
     }
 
