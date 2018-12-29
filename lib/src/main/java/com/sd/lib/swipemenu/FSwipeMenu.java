@@ -22,7 +22,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
-import android.view.ViewConfiguration;
 
 import com.sd.lib.swipemenu.gesture.FGestureManager;
 import com.sd.lib.swipemenu.gesture.FTouchHelper;
@@ -31,12 +30,10 @@ import com.sd.lib.swipemenu.gesture.FTouchHelper;
 public class FSwipeMenu extends BaseSwipeMenu
 {
     private FGestureManager mGestureManager;
-    private final int mTouchSlop;
 
     public FSwipeMenu(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
     @Override
@@ -121,6 +118,20 @@ public class FSwipeMenu extends BaseSwipeMenu
                 {
                     final int delta = getMenuDirection().isHorizontal() ? (currX - lastX) : (currY - lastY);
                     moveView(delta, false);
+                }
+            });
+            mGestureManager.getTagHolder().setCallback(new FGestureManager.TagHolder.Callback()
+            {
+                @Override
+                public void onTagInterceptChanged(boolean tag)
+                {
+                    FTouchHelper.requestDisallowInterceptTouchEvent(FSwipeMenu.this, tag);
+                }
+
+                @Override
+                public void onTagConsumeChanged(boolean tag)
+                {
+                    FTouchHelper.requestDisallowInterceptTouchEvent(FSwipeMenu.this, tag);
                 }
             });
         }
@@ -218,7 +229,7 @@ public class FSwipeMenu extends BaseSwipeMenu
             if (contentView == null)
                 return false;
 
-            if (delta == 0 || Math.abs(delta) < mTouchSlop)
+            if (delta == 0)
                 return false;
 
             final boolean pullToStart = delta < 0;
