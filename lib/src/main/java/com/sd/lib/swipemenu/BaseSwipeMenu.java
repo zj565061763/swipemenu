@@ -459,7 +459,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      * @param end
      * @return
      */
-    protected abstract boolean onSmoothScroll(int start, int end);
+    protected abstract boolean smoothScroll(int start, int end);
 
     @Override
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec)
@@ -681,7 +681,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
                 if (anim)
                 {
-                    onSmoothScroll(boundCurrent, boundState);
+                    smoothScroll(boundCurrent, boundState);
                 } else
                 {
                     layoutInternal(state);

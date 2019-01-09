@@ -158,7 +158,7 @@ public class FSwipeMenu extends BaseSwipeMenu
     }
 
     @Override
-    protected boolean onSmoothScroll(int start, int end)
+    protected boolean smoothScroll(int start, int end)
     {
         if (getMenuDirection().isHorizontal())
             return getGestureManager().getScroller().scrollToX(start, end, -1);
@@ -178,7 +178,6 @@ public class FSwipeMenu extends BaseSwipeMenu
             // horizontal
             final int delta = (int) getGestureManager().getTouchHelper().getDeltaXFromDown();
             return mHorizontalPullHelper.canPull(delta, getState());
-
         } else
         {
             // vertical
