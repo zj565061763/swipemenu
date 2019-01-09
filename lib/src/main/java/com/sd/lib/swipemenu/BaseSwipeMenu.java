@@ -745,7 +745,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             throw new RuntimeException();
         }
 
-        public abstract int getContentBoundCurrent();
+        protected abstract int getContentBoundCurrent();
 
         protected abstract int getContentBoundOpen();
 
