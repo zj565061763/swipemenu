@@ -464,9 +464,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec)
     {
-        final int contentWidthSpec = getChildMeasureSpec(widthMeasureSpec, 0, LayoutParams.MATCH_PARENT);
-        final int contentHeightSpec = getChildMeasureSpec(heightMeasureSpec, 0, LayoutParams.MATCH_PARENT);
-        mContentContainer.measure(contentWidthSpec, contentHeightSpec);
+        mContentContainer.measure(getChildMeasureSpec(widthMeasureSpec, 0, LayoutParams.MATCH_PARENT),
+                getChildMeasureSpec(heightMeasureSpec, 0, LayoutParams.MATCH_PARENT));
 
         int width = mContentContainer.getMeasuredWidth();
         int height = mContentContainer.getMeasuredHeight();
@@ -474,14 +473,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         final int widthMenuSpec = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
         final int heightMenuSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
 
-        final int count = getChildCount();
-        for (int i = 0; i < count; i++)
+        for (MenuContainer item : mMapMenuContainer.values())
         {
-            final View child = getChildAt(i);
-            if (child == mContentContainer)
-                continue;
-
-            child.measure(widthMenuSpec, heightMenuSpec);
+            item.measure(widthMenuSpec, heightMenuSpec);
         }
 
         width = getMeasureSize(width, widthMeasureSpec);
