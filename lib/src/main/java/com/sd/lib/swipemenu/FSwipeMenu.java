@@ -232,7 +232,7 @@ public class FSwipeMenu extends BaseSwipeMenu
                 return false;
 
             final boolean pullToStart = delta < 0;
-            if (!isLegalState(state, pullToStart))
+            if (!checkState(state, delta))
                 return false;
 
             if (!isScrollToBound(pullToStart, contentView))
@@ -255,7 +255,7 @@ public class FSwipeMenu extends BaseSwipeMenu
             return true;
         }
 
-        protected abstract boolean isLegalState(State state, boolean pullToStart);
+        protected abstract boolean checkState(State state, int delta);
 
         protected abstract State getOpenStateCanPull(boolean pullToStart);
 
@@ -269,15 +269,15 @@ public class FSwipeMenu extends BaseSwipeMenu
     private final PullHelper mHorizontalPullHelper = new PullHelper()
     {
         @Override
-        protected boolean isLegalState(State state, boolean pullToStart)
+        protected boolean checkState(State state, int delta)
         {
             if (state == State.Close)
                 return true;
 
-            if (state == State.OpenLeft && pullToStart)
+            if (state == State.OpenLeft && delta < 0)
                 return true;
 
-            if (state == State.OpenRight && !pullToStart)
+            if (state == State.OpenRight && delta > 0)
                 return true;
 
             return false;
@@ -316,15 +316,15 @@ public class FSwipeMenu extends BaseSwipeMenu
     private final PullHelper mVerticalPullHelper = new PullHelper()
     {
         @Override
-        protected boolean isLegalState(State state, boolean pullToStart)
+        protected boolean checkState(State state, int delta)
         {
             if (state == State.Close)
                 return true;
 
-            if (state == State.OpenTop && pullToStart)
+            if (state == State.OpenTop && delta < 0)
                 return true;
 
-            if (state == State.OpenBottom && !pullToStart)
+            if (state == State.OpenBottom && delta > 0)
                 return true;
 
             return false;
