@@ -239,8 +239,8 @@ public class FSwipeMenu extends BaseSwipeMenu
 
             Direction direction = null;
             if (state == State.Close)
-                direction = getMenuDirectionForCloseToOpen(delta);
-            else if (state == getOpenStateCanPull(delta))
+                direction = getMenuDirectionForCloseState(delta);
+            else
                 direction = getMenuDirectionForOpenState(state);
 
             if (direction == null)
@@ -258,9 +258,7 @@ public class FSwipeMenu extends BaseSwipeMenu
 
         protected abstract boolean checkScrollToBound(View view, int delta);
 
-        protected abstract State getOpenStateCanPull(int delta);
-
-        protected abstract Direction getMenuDirectionForCloseToOpen(int delta);
+        protected abstract Direction getMenuDirectionForCloseState(int delta);
 
         protected abstract Direction getMenuDirectionForOpenState(State state);
     }
@@ -289,15 +287,9 @@ public class FSwipeMenu extends BaseSwipeMenu
         }
 
         @Override
-        protected Direction getMenuDirectionForCloseToOpen(int delta)
+        protected Direction getMenuDirectionForCloseState(int delta)
         {
             return delta < 0 ? Direction.Right : Direction.Left;
-        }
-
-        @Override
-        protected State getOpenStateCanPull(int delta)
-        {
-            return delta < 0 ? State.OpenLeft : State.OpenRight;
         }
 
         @Override
@@ -336,15 +328,9 @@ public class FSwipeMenu extends BaseSwipeMenu
         }
 
         @Override
-        protected Direction getMenuDirectionForCloseToOpen(int delta)
+        protected Direction getMenuDirectionForCloseState(int delta)
         {
             return delta < 0 ? Direction.Bottom : Direction.Top;
-        }
-
-        @Override
-        protected State getOpenStateCanPull(int delta)
-        {
-            return delta < 0 ? State.OpenTop : State.OpenBottom;
         }
 
         @Override
