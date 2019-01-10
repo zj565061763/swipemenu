@@ -231,7 +231,6 @@ public class FSwipeMenu extends BaseSwipeMenu
             if (delta == 0)
                 return false;
 
-            final boolean pullToStart = delta < 0;
             if (!checkState(state, delta))
                 return false;
 
@@ -241,7 +240,7 @@ public class FSwipeMenu extends BaseSwipeMenu
             Direction direction = null;
             if (state == State.Close)
                 direction = getMenuDirectionForCloseToOpen(delta);
-            else if (state == getOpenStateCanPull(pullToStart))
+            else if (state == getOpenStateCanPull(delta))
                 direction = getMenuDirectionForOpenState(state);
 
             if (direction == null)
@@ -259,7 +258,7 @@ public class FSwipeMenu extends BaseSwipeMenu
 
         protected abstract boolean checkScrollToBound(View view, int delta);
 
-        protected abstract State getOpenStateCanPull(boolean pullToStart);
+        protected abstract State getOpenStateCanPull(int delta);
 
         protected abstract Direction getMenuDirectionForCloseToOpen(int delta);
 
@@ -296,9 +295,9 @@ public class FSwipeMenu extends BaseSwipeMenu
         }
 
         @Override
-        protected State getOpenStateCanPull(boolean pullToStart)
+        protected State getOpenStateCanPull(int delta)
         {
-            return pullToStart ? State.OpenLeft : State.OpenRight;
+            return delta < 0 ? State.OpenLeft : State.OpenRight;
         }
 
         @Override
@@ -343,9 +342,9 @@ public class FSwipeMenu extends BaseSwipeMenu
         }
 
         @Override
-        protected State getOpenStateCanPull(boolean pullToStart)
+        protected State getOpenStateCanPull(int delta)
         {
-            return pullToStart ? State.OpenTop : State.OpenBottom;
+            return delta < 0 ? State.OpenTop : State.OpenBottom;
         }
 
         @Override
