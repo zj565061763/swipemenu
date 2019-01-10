@@ -102,10 +102,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (container == null)
             throw new RuntimeException();
 
-        removeView(container);
-
         if (direction == getMenuDirection())
             setState(State.Close, false);
+
+        removeView(container);
     }
 
     @Override
