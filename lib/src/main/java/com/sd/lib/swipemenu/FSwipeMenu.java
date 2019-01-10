@@ -235,7 +235,7 @@ public class FSwipeMenu extends BaseSwipeMenu
             if (!checkState(state, delta))
                 return false;
 
-            if (!isScrollToBound(pullToStart, contentView))
+            if (!checkScrollToBound(contentView, delta))
                 return false;
 
             Direction direction = null;
@@ -257,9 +257,9 @@ public class FSwipeMenu extends BaseSwipeMenu
 
         protected abstract boolean checkState(State state, int delta);
 
-        protected abstract State getOpenStateCanPull(boolean pullToStart);
+        protected abstract boolean checkScrollToBound(View view, int delta);
 
-        protected abstract boolean isScrollToBound(boolean pullToStart, View view);
+        protected abstract State getOpenStateCanPull(boolean pullToStart);
 
         protected abstract Direction getMenuDirectionForCloseState(boolean pullToStart);
 
@@ -284,9 +284,9 @@ public class FSwipeMenu extends BaseSwipeMenu
         }
 
         @Override
-        protected boolean isScrollToBound(boolean pullToStart, View view)
+        protected boolean checkScrollToBound(View view, int delta)
         {
-            return pullToStart ? FTouchHelper.isScrollToRight(view) : FTouchHelper.isScrollToLeft(view);
+            return delta < 0 ? FTouchHelper.isScrollToRight(view) : FTouchHelper.isScrollToLeft(view);
         }
 
         @Override
@@ -331,9 +331,9 @@ public class FSwipeMenu extends BaseSwipeMenu
         }
 
         @Override
-        protected boolean isScrollToBound(boolean pullToStart, View view)
+        protected boolean checkScrollToBound(View view, int delta)
         {
-            return pullToStart ? FTouchHelper.isScrollToBottom(view) : FTouchHelper.isScrollToTop(view);
+            return delta < 0 ? FTouchHelper.isScrollToBottom(view) : FTouchHelper.isScrollToTop(view);
         }
 
         @Override
