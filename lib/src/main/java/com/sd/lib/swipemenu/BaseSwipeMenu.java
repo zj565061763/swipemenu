@@ -75,7 +75,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     private MenuContainer getOrCreateMenuContainer(final Direction direction)
     {
         if (direction == null)
-            throw new NullPointerException();
+            throw new IllegalArgumentException("direction is null when getOrCreateMenuContainer()");
 
         MenuContainer container = mMapMenuContainer.get(direction);
         if (container == null)
@@ -100,7 +100,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     {
         final MenuContainer container = mMapMenuContainer.remove(direction);
         if (container == null)
-            throw new RuntimeException();
+            throw new RuntimeException("MenuContainer was not found for direction: " + direction + " when removeMenuContainer()");
 
         if (direction == getMenuDirection())
             setState(State.Close, false);
@@ -142,7 +142,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     public final void setMenuView(View view, Direction direction)
     {
         if (direction == null)
-            throw new NullPointerException();
+            throw new IllegalArgumentException("direction is null when setMenuView()");
 
         if (view == null && !mMapMenuContainer.containsKey(direction))
             return;
@@ -154,7 +154,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     public final void setMode(Mode mode)
     {
         if (mode == null)
-            throw new NullPointerException();
+            throw new IllegalArgumentException("mode is null when setMode()");
 
         if (mMode != mode)
         {
@@ -207,7 +207,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     public boolean setState(State state, boolean anim)
     {
         if (state == null)
-            throw new NullPointerException();
+            throw new IllegalArgumentException("state is null when setState()");
 
         if (getContentView() == null)
         {
@@ -264,7 +264,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             case OpenBottom:
                 return Direction.Bottom;
             default:
-                throw new RuntimeException();
+                throw new RuntimeException("Unexpected state: " + state);
         }
     }
 
@@ -305,7 +305,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 mDirectionHandler = new BottomHandler(direction);
             } else
             {
-                throw new RuntimeException();
+                throw new RuntimeException("Unexpected direction: " + direction);
             }
             mDirectionHandler.init();
 
@@ -351,7 +351,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 setMenuView(item, Direction.Bottom);
             } else
             {
-                throw new RuntimeException("Illegal child:" + item);
+                throw new RuntimeException("Illegal child in swipe menu:" + item);
             }
         }
     }
@@ -404,7 +404,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     protected final void setScrollState(ScrollState state)
     {
         if (state == null)
-            throw new NullPointerException();
+            throw new NullPointerException("state is null when setScrollState()");
 
         final ScrollState old = mScrollState;
         if (old != state)
@@ -541,7 +541,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 top = mDirectionHandler.getContentBound(state);
             } else
             {
-                throw new RuntimeException();
+                throw new RuntimeException("Unexpected state: " + state);
             }
         } else
         {
@@ -744,7 +744,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             if (state == getStateOpen())
                 return getContentBoundOpen();
 
-            throw new RuntimeException();
+            throw new RuntimeException("Illegal state when invoke getContentBound() : " + state);
         }
 
         protected abstract int getContentBoundCurrent();
@@ -775,7 +775,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         {
             super(direction);
             if (direction == null)
-                throw new NullPointerException();
+                throw new IllegalArgumentException("direction is null when create DirectionHandler:" + getClass().getSimpleName());
         }
 
         @Override
