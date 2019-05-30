@@ -57,10 +57,10 @@ public interface SwipeMenu
     /**
      * 设置某个方向的菜单view
      *
-     * @param view
      * @param direction
+     * @param view
      */
-    void setMenuView(View view, Direction direction);
+    void setMenuView(Direction direction, View view);
 
     /**
      * 设置菜单模式，默认覆盖模式{@link Mode#Overlay}

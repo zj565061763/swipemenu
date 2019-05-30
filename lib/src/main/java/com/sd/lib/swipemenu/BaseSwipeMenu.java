@@ -139,7 +139,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
-    public final void setMenuView(View view, Direction direction)
+    public final void setMenuView(Direction direction, View view)
     {
         if (direction == null)
             throw new IllegalArgumentException("direction is null when setMenuView()");
@@ -336,19 +336,19 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             } else if (childId == R.id.lib_swipemenu_menu_left)
             {
                 removeView(item);
-                setMenuView(item, Direction.Left);
+                setMenuView(Direction.Left, item);
             } else if (childId == R.id.lib_swipemenu_menu_top)
             {
                 removeView(item);
-                setMenuView(item, Direction.Top);
+                setMenuView(Direction.Top, item);
             } else if (childId == R.id.lib_swipemenu_menu_right)
             {
                 removeView(item);
-                setMenuView(item, Direction.Right);
+                setMenuView(Direction.Right, item);
             } else if (childId == R.id.lib_swipemenu_menu_bottom)
             {
                 removeView(item);
-                setMenuView(item, Direction.Bottom);
+                setMenuView(Direction.Bottom, item);
             } else
             {
                 throw new RuntimeException("Illegal child in swipe menu:" + item);
