@@ -221,13 +221,15 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (mIsDebug)
             Log.i(SwipeMenu.class.getSimpleName(), "setState:" + stateOld + " -> " + state);
 
-        if (stateOld != state)
+        if (changed)
         {
             if (state != State.Close)
             {
                 final Direction direction = stateToMenuDirection(state);
+                if (direction == null)
+                    throw new RuntimeException("direction is null for state: " + state);
 
-                if (mDirectionHandler.mDirection != null && mDirectionHandler.mDirection != direction)
+                if ((mDirectionHandler instanceof NoneNullHandler) && mDirectionHandler.mDirection != direction)
                     mDirectionHandler.updateView(State.Close, false);
 
                 setMenuDirection(direction);
