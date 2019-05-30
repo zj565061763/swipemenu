@@ -633,7 +633,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             updateLockEvent();
 
             if (mOnViewPositionChangeCallback != null)
-                mOnViewPositionChangeCallback.onViewPositionChanged(left, top, isDrag, this);
+                mOnViewPositionChangeCallback.onViewPositionChanged(this, left, top, isDrag);
         }
     }
 

@@ -193,7 +193,7 @@ public interface SwipeMenu
          * @param isDrag    true-拖动，false-惯性滚动
          * @param swipeMenu
          */
-        void onViewPositionChanged(int left, int top, boolean isDrag, SwipeMenu swipeMenu);
+        void onViewPositionChanged(SwipeMenu swipeMenu, int left, int top, boolean isDrag);
     }
 
     interface OnScrollStateChangeCallback

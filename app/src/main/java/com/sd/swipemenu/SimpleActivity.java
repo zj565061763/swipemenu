@@ -46,7 +46,7 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
             private int mLastTop;
 
             @Override
-            public void onViewPositionChanged(int left, int top, boolean isDrag, SwipeMenu swipeMenu)
+            public void onViewPositionChanged(SwipeMenu swipeMenu, int left, int top, boolean isDrag)
             {
                 final int deltaLeft = left - mLastLeft;
                 final int deltaTop = top - mLastTop;
