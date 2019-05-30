@@ -34,7 +34,7 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
         mSwipeMenu.setOnStateChangeCallback(new SwipeMenu.OnStateChangeCallback()
         {
             @Override
-            public void onStateChanged(SwipeMenu.State oldState, SwipeMenu.State newState, SwipeMenu swipeMenu)
+            public void onStateChanged(SwipeMenu swipeMenu, SwipeMenu.State oldState, SwipeMenu.State newState)
             {
                 Log.e(TAG, "onStateChanged:" + oldState + "----->" + newState);
             }

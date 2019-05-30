@@ -238,7 +238,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             mState = state;
 
             if (mOnStateChangeCallback != null)
-                mOnStateChangeCallback.onStateChanged(stateOld, state, this);
+                mOnStateChangeCallback.onStateChanged(this, stateOld, state);
         }
 
         if (!changed && state == State.Close && mScrollState == ScrollState.Fling)

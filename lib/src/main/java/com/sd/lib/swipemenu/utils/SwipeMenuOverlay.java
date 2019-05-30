@@ -92,7 +92,7 @@ public class SwipeMenuOverlay extends FrameLayout implements SwipeMenu.OnStateCh
     }
 
     @Override
-    public void onStateChanged(SwipeMenu.State oldState, SwipeMenu.State newState, SwipeMenu swipeMenu)
+    public void onStateChanged(SwipeMenu swipeMenu, SwipeMenu.State oldState, SwipeMenu.State newState)
     {
         final Object tag = mMapSwipeMenu.get(swipeMenu);
         final SwipeMenuInfo info = mMapInfo.get(tag);

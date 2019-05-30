@@ -176,11 +176,11 @@ public interface SwipeMenu
         /**
          * 状态变更回调
          *
+         * @param swipeMenu
          * @param oldState
          * @param newState
-         * @param swipeMenu
          */
-        void onStateChanged(State oldState, State newState, SwipeMenu swipeMenu);
+        void onStateChanged(SwipeMenu swipeMenu, State oldState, State newState);
     }
 
     interface OnViewPositionChangeCallback
