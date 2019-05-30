@@ -51,10 +51,10 @@ public interface SwipeMenu
     /**
      * 设置某个方向的菜单view
      *
-     * @param view
      * @param direction
+     * @param view
      */
-    void setMenuView(View view, Direction direction);
+    void setMenuView(Direction direction, View view);
 
     /**
      * 设置菜单模式，默认覆盖模式{@link Mode#Overlay}
@@ -170,11 +170,11 @@ public interface SwipeMenu
         /**
          * 状态变更回调
          *
+         * @param swipeMenu
          * @param oldState
          * @param newState
-         * @param swipeMenu
          */
-        void onStateChanged(State oldState, State newState, SwipeMenu swipeMenu);
+        void onStateChanged(SwipeMenu swipeMenu, State oldState, State newState);
     }
 
     interface OnViewPositionChangeCallback
@@ -187,7 +187,7 @@ public interface SwipeMenu
          * @param isDrag    true-拖动，false-惯性滚动
          * @param swipeMenu
          */
-        void onViewPositionChanged(int left, int top, boolean isDrag, SwipeMenu swipeMenu);
+        void onViewPositionChanged(SwipeMenu swipeMenu, int left, int top, boolean isDrag);
     }
 
     interface OnScrollStateChangeCallback
@@ -195,11 +195,11 @@ public interface SwipeMenu
         /**
          * 滚动状态变化回调
          *
+         * @param swipeMenu
          * @param oldState
          * @param newState
-         * @param swipeMenu
          */
-        void onScrollStateChanged(ScrollState oldState, ScrollState newState, SwipeMenu swipeMenu);
+        void onScrollStateChanged(SwipeMenu swipeMenu, ScrollState oldState, ScrollState newState);
     }
 }
 ```
