@@ -201,10 +201,10 @@ public interface SwipeMenu
         /**
          * 滚动状态变化回调
          *
+         * @param swipeMenu
          * @param oldState
          * @param newState
-         * @param swipeMenu
          */
-        void onScrollStateChanged(ScrollState oldState, ScrollState newState, SwipeMenu swipeMenu);
+        void onScrollStateChanged(SwipeMenu swipeMenu, ScrollState oldState, ScrollState newState);
     }
 }
