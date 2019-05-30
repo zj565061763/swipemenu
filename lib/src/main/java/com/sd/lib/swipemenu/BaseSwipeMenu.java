@@ -728,7 +728,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 return 0;
 
             final int delta = Math.abs(getContentBoundCurrent() - getContentBoundClose());
-            return delta / size;
+            final float percent = delta / (float) size;
+
+            return percent;
         }
 
         public final int getContentBoundSize()
