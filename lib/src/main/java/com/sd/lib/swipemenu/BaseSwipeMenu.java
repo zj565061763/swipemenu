@@ -644,8 +644,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         final MenuContainer container = mMapMenuContainer.get(mMenuDirection);
         if (container != null)
             container.setLockEvent(percent < 1.0f);
-
-        mContentContainer.setLockEvent(percent > 0 && percent < 1.0f);
     }
 
     //---------- DirectionHandler start ----------
