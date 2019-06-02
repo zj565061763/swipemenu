@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
-import com.sd.lib.swipemenu.utils.SingleModeSwipeMenuOverlay;
+import com.sd.lib.swipemenu.ext.SingleModeSwipeMenuOverlay;
 
 public class ListViewActivity extends AppCompatActivity
 {

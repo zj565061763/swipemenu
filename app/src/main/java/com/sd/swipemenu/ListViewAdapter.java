@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import com.sd.lib.adapter.FSimpleAdapter;
 import com.sd.lib.swipemenu.SwipeMenu;
-import com.sd.lib.swipemenu.utils.SingleModeSwipeMenuOverlay;
+import com.sd.lib.swipemenu.ext.SingleModeSwipeMenuOverlay;
 
 public class ListViewAdapter extends FSimpleAdapter<DataModel>
 {

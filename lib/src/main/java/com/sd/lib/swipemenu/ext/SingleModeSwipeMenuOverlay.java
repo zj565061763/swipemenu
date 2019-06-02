@@ -1,4 +1,4 @@
-package com.sd.lib.swipemenu.utils;
+package com.sd.lib.swipemenu.ext;
 
 import android.content.Context;
 import android.graphics.Rect;

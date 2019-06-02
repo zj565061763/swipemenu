@@ -10,11 +10,11 @@
         android:layout_height="match_parent"
         android:divider="@null" />
 
-    <com.sd.lib.swipemenu.utils.SingleModeSwipeMenuOverlay
+    <com.sd.lib.swipemenu.ext.SingleModeSwipeMenuOverlay
         android:id="@+id/swipemenu_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.sd.lib.swipemenu.utils.SingleModeSwipeMenuOverlay>
+    </com.sd.lib.swipemenu.ext.SingleModeSwipeMenuOverlay>
 
 </FrameLayout>
