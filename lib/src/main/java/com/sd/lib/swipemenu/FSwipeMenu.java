@@ -1,6 +1,7 @@
 package com.sd.lib.swipemenu;
 
 import android.content.Context;
+import android.support.v4.view.NestedScrollingParent2;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -12,7 +13,7 @@ import com.sd.lib.swipemenu.gesture.FGestureManager;
 import com.sd.lib.swipemenu.gesture.FTouchHelper;
 
 
-public class FSwipeMenu extends BaseSwipeMenu
+public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent2
 {
     private FGestureManager mGestureManager;
 
@@ -42,7 +43,10 @@ public class FSwipeMenu extends BaseSwipeMenu
                         return false;
                     } else
                     {
-                        return canPull();
+                        if (mStartNestedScroll)
+                            return false;
+                        else
+                            return canPull();
                     }
                 }
 
@@ -207,6 +211,41 @@ public class FSwipeMenu extends BaseSwipeMenu
     {
         super.onDetachedFromWindow();
         getGestureManager().getScroller().abortAnimation();
+    }
+
+    private boolean mStartNestedScroll = false;
+
+    //---------- NestedScrollingParent ----------
+
+    @Override
+    public boolean onStartNestedScroll(View child, View target, int axes, int type)
+    {
+        Log.i(SwipeMenu.class.getSimpleName(), "onStartNestedScroll:" + target);
+        mStartNestedScroll = true;
+        return true;
+    }
+
+    @Override
+    public void onNestedScrollAccepted(View child, View target, int axes, int type)
+    {
+        Log.i(SwipeMenu.class.getSimpleName(), "onNestedScrollAccepted:" + target);
+    }
+
+    @Override
+    public void onStopNestedScroll(View target, int type)
+    {
+        Log.i(SwipeMenu.class.getSimpleName(), "onStopNestedScroll:" + target);
+        mStartNestedScroll = false;
+    }
+
+    @Override
+    public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type)
+    {
+    }
+
+    @Override
+    public void onNestedPreScroll(View target, int dx, int dy, int[] consumed, int type)
+    {
     }
 
     //---------- PullHelper Start ----------
