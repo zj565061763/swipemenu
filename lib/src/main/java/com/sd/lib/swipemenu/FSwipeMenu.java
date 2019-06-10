@@ -13,8 +13,8 @@ import com.sd.lib.swipemenu.gesture.FGestureManager;
 import com.sd.lib.swipemenu.gesture.FTouchHelper;
 import com.sd.lib.swipemenu.pull_condition.NestedScrollPullCondition;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 
 public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent2
@@ -239,7 +239,7 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent2
     private void addNestedScrollPullCondition(View target, int axes)
     {
         if (mMapNestedScrollPullCondition == null)
-            mMapNestedScrollPullCondition = new WeakHashMap<>();
+            mMapNestedScrollPullCondition = new HashMap<>();
 
         removeNestedScrollPullCondition(target);
 
