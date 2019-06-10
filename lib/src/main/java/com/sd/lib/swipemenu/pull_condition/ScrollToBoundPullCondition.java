@@ -5,6 +5,9 @@ import android.view.View;
 
 import com.sd.lib.swipemenu.SwipeMenu;
 
+/**
+ * 限制View滚动到边界后，{@link SwipeMenu}才可以拖动
+ */
 public class ScrollToBoundPullCondition extends BasePullCondition<View>
 {
     private final Axis mAxis;
