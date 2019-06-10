@@ -9,6 +9,7 @@ import com.sd.lib.swipemenu.SwipeMenu;
 public class NestedScrollPullCondition extends BasePullCondition<View>
 {
     private int mAxes;
+    private final ScrollToBoundPullCondition mScrollToBoundPullCondition;
 
     public NestedScrollPullCondition(View source, int axes)
     {
@@ -16,12 +17,15 @@ public class NestedScrollPullCondition extends BasePullCondition<View>
         if ((axes & ViewCompat.SCROLL_AXIS_HORIZONTAL) != 0)
         {
             mAxes = ViewCompat.SCROLL_AXIS_HORIZONTAL;
+            mScrollToBoundPullCondition = new ScrollToBoundPullCondition(source, ScrollToBoundPullCondition.Axis.Horizontal);
         } else if ((axes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0)
         {
             mAxes = ViewCompat.SCROLL_AXIS_VERTICAL;
+            mScrollToBoundPullCondition = new ScrollToBoundPullCondition(source, ScrollToBoundPullCondition.Axis.Vertical);
         } else
         {
             mAxes = ViewCompat.SCROLL_AXIS_NONE;
+            mScrollToBoundPullCondition = null;
         }
     }
 
@@ -36,28 +40,14 @@ public class NestedScrollPullCondition extends BasePullCondition<View>
 
         if (mAxes == ViewCompat.SCROLL_AXIS_HORIZONTAL)
         {
-            if (pullDirection == SwipeMenu.Direction.Left)
-            {
-                if (getSource().canScrollHorizontally(1))
-                    return false;
-            } else if (pullDirection == SwipeMenu.Direction.Right)
-            {
-                if (getSource().canScrollHorizontally(-1))
-                    return false;
-            }
+            if (!mScrollToBoundPullCondition.canPull(swipeMenu, pullDirection, event))
+                return false;
         }
 
         if (mAxes == ViewCompat.SCROLL_AXIS_VERTICAL)
         {
-            if (pullDirection == SwipeMenu.Direction.Top)
-            {
-                if (getSource().canScrollVertically(1))
-                    return false;
-            } else if (pullDirection == SwipeMenu.Direction.Bottom)
-            {
-                if (getSource().canScrollVertically(-1))
-                    return false;
-            }
+            if (!mScrollToBoundPullCondition.canPull(swipeMenu, pullDirection, event))
+                return false;
         }
 
         return true;
