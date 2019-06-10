@@ -11,6 +11,10 @@ import android.view.View;
 
 import com.sd.lib.swipemenu.gesture.FGestureManager;
 import com.sd.lib.swipemenu.gesture.FTouchHelper;
+import com.sd.lib.swipemenu.pull_condition.NestedScrollPullCondition;
+
+import java.util.Map;
+import java.util.WeakHashMap;
 
 
 public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent2
@@ -43,17 +47,14 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent2
                         return false;
                     } else
                     {
-                        if (mStartNestedScroll)
-                            return false;
-                        else
-                            return canPull();
+                        return canPull(event);
                     }
                 }
 
                 @Override
                 public boolean shouldConsumeEvent(MotionEvent event)
                 {
-                    return canPull();
+                    return mGestureManager.getTagHolder().isTagIntercept() || canPull(event);
                 }
 
                 @Override
@@ -161,7 +162,7 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent2
             return getGestureManager().getScroller().scrollToY(start, end, -1);
     }
 
-    private boolean canPull()
+    private boolean canPull(MotionEvent event)
     {
         final boolean checkViewIdle = isViewIdle();
         if (!checkViewIdle)
@@ -172,12 +173,30 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent2
         {
             // horizontal
             final int delta = (int) getGestureManager().getTouchHelper().getDeltaXFromDown();
-            return mHorizontalPullHelper.canPull(delta, getState());
+            final Direction initDirection = mHorizontalPullHelper.canPull(delta, getState());
+            if (initDirection == null)
+                return false;
+
+            final Direction pullDirection = delta < 0 ? Direction.Left : Direction.Right;
+            if (!checkPullCondition(pullDirection, event))
+                return false;
+
+            setMenuDirection(initDirection);
+            return true;
         } else
         {
             // vertical
             final int delta = (int) getGestureManager().getTouchHelper().getDeltaYFromDown();
-            return mVerticalPullHelper.canPull(delta, getState());
+            final Direction initDirection = mVerticalPullHelper.canPull(delta, getState());
+            if (initDirection == null)
+                return false;
+
+            final Direction pullDirection = delta < 0 ? Direction.Top : Direction.Bottom;
+            if (!checkPullCondition(pullDirection, event))
+                return false;
+
+            setMenuDirection(initDirection);
+            return true;
         }
     }
 
@@ -213,29 +232,44 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent2
         getGestureManager().getScroller().abortAnimation();
     }
 
-    private boolean mStartNestedScroll = false;
+    private Map<View, PullCondition> mMapNestedScrollPullCondition;
 
     //---------- NestedScrollingParent ----------
+
+    private void addNestedScrollPullCondition(View target, int axes)
+    {
+        if (mMapNestedScrollPullCondition == null)
+            mMapNestedScrollPullCondition = new WeakHashMap<>();
+
+        removeNestedScrollPullCondition(target);
+
+        final PullCondition pullCondition = new NestedScrollPullCondition(target, axes);
+        mMapNestedScrollPullCondition.put(target, pullCondition);
+        addPullCondition(pullCondition);
+    }
+
+    private void removeNestedScrollPullCondition(View target)
+    {
+        final PullCondition pullCondition = mMapNestedScrollPullCondition.remove(target);
+        removePullCondition(pullCondition);
+    }
 
     @Override
     public boolean onStartNestedScroll(View child, View target, int axes, int type)
     {
-        Log.i(SwipeMenu.class.getSimpleName(), "onStartNestedScroll:" + target);
-        mStartNestedScroll = true;
+        addNestedScrollPullCondition(target, axes);
         return true;
     }
 
     @Override
     public void onNestedScrollAccepted(View child, View target, int axes, int type)
     {
-        Log.i(SwipeMenu.class.getSimpleName(), "onNestedScrollAccepted:" + target);
     }
 
     @Override
     public void onStopNestedScroll(View target, int type)
     {
-        Log.i(SwipeMenu.class.getSimpleName(), "onStopNestedScroll:" + target);
-        mStartNestedScroll = false;
+        removeNestedScrollPullCondition(target);
     }
 
     @Override
@@ -252,20 +286,20 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent2
 
     public abstract class PullHelper
     {
-        public final boolean canPull(int delta, State state)
+        public final Direction canPull(int delta, State state)
         {
             final View contentView = getContentView();
             if (contentView == null)
-                return false;
+                return null;
 
             if (delta == 0)
-                return false;
+                return null;
 
             if (!checkState(state, delta))
-                return false;
+                return null;
 
             if (!checkScrollToBound(contentView, delta))
-                return false;
+                return null;
 
             Direction direction = null;
             if (state == State.Close)
@@ -278,10 +312,9 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent2
 
             final View view = getMenuView(direction);
             if (view == null)
-                return false;
+                return null;
 
-            setMenuDirection(direction);
-            return true;
+            return direction;
         }
 
         protected abstract boolean checkState(State state, int delta);

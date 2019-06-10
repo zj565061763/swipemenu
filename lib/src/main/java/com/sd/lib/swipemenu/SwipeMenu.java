@@ -1,5 +1,6 @@
 package com.sd.lib.swipemenu;
 
+import android.view.MotionEvent;
 import android.view.View;
 
 public interface SwipeMenu
@@ -31,6 +32,20 @@ public interface SwipeMenu
      * @param callback
      */
     void setOnScrollStateChangeCallback(OnScrollStateChangeCallback callback);
+
+    /**
+     * 添加拖动条件限制
+     *
+     * @param condition
+     */
+    void addPullCondition(PullCondition condition);
+
+    /**
+     * 移除拖动条件限制
+     *
+     * @param condition
+     */
+    void removePullCondition(PullCondition condition);
 
     /**
      * 设置内容view
@@ -191,5 +206,10 @@ public interface SwipeMenu
          * @param newState
          */
         void onScrollStateChanged(SwipeMenu swipeMenu, ScrollState oldState, ScrollState newState);
+    }
+
+    interface PullCondition
+    {
+        boolean canPull(SwipeMenu swipeMenu, Direction pullDirection, MotionEvent event);
     }
 }

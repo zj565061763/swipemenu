@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 {
@@ -36,6 +38,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     private OnStateChangeCallback mOnStateChangeCallback;
     private OnViewPositionChangeCallback mOnViewPositionChangeCallback;
     private OnScrollStateChangeCallback mOnScrollStateChangeCallback;
+
+    private List<PullCondition> mListPullCondition;
 
     public BaseSwipeMenu(Context context, AttributeSet attrs)
     {
@@ -115,6 +119,54 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     public final void setOnScrollStateChangeCallback(OnScrollStateChangeCallback callback)
     {
         mOnScrollStateChangeCallback = callback;
+    }
+
+    @Override
+    public void addPullCondition(PullCondition condition)
+    {
+        if (condition == null)
+            return;
+
+        if (mListPullCondition == null)
+            mListPullCondition = new CopyOnWriteArrayList<>();
+
+        if (mListPullCondition.contains(condition))
+            return;
+
+        mListPullCondition.add(condition);
+
+        if (mIsDebug)
+            Log.i(SwipeMenu.class.getSimpleName(), " + addPullCondition " + mListPullCondition.size() + " : " + condition);
+    }
+
+    @Override
+    public void removePullCondition(PullCondition condition)
+    {
+        if (mListPullCondition != null)
+        {
+            if (mListPullCondition.remove(condition))
+            {
+                if (mIsDebug)
+                    Log.i(SwipeMenu.class.getSimpleName(), " - removePullCondition " + mListPullCondition.size() + " : " + condition);
+            }
+        }
+    }
+
+    protected boolean checkPullCondition(Direction pullDirection, MotionEvent event)
+    {
+        if (pullDirection == null)
+            throw new IllegalArgumentException("pullDirection is null when checkPullCondition()");
+
+        if (mListPullCondition != null)
+        {
+            for (PullCondition item : mListPullCondition)
+            {
+                if (!item.canPull(this, pullDirection, event))
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     @Override

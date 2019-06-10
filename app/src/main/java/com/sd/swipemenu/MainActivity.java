@@ -25,6 +25,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_listview:
                 startActivity(new Intent(this, ListViewActivity.class));
                 break;
+            case R.id.btn_nested:
+                startActivity(new Intent(this, NestedActivity.class));
+                break;
         }
     }
 }
