@@ -6,6 +6,9 @@ import android.view.View;
 
 import com.sd.lib.swipemenu.SwipeMenu;
 
+/**
+ * 限制触摸点不在指定的View边界内，{@link SwipeMenu}才可以拖动
+ */
 public class IgnoreViewPullCondition extends BasePullCondition<View>
 {
     private final int[] mLocation = new int[2];
