@@ -141,6 +141,11 @@ public interface SwipeMenu
         {
             return this == Left || this == Right;
         }
+
+        public final boolean isVertical()
+        {
+            return this == Top || this == Bottom;
+        }
     }
 
     enum Mode
