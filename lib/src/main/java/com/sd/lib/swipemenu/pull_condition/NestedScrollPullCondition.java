@@ -26,14 +26,8 @@ public class NestedScrollPullCondition extends BasePullCondition<View>
     }
 
     @Override
-    public boolean canPull(SwipeMenu swipeMenu, SwipeMenu.Direction pullDirection, MotionEvent event)
+    protected boolean canPullImpl(SwipeMenu swipeMenu, SwipeMenu.Direction pullDirection, MotionEvent event)
     {
-        if (getSource() == null)
-        {
-            swipeMenu.removePullCondition(this);
-            return true;
-        }
-
         if (mAxes == ViewCompat.SCROLL_AXIS_NONE)
         {
             swipeMenu.removePullCondition(this);
