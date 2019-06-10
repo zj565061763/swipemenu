@@ -152,6 +152,16 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         }
     }
 
+    @Override
+    public void clearPullCondition()
+    {
+        if (mListPullCondition != null)
+        {
+            mListPullCondition.clear();
+            mListPullCondition = null;
+        }
+    }
+
     protected boolean checkPullCondition(Direction pullDirection, MotionEvent event)
     {
         if (pullDirection == null)

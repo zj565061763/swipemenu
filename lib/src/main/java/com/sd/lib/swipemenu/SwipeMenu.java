@@ -48,6 +48,11 @@ public interface SwipeMenu
     void removePullCondition(PullCondition condition);
 
     /**
+     * 清空所有拖动条件限制
+     */
+    void clearPullCondition();
+
+    /**
      * 设置内容view
      *
      * @param view
