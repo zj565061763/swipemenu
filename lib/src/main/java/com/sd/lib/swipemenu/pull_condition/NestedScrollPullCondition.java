@@ -34,14 +34,30 @@ public class NestedScrollPullCondition extends BasePullCondition<View>
             return true;
         }
 
-        if (mAxes == ViewCompat.SCROLL_AXIS_HORIZONTAL && pullDirection.isHorizontal())
+        if (mAxes == ViewCompat.SCROLL_AXIS_HORIZONTAL)
         {
-            return false;
+            if (pullDirection == SwipeMenu.Direction.Left)
+            {
+                if (getSource().canScrollHorizontally(1))
+                    return false;
+            } else if (pullDirection == SwipeMenu.Direction.Right)
+            {
+                if (getSource().canScrollHorizontally(-1))
+                    return false;
+            }
         }
 
-        if (mAxes == ViewCompat.SCROLL_AXIS_VERTICAL && !pullDirection.isHorizontal())
+        if (mAxes == ViewCompat.SCROLL_AXIS_VERTICAL)
         {
-            return false;
+            if (pullDirection == SwipeMenu.Direction.Top)
+            {
+                if (getSource().canScrollVertically(1))
+                    return false;
+            } else if (pullDirection == SwipeMenu.Direction.Bottom)
+            {
+                if (getSource().canScrollVertically(-1))
+                    return false;
+            }
         }
 
         return true;
