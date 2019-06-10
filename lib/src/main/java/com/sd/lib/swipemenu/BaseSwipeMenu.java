@@ -879,7 +879,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         public VerticalHandler(Direction direction)
         {
             super(direction);
-            if (direction.isHorizontal())
+            if (!direction.isVertical())
                 throw new IllegalArgumentException("direction must be vertical");
         }
 
