@@ -1,6 +1,5 @@
 package com.sd.lib.swipemenu.pull_condition;
 
-import android.os.Build;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -32,9 +31,6 @@ public class IgnoreViewPullCondition extends ViewPullCondition
         if (view == null)
             return false;
 
-        if (!isAttached(view))
-            return false;
-
         final int[] location = getLocationOnScreen(view, outLocation);
         final int left = location[0];
         final int top = location[1];
@@ -43,17 +39,6 @@ public class IgnoreViewPullCondition extends ViewPullCondition
 
         return left < right && top < bottom
                 && x >= left && x < right && y >= top && y < bottom;
-    }
-
-    private static boolean isAttached(View view)
-    {
-        if (view == null)
-            return false;
-
-        if (Build.VERSION.SDK_INT >= 19)
-            return view.isAttachedToWindow();
-        else
-            return view.getWindowToken() != null;
     }
 
     private static int[] getLocationOnScreen(View view, int[] outLocation)
