@@ -8,18 +8,18 @@ import com.sd.lib.swipemenu.SwipeMenu;
 /**
  * 限制View滚动到边界后，{@link SwipeMenu}才可以拖动
  */
-public class ScrollToBoundPullCondition extends BasePullCondition<View>
+public class ScrollToBoundPullCondition extends ViewPullCondition
 {
     private final Axis mAxis;
 
-    public ScrollToBoundPullCondition(View source)
+    public ScrollToBoundPullCondition(View view)
     {
-        this(source, Axis.All);
+        this(view, Axis.All);
     }
 
-    public ScrollToBoundPullCondition(View source, Axis axis)
+    public ScrollToBoundPullCondition(View view, Axis axis)
     {
-        super(source);
+        super(view);
         if (axis == null)
             throw new IllegalArgumentException("axis is null");
 
@@ -58,11 +58,11 @@ public class ScrollToBoundPullCondition extends BasePullCondition<View>
     {
         if (pullDirection == SwipeMenu.Direction.Left)
         {
-            if (getSource().canScrollHorizontally(1))
+            if (getView().canScrollHorizontally(1))
                 return false;
         } else if (pullDirection == SwipeMenu.Direction.Right)
         {
-            if (getSource().canScrollHorizontally(-1))
+            if (getView().canScrollHorizontally(-1))
                 return false;
         } else
         {
@@ -75,11 +75,11 @@ public class ScrollToBoundPullCondition extends BasePullCondition<View>
     {
         if (pullDirection == SwipeMenu.Direction.Top)
         {
-            if (getSource().canScrollVertically(1))
+            if (getView().canScrollVertically(1))
                 return false;
         } else if (pullDirection == SwipeMenu.Direction.Bottom)
         {
-            if (getSource().canScrollVertically(-1))
+            if (getView().canScrollVertically(-1))
                 return false;
         } else
         {

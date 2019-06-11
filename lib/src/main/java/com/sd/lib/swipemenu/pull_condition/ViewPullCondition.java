@@ -1,32 +1,33 @@
 package com.sd.lib.swipemenu.pull_condition;
 
 import android.view.MotionEvent;
+import android.view.View;
 
 import com.sd.lib.swipemenu.SwipeMenu;
 
 import java.lang.ref.WeakReference;
 
-public abstract class BasePullCondition<S> implements SwipeMenu.PullCondition
+public abstract class ViewPullCondition implements SwipeMenu.PullCondition
 {
-    private final WeakReference<S> mSource;
+    private final WeakReference<View> mView;
 
-    public BasePullCondition(S source)
+    public ViewPullCondition(View view)
     {
-        if (source == null)
-            throw new IllegalArgumentException("source is null for pull condition");
+        if (view == null)
+            throw new IllegalArgumentException("view is null for pull condition");
 
-        mSource = new WeakReference<>(source);
+        mView = new WeakReference<>(view);
     }
 
-    public final S getSource()
+    public final View getView()
     {
-        return mSource == null ? null : mSource.get();
+        return mView == null ? null : mView.get();
     }
 
     @Override
     public final boolean canPull(SwipeMenu swipeMenu, SwipeMenu.Direction pullDirection, MotionEvent event)
     {
-        if (getSource() == null)
+        if (getView() == null)
         {
             swipeMenu.removePullCondition(this);
             return true;

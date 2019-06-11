@@ -6,22 +6,22 @@ import android.view.View;
 
 import com.sd.lib.swipemenu.SwipeMenu;
 
-public class NestedScrollPullCondition extends BasePullCondition<View>
+public class NestedScrollPullCondition extends ViewPullCondition
 {
     private int mAxes;
     private final ScrollToBoundPullCondition mScrollToBoundPullCondition;
 
-    public NestedScrollPullCondition(View source, int axes)
+    public NestedScrollPullCondition(View view, int axes)
     {
-        super(source);
+        super(view);
         if ((axes & ViewCompat.SCROLL_AXIS_HORIZONTAL) != 0)
         {
             mAxes = ViewCompat.SCROLL_AXIS_HORIZONTAL;
-            mScrollToBoundPullCondition = new ScrollToBoundPullCondition(source, ScrollToBoundPullCondition.Axis.Horizontal);
+            mScrollToBoundPullCondition = new ScrollToBoundPullCondition(view, ScrollToBoundPullCondition.Axis.Horizontal);
         } else if ((axes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0)
         {
             mAxes = ViewCompat.SCROLL_AXIS_VERTICAL;
-            mScrollToBoundPullCondition = new ScrollToBoundPullCondition(source, ScrollToBoundPullCondition.Axis.Vertical);
+            mScrollToBoundPullCondition = new ScrollToBoundPullCondition(view, ScrollToBoundPullCondition.Axis.Vertical);
         } else
         {
             mAxes = ViewCompat.SCROLL_AXIS_NONE;

@@ -9,19 +9,19 @@ import com.sd.lib.swipemenu.SwipeMenu;
 /**
  * 限制触摸点不在指定的View边界内，{@link SwipeMenu}才可以拖动
  */
-public class IgnoreViewPullCondition extends BasePullCondition<View>
+public class IgnoreViewPullCondition extends ViewPullCondition
 {
     private final int[] mLocation = new int[2];
 
-    public IgnoreViewPullCondition(View source)
+    public IgnoreViewPullCondition(View view)
     {
-        super(source);
+        super(view);
     }
 
     @Override
     protected boolean canPullImpl(SwipeMenu swipeMenu, SwipeMenu.Direction pullDirection, MotionEvent event)
     {
-        if (isViewUnder(getSource(), (int) event.getRawX(), (int) event.getRawY(), mLocation))
+        if (isViewUnder(getView(), (int) event.getRawX(), (int) event.getRawY(), mLocation))
             return false;
 
         return true;
