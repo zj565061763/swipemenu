@@ -42,6 +42,25 @@ public interface SwipeMenu
     void setOnScrollStateChangeCallback(OnScrollStateChangeCallback callback);
 
     /**
+     * 添加拖动条件限制
+     *
+     * @param condition
+     */
+    void addPullCondition(PullCondition condition);
+
+    /**
+     * 移除拖动条件限制
+     *
+     * @param condition
+     */
+    void removePullCondition(PullCondition condition);
+
+    /**
+     * 清空所有拖动条件限制
+     */
+    void clearPullCondition();
+
+    /**
      * 设置内容view
      *
      * @param view
@@ -135,6 +154,11 @@ public interface SwipeMenu
         {
             return this == Left || this == Right;
         }
+
+        public final boolean isVertical()
+        {
+            return this == Top || this == Bottom;
+        }
     }
 
     enum Mode
@@ -200,6 +224,11 @@ public interface SwipeMenu
          * @param newState
          */
         void onScrollStateChanged(SwipeMenu swipeMenu, ScrollState oldState, ScrollState newState);
+    }
+
+    interface PullCondition
+    {
+        boolean canPull(SwipeMenu swipeMenu, Direction pullDirection, MotionEvent event);
     }
 }
 ```
