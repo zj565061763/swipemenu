@@ -45,6 +45,8 @@ public class InfiniteSwipeActivity extends AppCompatActivity
         @Override
         protected void onBindData(Direction viewDirection, Direction dataDirection)
         {
+            Log.i(TAG, "onBindData:" + viewDirection + " " + dataDirection);
+
             TextView textView = null;
             switch (viewDirection)
             {
