@@ -34,8 +34,8 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
     /**
      * 绑定数据
      *
-     * @param viewDirection
-     * @param dataDirection
+     * @param viewDirection view方向
+     * @param dataDirection 数据方向
      */
     public void bindData(Direction viewDirection, Direction dataDirection)
     {
@@ -78,8 +78,19 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
         onBindData(direction, direction);
     }
 
+    /**
+     * 绑定数据
+     *
+     * @param viewDirection view方向
+     * @param dataDirection 数据方向
+     */
     protected abstract void onBindData(Direction viewDirection, Direction dataDirection);
 
+    /**
+     * 移动索引
+     *
+     * @param direction 索引需要移动的方向
+     */
     protected abstract void onMoveIndex(Direction direction);
 
     public enum Direction
