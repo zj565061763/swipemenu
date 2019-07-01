@@ -37,13 +37,16 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
 
     }
 
+    /**
+     * 绑定数据
+     */
     public void bindData()
     {
-        onBindData(null, null);
-        onBindData(SwipeMenu.Direction.Left, SwipeMenu.Direction.Left);
-        onBindData(SwipeMenu.Direction.Top, SwipeMenu.Direction.Top);
-        onBindData(SwipeMenu.Direction.Right, SwipeMenu.Direction.Right);
-        onBindData(SwipeMenu.Direction.Bottom, SwipeMenu.Direction.Bottom);
+        onBindData(Direction.Center, Direction.Center);
+        onBindData(Direction.Left, Direction.Left);
+        onBindData(Direction.Top, Direction.Top);
+        onBindData(Direction.Right, Direction.Right);
+        onBindData(Direction.Bottom, Direction.Bottom);
     }
 
     private void bindDataWhenOpenIdle(SwipeMenu swipeMenu)
@@ -59,16 +62,16 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
         switch (state)
         {
             case OpenLeft:
-                onBindData(null, SwipeMenu.Direction.Left);
+                onBindData(Direction.Center, Direction.Left);
                 break;
             case OpenTop:
-                onBindData(null, SwipeMenu.Direction.Top);
+                onBindData(Direction.Center, Direction.Top);
                 break;
             case OpenRight:
-                onBindData(null, SwipeMenu.Direction.Right);
+                onBindData(Direction.Center, Direction.Right);
                 break;
             case OpenBottom:
-                onBindData(null, SwipeMenu.Direction.Bottom);
+                onBindData(Direction.Center, Direction.Bottom);
                 break;
             default:
                 return;
@@ -77,5 +80,14 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
         swipeMenu.setState(SwipeMenu.State.Close, false);
     }
 
-    public abstract void onBindData(SwipeMenu.Direction viewDirection, SwipeMenu.Direction dataDirection);
+    protected abstract void onBindData(Direction viewDirection, Direction dataDirection);
+
+    public enum Direction
+    {
+        Left,
+        Top,
+        Right,
+        Bottom,
+        Center
+    }
 }
