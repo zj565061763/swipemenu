@@ -53,29 +53,37 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
             return;
 
         Direction direction = null;
+        Direction directionOther = null;
+
         switch (state)
         {
             case OpenLeft:
                 direction = Direction.Left;
+                directionOther = Direction.Right;
                 break;
             case OpenTop:
                 direction = Direction.Top;
+                directionOther = Direction.Bottom;
                 break;
             case OpenRight:
                 direction = Direction.Right;
+                directionOther = Direction.Left;
                 break;
             case OpenBottom:
                 direction = Direction.Bottom;
+                directionOther = Direction.Top;
                 break;
             default:
                 return;
         }
 
         onBindData(Direction.Center, direction);
-        swipeMenu.setState(SwipeMenu.State.Close, false);
 
+        swipeMenu.setState(SwipeMenu.State.Close, false);
         onMoveIndex(direction);
+
         onBindData(direction, direction);
+        onBindData(directionOther, directionOther);
     }
 
     /**
