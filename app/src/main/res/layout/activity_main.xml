@@ -28,4 +28,12 @@
         android:text="Nested"
         android:textAllCaps="false" />
 
+    <Button
+        android:id="@+id/btn_infinite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:text="Infinite"
+        android:textAllCaps="false" />
+
 </LinearLayout>

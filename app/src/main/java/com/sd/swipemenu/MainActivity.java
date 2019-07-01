@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_nested:
                 startActivity(new Intent(this, NestedActivity.class));
                 break;
+            case R.id.btn_infinite:
+                startActivity(new Intent(this, InfiniteSwipeActivity.class));
+                break;
         }
     }
 }

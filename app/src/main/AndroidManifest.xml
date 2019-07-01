@@ -21,6 +21,7 @@
         <activity android:name="com.sd.swipemenu.SimpleActivity" />
         <activity android:name="com.sd.swipemenu.ListViewActivity" />
         <activity android:name="com.sd.swipemenu.NestedActivity" />
+        <activity android:name="com.sd.swipemenu.InfiniteSwipeActivity" />
 
     </application>
 

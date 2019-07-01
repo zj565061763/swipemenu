@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.sd.lib.swipemenu.FSwipeMenu
+        android:id="@+id/swipemenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- 内容 -->
+        <FrameLayout
+            android:id="@id/lib_swipemenu_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:background="@color/colorAccent"
+                android:gravity="center" />
+
+        </FrameLayout>
+
+        <!-- 顶部菜单 -->
+        <FrameLayout
+            android:id="@id/lib_swipemenu_menu_top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_menu_top"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:background="@color/colorAccent"
+                android:gravity="center" />
+
+        </FrameLayout>
+
+        <!-- 底部菜单 -->
+        <FrameLayout
+            android:id="@id/lib_swipemenu_menu_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_menu_bottom"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:background="@color/colorAccent"
+                android:gravity="center" />
+
+        </FrameLayout>
+
+    </com.sd.lib.swipemenu.FSwipeMenu>
+
+</FrameLayout>
