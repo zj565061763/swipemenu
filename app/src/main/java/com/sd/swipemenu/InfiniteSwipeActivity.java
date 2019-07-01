@@ -29,48 +29,60 @@ public class InfiniteSwipeActivity extends AppCompatActivity
 
         initData();
         mLoopList.setIndex(0);
-        bindDataDefault();
 
-        initSwipeMenu();
-    }
-
-    private void initSwipeMenu()
-    {
         mSwipeMenu.setMode(SwipeMenu.Mode.Drawer);
-        mSwipeMenu.setOnScrollStateChangeCallback(new SwipeMenu.OnScrollStateChangeCallback()
-        {
-            @Override
-            public void onScrollStateChanged(SwipeMenu swipeMenu, SwipeMenu.ScrollState oldState, SwipeMenu.ScrollState newState)
-            {
-                if (newState == SwipeMenu.ScrollState.Idle)
-                {
-                    switch (swipeMenu.getState())
-                    {
-                        case OpenTop:
-                            tv_content.setText(mLoopList.previous(1));
-                            mLoopList.movePrevious(1);
-                            break;
-                        case OpenBottom:
-                            tv_content.setText(mLoopList.next(1));
-                            mLoopList.moveNext(1);
-                            break;
-                        default:
-                            return;
-                    }
-
-                    swipeMenu.setState(SwipeMenu.State.Close, false);
-                    bindDataDefault();
-                }
-            }
-        });
+        mInfiniteSwipeMenuHandler.setSwipeMenu(mSwipeMenu);
+        mInfiniteSwipeMenuHandler.bindData(InfiniteSwipeMenuHandler.Direction.Center, InfiniteSwipeMenuHandler.Direction.Center);
+        mInfiniteSwipeMenuHandler.bindData(InfiniteSwipeMenuHandler.Direction.Top, InfiniteSwipeMenuHandler.Direction.Top);
+        mInfiniteSwipeMenuHandler.bindData(InfiniteSwipeMenuHandler.Direction.Bottom, InfiniteSwipeMenuHandler.Direction.Bottom);
     }
 
-    private void bindDataDefault()
+    private final InfiniteSwipeMenuHandler mInfiniteSwipeMenuHandler = new InfiniteSwipeMenuHandler()
     {
-        tv_menu_top.setText(mLoopList.previous(1));
-        tv_menu_bottom.setText(mLoopList.next(1));
-        tv_content.setText(mLoopList.current());
-    }
+        @Override
+        protected void onBindData(Direction viewDirection, Direction dataDirection)
+        {
+            TextView textView = null;
+            switch (viewDirection)
+            {
+                case Top:
+                    textView = tv_menu_top;
+                    break;
+                case Bottom:
+                    textView = tv_menu_bottom;
+                    break;
+                case Center:
+                    textView = tv_content;
+                    break;
+            }
+
+            String data = null;
+            switch (dataDirection)
+            {
+                case Top:
+                    data = mLoopList.previous(1);
+                    break;
+                case Bottom:
+                    data = mLoopList.next(1);
+                    break;
+                case Center:
+                    data = mLoopList.current();
+                    break;
+            }
+
+            if (textView != null)
+                textView.setText(data);
+        }
+
+        @Override
+        protected void onMoveIndex(Direction direction)
+        {
+            if (direction == Direction.Top)
+                mLoopList.movePrevious(1);
+            else if (direction == Direction.Bottom)
+                mLoopList.moveNext(1);
+        }
+    };
 
     private final FLoopList<String> mLoopList = new FLoopList<String>()
     {

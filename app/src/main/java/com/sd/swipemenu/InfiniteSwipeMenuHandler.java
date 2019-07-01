@@ -2,7 +2,7 @@ package com.sd.swipemenu;
 
 import com.sd.lib.swipemenu.SwipeMenu;
 
-public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStateChangeCallback, SwipeMenu.OnStateChangeCallback
+public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStateChangeCallback
 {
     private SwipeMenu mSwipeMenu;
 
@@ -31,22 +31,15 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
         bindDataWhenOpenIdle(swipeMenu);
     }
 
-    @Override
-    public void onStateChanged(SwipeMenu swipeMenu, SwipeMenu.State oldState, SwipeMenu.State newState)
-    {
-
-    }
-
     /**
      * 绑定数据
+     *
+     * @param viewDirection
+     * @param dataDirection
      */
-    public void bindData()
+    public void bindData(Direction viewDirection, Direction dataDirection)
     {
-        onBindData(Direction.Center, Direction.Center);
-        onBindData(Direction.Left, Direction.Left);
-        onBindData(Direction.Top, Direction.Top);
-        onBindData(Direction.Right, Direction.Right);
-        onBindData(Direction.Bottom, Direction.Bottom);
+        onBindData(viewDirection, dataDirection);
     }
 
     private void bindDataWhenOpenIdle(SwipeMenu swipeMenu)
@@ -59,28 +52,35 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
         if (state == SwipeMenu.State.Close)
             return;
 
+        Direction direction = null;
         switch (state)
         {
             case OpenLeft:
-                onBindData(Direction.Center, Direction.Left);
+                direction = Direction.Left;
                 break;
             case OpenTop:
-                onBindData(Direction.Center, Direction.Top);
+                direction = Direction.Top;
                 break;
             case OpenRight:
-                onBindData(Direction.Center, Direction.Right);
+                direction = Direction.Right;
                 break;
             case OpenBottom:
-                onBindData(Direction.Center, Direction.Bottom);
+                direction = Direction.Bottom;
                 break;
             default:
                 return;
         }
 
+        onBindData(Direction.Center, direction);
         swipeMenu.setState(SwipeMenu.State.Close, false);
+
+        onMoveIndex(direction);
+        onBindData(direction, direction);
     }
 
     protected abstract void onBindData(Direction viewDirection, Direction dataDirection);
+
+    protected abstract void onMoveIndex(Direction direction);
 
     public enum Direction
     {
