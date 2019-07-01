@@ -1,4 +1,4 @@
-package com.sd.swipemenu;
+package com.sd.lib.swipemenu.ext;
 
 import com.sd.lib.swipemenu.SwipeMenu;
 

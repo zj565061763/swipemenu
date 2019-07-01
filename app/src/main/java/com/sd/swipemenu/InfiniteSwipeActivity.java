@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.sd.lib.swipemenu.SwipeMenu;
+import com.sd.lib.swipemenu.ext.InfiniteSwipeMenuHandler;
 import com.sd.swipemenu.utils.FLoopList;
 
 import java.util.ArrayList;
