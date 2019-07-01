@@ -2,7 +2,12 @@ package com.sd.swipemenu.utils;
 
 public abstract class FLoopList<T>
 {
-    private int mIndex = 0;
+    /**
+     * 无效的索引位置
+     */
+    public static final int INVALID_INDEX = -1;
+
+    private int mIndex = INVALID_INDEX;
 
     /**
      * 返回索引位置
@@ -18,14 +23,13 @@ public abstract class FLoopList<T>
      * 设置索引位置
      *
      * @param index
-     * @return
      */
-    public int setIndex(int index)
+    public void setIndex(int index)
     {
         final int size = size();
         if (size <= 0)
         {
-            index = -1;
+            index = INVALID_INDEX;
         } else
         {
             if (index >= size)
@@ -35,32 +39,34 @@ public abstract class FLoopList<T>
                 index = 0;
         }
 
-        mIndex = index;
-        return mIndex;
+        final int old = mIndex;
+        if (old != index)
+        {
+            mIndex = index;
+            onIndexChanged(old, mIndex);
+        }
     }
 
     /**
      * 移动索引到后面的位置
      *
      * @param count 移动几个位置
-     * @return
      */
-    public int moveNext(int count)
+    public void moveIndexNext(int count)
     {
-        final int index = movedIndex(true, count);
-        return setIndex(index);
+        final int index = calculateIndex(true, count);
+        setIndex(index);
     }
 
     /**
      * 移动索引到前面的位置
      *
      * @param count 移动几个位置
-     * @return
      */
-    public int movePrevious(int count)
+    public void moveIndexPrevious(int count)
     {
-        final int index = movedIndex(false, count);
-        return setIndex(index);
+        final int index = calculateIndex(false, count);
+        setIndex(index);
     }
 
     /**
@@ -68,10 +74,10 @@ public abstract class FLoopList<T>
      *
      * @return
      */
-    public T current()
+    public T getCurrent()
     {
-        final int index = setIndex(mIndex);
-        return index < 0 ? null : get(index);
+        final int index = mIndex;
+        return getInternal(index);
     }
 
     /**
@@ -80,10 +86,10 @@ public abstract class FLoopList<T>
      * @param count 索引后面第几个位置
      * @return
      */
-    public T next(int count)
+    public T getNext(int count)
     {
-        final int index = movedIndex(true, count);
-        return index < 0 ? null : get(index);
+        final int index = calculateIndex(true, count);
+        return getInternal(index);
     }
 
     /**
@@ -91,38 +97,50 @@ public abstract class FLoopList<T>
      *
      * @return 索引前面第几个位置
      */
-    public T previous(int count)
+    public T getPrevious(int count)
     {
-        final int index = movedIndex(false, count);
-        return index < 0 ? null : get(index);
+        final int index = calculateIndex(false, count);
+        return getInternal(index);
     }
 
-    private int movedIndex(boolean next, int count)
+    private T getInternal(int index)
+    {
+        if (index == INVALID_INDEX)
+            return null;
+
+        if (index < 0 || index >= size())
+            return null;
+
+        return get(index);
+    }
+
+    private int calculateIndex(boolean next, int count)
     {
         if (count <= 0)
             throw new IllegalArgumentException("count is out of range (count > 0)");
 
+        if (mIndex == INVALID_INDEX)
+            return INVALID_INDEX;
+
         final int size = size();
         if (size <= 0)
-            return -1;
+            return INVALID_INDEX;
 
-        int tempIndex = next ? mIndex + count : mIndex - count;
+        final int tempIndex = next ? mIndex + count : mIndex - count;
+
         int index = 0;
         if (next)
         {
             index = tempIndex < size ? tempIndex : tempIndex % size;
         } else
         {
-            if (tempIndex >= 0)
-            {
-                index = tempIndex;
-            } else
-            {
-                tempIndex = tempIndex % size;
-                index = size + tempIndex;
-            }
+            index = tempIndex >= 0 ? tempIndex : size + tempIndex % size;
         }
         return index;
+    }
+
+    protected void onIndexChanged(int oldIndex, int newIndex)
+    {
     }
 
     protected abstract int size();

@@ -2,6 +2,7 @@ package com.sd.swipemenu;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.sd.lib.swipemenu.SwipeMenu;
@@ -12,6 +13,8 @@ import java.util.List;
 
 public class InfiniteSwipeActivity extends AppCompatActivity
 {
+    public static final String TAG = InfiniteSwipeActivity.class.getSimpleName();
+
     private SwipeMenu mSwipeMenu;
     private TextView tv_menu_top, tv_menu_bottom, tv_content;
 
@@ -60,13 +63,13 @@ public class InfiniteSwipeActivity extends AppCompatActivity
             switch (dataDirection)
             {
                 case Top:
-                    data = mLoopList.previous(1);
+                    data = mLoopList.getPrevious(1);
                     break;
                 case Bottom:
-                    data = mLoopList.next(1);
+                    data = mLoopList.getNext(1);
                     break;
                 case Center:
-                    data = mLoopList.current();
+                    data = mLoopList.getCurrent();
                     break;
             }
 
@@ -78,14 +81,21 @@ public class InfiniteSwipeActivity extends AppCompatActivity
         protected void onMoveIndex(Direction direction)
         {
             if (direction == Direction.Top)
-                mLoopList.movePrevious(1);
+                mLoopList.moveIndexPrevious(1);
             else if (direction == Direction.Bottom)
-                mLoopList.moveNext(1);
+                mLoopList.moveIndexNext(1);
         }
     };
 
     private final FLoopList<String> mLoopList = new FLoopList<String>()
     {
+        @Override
+        protected void onIndexChanged(int oldIndex, int newIndex)
+        {
+            super.onIndexChanged(oldIndex, newIndex);
+            Log.i(TAG, "onIndexChanged:" + newIndex);
+        }
+
         @Override
         protected int size()
         {
