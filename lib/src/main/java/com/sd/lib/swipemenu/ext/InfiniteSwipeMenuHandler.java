@@ -84,6 +84,8 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
 
         onBindData(direction, direction);
         onBindData(directionOther, directionOther);
+
+        onPageChanged(direction);
     }
 
     /**
@@ -100,6 +102,13 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
      * @param direction 索引需要移动的方向
      */
     protected abstract void onMoveIndex(Direction direction);
+
+    /**
+     * 页面变化回调
+     *
+     * @param direction
+     */
+    protected abstract void onPageChanged(Direction direction);
 
     public enum Direction
     {

@@ -88,6 +88,12 @@ public class InfiniteSwipeActivity extends AppCompatActivity
             else if (direction == Direction.Bottom)
                 mLoopList.moveIndexNext(1);
         }
+
+        @Override
+        protected void onPageChanged(Direction direction)
+        {
+            Log.i(TAG, "onPageChanged:" + direction);
+        }
     };
 
     private final FLoopList<String> mLoopList = new FLoopList<String>()
