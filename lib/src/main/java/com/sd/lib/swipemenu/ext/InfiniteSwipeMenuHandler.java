@@ -2,10 +2,18 @@ package com.sd.lib.swipemenu.ext;
 
 import com.sd.lib.swipemenu.SwipeMenu;
 
+/**
+ * 无限滑动处理
+ */
 public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStateChangeCallback
 {
     private SwipeMenu mSwipeMenu;
 
+    /**
+     * 设置要处理的对象
+     *
+     * @param swipeMenu
+     */
     public void setSwipeMenu(SwipeMenu swipeMenu)
     {
         final SwipeMenu old = mSwipeMenu;
@@ -25,12 +33,6 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
         }
     }
 
-    @Override
-    public void onScrollStateChanged(SwipeMenu swipeMenu, SwipeMenu.ScrollState oldState, SwipeMenu.ScrollState newState)
-    {
-        bindDataWhenOpenIdle(swipeMenu);
-    }
-
     /**
      * 绑定数据
      *
@@ -42,7 +44,13 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
         onBindData(viewDirection, dataDirection);
     }
 
-    private void bindDataWhenOpenIdle(SwipeMenu swipeMenu)
+    @Override
+    public void onScrollStateChanged(SwipeMenu swipeMenu, SwipeMenu.ScrollState oldState, SwipeMenu.ScrollState newState)
+    {
+        processIfNeed(swipeMenu);
+    }
+
+    private void processIfNeed(SwipeMenu swipeMenu)
     {
         final SwipeMenu.ScrollState scrollState = swipeMenu.getScrollState();
         if (scrollState != SwipeMenu.ScrollState.Idle)
