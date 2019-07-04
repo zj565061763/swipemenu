@@ -322,12 +322,12 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected final void setMenuDirection(Direction direction)
     {
-        if (mIsDebug)
-            Log.e(SwipeMenu.class.getSimpleName(), "setMenuDirection:" + direction);
-
         if (mMenuDirection != direction)
         {
             mMenuDirection = direction;
+
+            if (mIsDebug)
+                Log.e(SwipeMenu.class.getSimpleName(), "setMenuDirection:" + direction);
 
             if (direction == null)
             {
