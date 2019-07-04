@@ -7,7 +7,7 @@ import android.widget.Scroller;
 /**
  * 滚动帮助类
  */
-public abstract class FScroller
+public class FScroller
 {
     private ScrollerApi mScrollerApi;
     /**
