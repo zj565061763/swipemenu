@@ -34,7 +34,9 @@ public class InfiniteSwipeActivity extends AppCompatActivity
         initData();
         mLoopList.setIndex(0);
 
+        mSwipeMenu.setDebug(true);
         mSwipeMenu.setMode(SwipeMenu.Mode.Drawer);
+
         mInfiniteSwipeMenuHandler.setSwipeMenu(mSwipeMenu);
         mInfiniteSwipeMenuHandler.bindData(InfiniteSwipeMenuHandler.Direction.Center, InfiniteSwipeMenuHandler.Direction.Center);
         mInfiniteSwipeMenuHandler.bindData(InfiniteSwipeMenuHandler.Direction.Top, InfiniteSwipeMenuHandler.Direction.Top);
