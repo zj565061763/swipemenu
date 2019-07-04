@@ -730,7 +730,16 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                     smoothScroll(boundCurrent, boundState);
                 } else
                 {
-                    layoutInternal(state);
+                    if (state == mState)
+                    {
+                        if (mIsDebug)
+                            Log.i(SwipeMenu.class.getSimpleName(), "state == mState requestLayout()");
+
+                        requestLayout();
+                    } else
+                    {
+                        layoutInternal(state);
+                    }
                 }
             }
         }
