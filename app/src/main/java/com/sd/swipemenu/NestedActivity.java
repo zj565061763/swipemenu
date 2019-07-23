@@ -1,11 +1,12 @@
 package com.sd.swipemenu;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.sd.lib.adapter.FSimpleRecyclerAdapter;
 import com.sd.lib.adapter.viewholder.FRecyclerViewHolder;
@@ -26,7 +27,7 @@ public class NestedActivity extends AppCompatActivity
 
         mSwipeMenu.setDebug(true);
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.getDataHolder().setData(DataModel.get(100));
     }

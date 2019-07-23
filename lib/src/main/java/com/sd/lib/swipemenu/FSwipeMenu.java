@@ -1,13 +1,14 @@
 package com.sd.lib.swipemenu;
 
 import android.content.Context;
-import android.support.v4.view.NestedScrollingParent2;
-import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+
+import androidx.core.view.NestedScrollingParent2;
+import androidx.core.view.ViewCompat;
 
 import com.sd.lib.swipemenu.gesture.FGestureManager;
 import com.sd.lib.swipemenu.gesture.FTouchHelper;

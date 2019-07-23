@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.sd.swipemenu"
         minSdkVersion 15
@@ -19,8 +19,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.github.zj565061763:adapter:1.1.8'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'com.github.zj565061763:adapter:1.2.0'
     implementation project(':lib')
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
 }
