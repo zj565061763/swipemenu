@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 
-import androidx.core.view.NestedScrollingParent2;
+import androidx.core.view.NestedScrollingParent;
 import androidx.core.view.ViewCompat;
 
 import com.sd.lib.swipemenu.gesture.FGestureManager;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent2
+public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent
 {
     private FGestureManager mGestureManager;
 
@@ -256,31 +256,57 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent2
     }
 
     @Override
-    public boolean onStartNestedScroll(View child, View target, int axes, int type)
+    public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes)
     {
-        addNestedScrollPullCondition(target, axes);
+        if (mIsDebug)
+            Log.i(SwipeMenu.class.getSimpleName(), "onStartNestedScroll target:" + target);
+        addNestedScrollPullCondition(target, nestedScrollAxes);
         return true;
     }
 
     @Override
-    public void onNestedScrollAccepted(View child, View target, int axes, int type)
+    public void onNestedScrollAccepted(View child, View target, int axes)
     {
+        super.onNestedScrollAccepted(child, target, axes);
     }
 
     @Override
-    public void onStopNestedScroll(View target, int type)
+    public void onStopNestedScroll(View child)
     {
-        removeNestedScrollPullCondition(target);
+        if (mIsDebug)
+            Log.i(SwipeMenu.class.getSimpleName(), "onStopNestedScroll target:" + child);
+        removeNestedScrollPullCondition(child);
+        super.onStopNestedScroll(child);
     }
 
     @Override
-    public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type)
+    public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed)
     {
+        super.onNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
     }
 
     @Override
-    public void onNestedPreScroll(View target, int dx, int dy, int[] consumed, int type)
+    public void onNestedPreScroll(View target, int dx, int dy, int[] consumed)
     {
+        super.onNestedPreScroll(target, dx, dy, consumed);
+    }
+
+    @Override
+    public boolean onNestedFling(View target, float velocityX, float velocityY, boolean consumed)
+    {
+        return super.onNestedFling(target, velocityX, velocityY, consumed);
+    }
+
+    @Override
+    public boolean onNestedPreFling(View target, float velocityX, float velocityY)
+    {
+        return super.onNestedPreFling(target, velocityX, velocityY);
+    }
+
+    @Override
+    public int getNestedScrollAxes()
+    {
+        return super.getNestedScrollAxes();
     }
 
     //---------- PullHelper Start ----------
