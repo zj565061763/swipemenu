@@ -267,6 +267,7 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent, 
     {
         if (mIsDebug)
             Log.i(SwipeMenu.class.getSimpleName(), "onStartNestedScroll target:" + target);
+
         addNestedScrollPullCondition(target, nestedScrollAxes);
         return true;
     }
@@ -283,6 +284,7 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent, 
     {
         if (mIsDebug)
             Log.i(SwipeMenu.class.getSimpleName(), "onStopNestedScroll target:" + child);
+
         removeNestedScrollPullCondition(child);
         mNestedScrollingParentHelper.onStopNestedScroll(child);
         stopNestedScroll();
