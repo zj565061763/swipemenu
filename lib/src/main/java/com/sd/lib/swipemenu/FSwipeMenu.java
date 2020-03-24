@@ -7,7 +7,11 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 
-import androidx.core.view.NestedScrollingParent2;
+import androidx.annotation.Nullable;
+import androidx.core.view.NestedScrollingChild;
+import androidx.core.view.NestedScrollingChildHelper;
+import androidx.core.view.NestedScrollingParent;
+import androidx.core.view.NestedScrollingParentHelper;
 import androidx.core.view.ViewCompat;
 
 import com.sd.lib.swipemenu.gesture.FGestureManager;
@@ -18,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent2
+public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent, NestedScrollingChild
 {
     private FGestureManager mGestureManager;
 
@@ -233,9 +237,10 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent2
         getGestureManager().getScroller().abortAnimation();
     }
 
-    private Map<View, PullCondition> mMapNestedScrollPullCondition;
+    private final NestedScrollingParentHelper mNestedScrollingParentHelper = new NestedScrollingParentHelper(this);
+    private final NestedScrollingChildHelper mNestedScrollingChildHelper = new NestedScrollingChildHelper(this);
 
-    //---------- NestedScrollingParent ----------
+    private Map<View, PullCondition> mMapNestedScrollPullCondition;
 
     private void addNestedScrollPullCondition(View target, int axes)
     {
@@ -255,33 +260,125 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent2
         removePullCondition(pullCondition);
     }
 
+    //---------- NestedScrollingParent start ----------
+
     @Override
-    public boolean onStartNestedScroll(View child, View target, int axes, int type)
+    public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes)
     {
-        addNestedScrollPullCondition(target, axes);
+        if (mIsDebug)
+            Log.i(SwipeMenu.class.getSimpleName(), "onStartNestedScroll target:" + target);
+
+        addNestedScrollPullCondition(target, nestedScrollAxes);
         return true;
     }
 
     @Override
-    public void onNestedScrollAccepted(View child, View target, int axes, int type)
+    public void onNestedScrollAccepted(View child, View target, int axes)
     {
+        mNestedScrollingParentHelper.onNestedScrollAccepted(child, target, axes);
+        startNestedScroll(axes);
     }
 
     @Override
-    public void onStopNestedScroll(View target, int type)
+    public void onStopNestedScroll(View child)
     {
-        removeNestedScrollPullCondition(target);
+        if (mIsDebug)
+            Log.i(SwipeMenu.class.getSimpleName(), "onStopNestedScroll target:" + child);
+
+        removeNestedScrollPullCondition(child);
+        mNestedScrollingParentHelper.onStopNestedScroll(child);
+        stopNestedScroll();
     }
 
     @Override
-    public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type)
+    public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed)
     {
+        dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, null);
     }
 
     @Override
-    public void onNestedPreScroll(View target, int dx, int dy, int[] consumed, int type)
+    public void onNestedPreScroll(View target, int dx, int dy, int[] consumed)
     {
+        dispatchNestedPreScroll(dx, dy, consumed, null);
     }
+
+    @Override
+    public boolean onNestedFling(View target, float velocityX, float velocityY, boolean consumed)
+    {
+        return dispatchNestedFling(velocityX, velocityY, consumed);
+    }
+
+    @Override
+    public boolean onNestedPreFling(View target, float velocityX, float velocityY)
+    {
+        return dispatchNestedPreFling(velocityX, velocityY);
+    }
+
+    @Override
+    public int getNestedScrollAxes()
+    {
+        return mNestedScrollingParentHelper.getNestedScrollAxes();
+    }
+
+    //---------- NestedScrollingParent end ----------
+
+    //---------- NestedScrollingChild start ----------
+
+    @Override
+    public void setNestedScrollingEnabled(boolean enabled)
+    {
+        mNestedScrollingChildHelper.setNestedScrollingEnabled(enabled);
+    }
+
+    @Override
+    public boolean isNestedScrollingEnabled()
+    {
+        return mNestedScrollingChildHelper.isNestedScrollingEnabled();
+    }
+
+    @Override
+    public boolean startNestedScroll(int axes)
+    {
+        return mNestedScrollingChildHelper.startNestedScroll(axes);
+    }
+
+    @Override
+    public void stopNestedScroll()
+    {
+        mNestedScrollingChildHelper.stopNestedScroll();
+    }
+
+    @Override
+    public boolean hasNestedScrollingParent()
+    {
+        return mNestedScrollingChildHelper.hasNestedScrollingParent();
+    }
+
+    @Override
+    public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, @Nullable int[] offsetInWindow)
+    {
+        return mNestedScrollingChildHelper.dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, offsetInWindow);
+    }
+
+    @Override
+    public boolean dispatchNestedPreScroll(int dx, int dy, @Nullable int[] consumed, @Nullable int[] offsetInWindow)
+    {
+        return mNestedScrollingChildHelper.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow);
+    }
+
+    @Override
+    public boolean dispatchNestedFling(float velocityX, float velocityY, boolean consumed)
+    {
+        return mNestedScrollingChildHelper.dispatchNestedFling(velocityX, velocityY, consumed);
+    }
+
+    @Override
+    public boolean dispatchNestedPreFling(float velocityX, float velocityY)
+    {
+        return mNestedScrollingChildHelper.dispatchNestedPreFling(velocityX, velocityY);
+    }
+
+    //---------- NestedScrollingChild end ----------
 
     //---------- PullHelper Start ----------
 
