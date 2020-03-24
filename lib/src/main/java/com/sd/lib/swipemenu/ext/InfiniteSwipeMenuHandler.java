@@ -60,6 +60,9 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
         if (state == SwipeMenu.State.Close)
             return;
 
+        if (!handleState(state))
+            return;
+
         Direction direction = null;
         Direction directionOther = null;
 
@@ -94,6 +97,17 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
         onBindData(directionOther, directionOther);
 
         onPageChanged(direction);
+    }
+
+    /**
+     * 是否处理指定状态
+     *
+     * @param state
+     * @return
+     */
+    protected boolean handleState(SwipeMenu.State state)
+    {
+        return true;
     }
 
     /**

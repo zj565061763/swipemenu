@@ -37,7 +37,8 @@
                 android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:background="@color/colorAccent"
-                android:gravity="center" />
+                android:gravity="center"
+                android:text="top" />
 
         </FrameLayout>
 
@@ -54,6 +55,23 @@
                 android:layout_gravity="center"
                 android:background="@color/colorAccent"
                 android:gravity="center" />
+
+        </FrameLayout>
+
+        <!-- 底部菜单 -->
+        <FrameLayout
+            android:id="@id/lib_swipemenu_menu_right"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_menu_right"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:background="@color/colorAccent"
+                android:gravity="center"
+                android:text="right" />
 
         </FrameLayout>
 

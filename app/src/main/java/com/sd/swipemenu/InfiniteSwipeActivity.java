@@ -47,6 +47,14 @@ public class InfiniteSwipeActivity extends AppCompatActivity
     private final InfiniteSwipeMenuHandler mInfiniteSwipeMenuHandler = new InfiniteSwipeMenuHandler()
     {
         @Override
+        protected boolean handleState(SwipeMenu.State state)
+        {
+            if (state == SwipeMenu.State.OpenLeft || state == SwipeMenu.State.OpenRight)
+                return false;
+            return super.handleState(state);
+        }
+
+        @Override
         protected void onBindData(Direction viewDirection, Direction dataDirection)
         {
             Log.i(TAG, "onBindData:" + viewDirection + " " + dataDirection);
