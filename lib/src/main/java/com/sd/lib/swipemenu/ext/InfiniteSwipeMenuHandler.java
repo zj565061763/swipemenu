@@ -41,7 +41,7 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
      */
     public void bindData(Direction viewDirection, Direction dataDirection)
     {
-        onBindData(viewDirection, dataDirection);
+        onBindData(viewDirection, dataDirection, false);
     }
 
     @Override
@@ -88,13 +88,13 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
                 return;
         }
 
-        onBindData(Direction.Center, direction);
+        onBindData(Direction.Center, direction, true);
 
         swipeMenu.setState(SwipeMenu.State.Close, false);
         onMoveIndex(direction);
 
-        onBindData(direction, direction);
-        onBindData(directionOther, directionOther);
+        onBindData(direction, direction, true);
+        onBindData(directionOther, directionOther, true);
 
         onPageChanged(direction);
     }
@@ -115,8 +115,9 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
      *
      * @param viewDirection view方向
      * @param dataDirection 数据方向
+     * @param isInfinite    是否是由无限滑动触发的
      */
-    protected abstract void onBindData(Direction viewDirection, Direction dataDirection);
+    protected abstract void onBindData(Direction viewDirection, Direction dataDirection, boolean isInfinite);
 
     /**
      * 移动索引
