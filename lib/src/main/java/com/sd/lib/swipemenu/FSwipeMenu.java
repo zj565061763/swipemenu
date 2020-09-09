@@ -272,11 +272,27 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent, 
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes)
     {
-        if (mIsDebug)
-            Log.i(SwipeMenu.class.getSimpleName(), "onStartNestedScroll target:" + target);
+        final boolean isVertical = (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
+        boolean startNestedScroll = false;
+        if (isVertical)
+        {
+            startNestedScroll = getMenuView(Direction.Top) != null || getMenuView(Direction.Bottom) != null;
+        } else
+        {
+            startNestedScroll = getMenuView(Direction.Left) != null || getMenuView(Direction.Right) != null;
+        }
 
-        addNestedScrollPullCondition(target, nestedScrollAxes);
-        return true;
+        if (mIsDebug)
+        {
+            Log.i(SwipeMenu.class.getSimpleName(), "onStartNestedScroll target:" + target
+                    + " isVertical:" + isVertical
+                    + " startNestedScroll:" + startNestedScroll);
+        }
+
+        if (startNestedScroll)
+            addNestedScrollPullCondition(target, nestedScrollAxes);
+
+        return startNestedScroll;
     }
 
     @Override
