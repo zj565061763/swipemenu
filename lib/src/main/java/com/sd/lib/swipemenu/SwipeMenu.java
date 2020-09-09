@@ -13,6 +13,13 @@ public interface SwipeMenu
     void setDebug(boolean debug);
 
     /**
+     * 设置是否可以拖动
+     *
+     * @param enable
+     */
+    void setPullEnable(boolean enable);
+
+    /**
      * 设置状态变化回调
      *
      * @param callback

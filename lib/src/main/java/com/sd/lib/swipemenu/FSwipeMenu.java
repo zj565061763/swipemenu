@@ -47,6 +47,9 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent, 
                 @Override
                 public boolean shouldInterceptEvent(MotionEvent event)
                 {
+                    if (!mIsPullEnable)
+                        return false;
+
                     if (event.getAction() == MotionEvent.ACTION_DOWN)
                     {
                         return false;
@@ -59,6 +62,9 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent, 
                 @Override
                 public boolean shouldConsumeEvent(MotionEvent event)
                 {
+                    if (!mIsPullEnable)
+                        return false;
+
                     return mGestureManager.getTagHolder().isTagIntercept() || canPull(event);
                 }
 

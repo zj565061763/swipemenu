@@ -21,6 +21,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 {
     protected boolean mIsDebug;
+    protected boolean mIsPullEnable = true;
 
     private final ContentContainer mContentContainer;
     private final Map<Direction, MenuContainer> mMapMenuContainer = new HashMap<>();
@@ -102,6 +103,12 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     public void setDebug(boolean debug)
     {
         mIsDebug = debug;
+    }
+
+    @Override
+    public void setPullEnable(boolean enable)
+    {
+        mIsPullEnable = enable;
     }
 
     @Override
