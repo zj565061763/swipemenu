@@ -253,11 +253,12 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent, 
         if (mMapNestedScrollPullCondition == null)
             mMapNestedScrollPullCondition = new HashMap<>();
 
-        removeNestedScrollPullCondition(target);
-
-        final PullCondition pullCondition = new NestedScrollPullCondition(target, axes);
-        mMapNestedScrollPullCondition.put(target, pullCondition);
-        addPullCondition(pullCondition);
+        if (!mMapNestedScrollPullCondition.containsKey(target))
+        {
+            final PullCondition pullCondition = new NestedScrollPullCondition(target, axes);
+            mMapNestedScrollPullCondition.put(target, pullCondition);
+            addPullCondition(pullCondition);
+        }
     }
 
     private void removeNestedScrollPullCondition(View target)

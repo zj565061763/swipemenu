@@ -150,6 +150,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     public void removePullCondition(PullCondition condition)
     {
+        if (condition == null)
+            return;
+
         if (mPullConditionHolder != null)
         {
             if (mPullConditionHolder.remove(condition) != null)
