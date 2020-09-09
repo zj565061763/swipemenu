@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 {
@@ -41,7 +41,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     private OnViewPositionChangeCallback mOnViewPositionChangeCallback;
     private OnScrollStateChangeCallback mOnScrollStateChangeCallback;
 
-    private List<PullCondition> mListPullCondition;
+    private Map<PullCondition, String> mPullConditionHolder;
 
     public BaseSwipeMenu(Context context, AttributeSet attrs)
     {
@@ -135,27 +135,27 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (condition == null)
             return;
 
-        if (mListPullCondition == null)
-            mListPullCondition = new CopyOnWriteArrayList<>();
+        if (mPullConditionHolder == null)
+            mPullConditionHolder = new ConcurrentHashMap<>();
 
-        if (mListPullCondition.contains(condition))
+        if (mPullConditionHolder.containsKey(condition))
             return;
 
-        mListPullCondition.add(condition);
+        mPullConditionHolder.put(condition, "");
 
         if (mIsDebug)
-            Log.i(SwipeMenu.class.getSimpleName(), " + addPullCondition " + mListPullCondition.size() + " : " + condition);
+            Log.i(SwipeMenu.class.getSimpleName(), " + addPullCondition " + mPullConditionHolder.size() + " : " + condition);
     }
 
     @Override
     public void removePullCondition(PullCondition condition)
     {
-        if (mListPullCondition != null)
+        if (mPullConditionHolder != null)
         {
-            if (mListPullCondition.remove(condition))
+            if (mPullConditionHolder.remove(condition) != null)
             {
                 if (mIsDebug)
-                    Log.i(SwipeMenu.class.getSimpleName(), " - removePullCondition " + mListPullCondition.size() + " : " + condition);
+                    Log.i(SwipeMenu.class.getSimpleName(), " - removePullCondition " + mPullConditionHolder.size() + " : " + condition);
             }
         }
     }
@@ -163,10 +163,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     @Override
     public void clearPullCondition()
     {
-        if (mListPullCondition != null)
+        if (mPullConditionHolder != null)
         {
-            mListPullCondition.clear();
-            mListPullCondition = null;
+            mPullConditionHolder.clear();
+            mPullConditionHolder = null;
         }
     }
 
@@ -175,9 +175,9 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (pullDirection == null)
             throw new IllegalArgumentException("pullDirection is null when checkPullCondition()");
 
-        if (mListPullCondition != null)
+        if (mPullConditionHolder != null)
         {
-            for (PullCondition item : mListPullCondition)
+            for (PullCondition item : mPullConditionHolder.keySet())
             {
                 if (!item.canPull(this, pullDirection, event))
                     return false;
