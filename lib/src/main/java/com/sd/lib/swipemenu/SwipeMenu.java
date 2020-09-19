@@ -104,6 +104,13 @@ public interface SwipeMenu
     Direction getMenuDirection();
 
     /**
+     * 是否可以拖动
+     *
+     * @return
+     */
+    boolean isPullEnable();
+
+    /**
      * 返回当前菜单的状态
      *
      * @return

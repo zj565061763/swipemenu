@@ -106,7 +106,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
-    public void setPullEnable(boolean enable)
+    public final void setPullEnable(boolean enable)
     {
         mIsPullEnable = enable;
     }
@@ -130,7 +130,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
-    public void addPullCondition(PullCondition condition)
+    public final void addPullCondition(PullCondition condition)
     {
         if (condition == null)
             return;
@@ -138,17 +138,15 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (mPullConditionHolder == null)
             mPullConditionHolder = new ConcurrentHashMap<>();
 
-        if (mPullConditionHolder.containsKey(condition))
-            return;
-
-        mPullConditionHolder.put(condition, "");
-
-        if (mIsDebug)
-            Log.i(SwipeMenu.class.getSimpleName(), " + addPullCondition " + mPullConditionHolder.size() + " : " + condition);
+        if (mPullConditionHolder.put(condition, "") == null)
+        {
+            if (mIsDebug)
+                Log.i(SwipeMenu.class.getSimpleName(), " + addPullCondition " + mPullConditionHolder.size() + " : " + condition);
+        }
     }
 
     @Override
-    public void removePullCondition(PullCondition condition)
+    public final void removePullCondition(PullCondition condition)
     {
         if (condition == null)
             return;
@@ -164,7 +162,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
-    public void clearPullCondition()
+    public final void clearPullCondition()
     {
         if (mPullConditionHolder != null)
         {
@@ -173,7 +171,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         }
     }
 
-    protected boolean checkPullCondition(Direction pullDirection, MotionEvent event)
+    protected final boolean checkPullCondition(Direction pullDirection, MotionEvent event)
     {
         if (pullDirection == null)
             throw new IllegalArgumentException("pullDirection is null when checkPullCondition()");
@@ -244,6 +242,12 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
+    public final boolean isPullEnable()
+    {
+        return mIsPullEnable;
+    }
+
+    @Override
     public final State getState()
     {
         return mState;
@@ -256,7 +260,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
-    public float getScrollPercent()
+    public final float getScrollPercent()
     {
         return mDirectionHandler.getScrollPercent();
     }
