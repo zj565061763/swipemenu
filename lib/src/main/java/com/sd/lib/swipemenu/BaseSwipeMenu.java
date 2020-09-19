@@ -378,6 +378,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             {
                 if (mIsDebug)
                     Log.i(SwipeMenu.class.getSimpleName(), "requestLayout() when direction is null");
+
+                // 状态被重置之后，需要requestLayout()，否则可能造成view树里面的view异常
                 requestLayout();
             }
 
