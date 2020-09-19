@@ -308,8 +308,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         updateView(state, anim);
 
-//        if (changed && state == State.Close && mScrollState == ScrollState.Idle)
-//            setMenuDirection(null);
+        if (changed && state == State.Close && mScrollState == ScrollState.Idle)
+            setMenuDirection(null);
 
         return changed;
     }
@@ -373,6 +373,14 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 throw new RuntimeException("Unexpected direction: " + direction);
             }
             mDirectionHandler.init();
+
+            if (direction == null)
+            {
+                if (mIsDebug)
+                    Log.i(SwipeMenu.class.getSimpleName(), "requestLayout() when direction is null");
+
+                requestLayout();
+            }
 
             onMenuDirectionChanged(direction);
         }
@@ -482,11 +490,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             if (state == ScrollState.Idle && mState == State.Close)
             {
                 setMenuDirection(null);
-
-                if (mIsDebug)
-                    Log.i(SwipeMenu.class.getSimpleName(), "requestLayout() when Idle and Close");
-
-                requestLayout();
             }
 
             if (mOnScrollStateChangeCallback != null)
@@ -752,16 +755,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                     smoothScroll(boundCurrent, boundState);
                 } else
                 {
-                    if (state == mState)
-                    {
-                        if (mIsDebug)
-                            Log.i(SwipeMenu.class.getSimpleName(), "requestLayout() state == mState");
-
-                        requestLayout();
-                    } else
-                    {
-                        layoutInternal(state);
-                    }
+                    final int delta = boundState - boundCurrent;
+                    moveView(delta, false);
                 }
             }
         }
