@@ -37,7 +37,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     private int mContentContainerLeft;
     private int mContentContainerTop;
 
-    private OnStateChangeCallback mOnStateChangeCallback;
+    private Map<OnStateChangeCallback, String> mOnStateChangeCallbackHolder;
     private Map<OnViewPositionChangeCallback, String> mOnViewPositionChangeCallbackHolder;
     private Map<OnScrollStateChangeCallback, String> mOnScrollStateChangeCallbackHolder;
 
@@ -112,9 +112,29 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
-    public final void setOnStateChangeCallback(OnStateChangeCallback callback)
+    public final void addOnStateChangeCallback(OnStateChangeCallback callback)
     {
-        mOnStateChangeCallback = callback;
+        if (callback == null)
+            return;
+
+        if (mOnStateChangeCallbackHolder == null)
+            mOnStateChangeCallbackHolder = new ConcurrentHashMap<>();
+
+        mOnStateChangeCallbackHolder.put(callback, "");
+    }
+
+    @Override
+    public final void removeOnStateChangeCallback(OnStateChangeCallback callback)
+    {
+        if (callback == null)
+            return;
+
+        if (mOnStateChangeCallbackHolder != null)
+        {
+            mOnStateChangeCallbackHolder.remove(callback);
+            if (mOnStateChangeCallbackHolder.isEmpty())
+                mOnStateChangeCallbackHolder = null;
+        }
     }
 
     @Override
@@ -339,8 +359,13 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
             mState = state;
 
-            if (mOnStateChangeCallback != null)
-                mOnStateChangeCallback.onStateChanged(stateOld, state, BaseSwipeMenu.this);
+            if (mOnStateChangeCallbackHolder != null)
+            {
+                for (OnStateChangeCallback callback : mOnStateChangeCallbackHolder.keySet())
+                {
+                    callback.onStateChanged(stateOld, state, BaseSwipeMenu.this);
+                }
+            }
         }
 
         if (!changed && state == State.Close && mScrollState == ScrollState.Fling)
@@ -532,9 +557,12 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 setMenuDirection(null);
             }
 
-            for (OnScrollStateChangeCallback callback : mOnScrollStateChangeCallbackHolder.keySet())
+            if (mOnScrollStateChangeCallbackHolder != null)
             {
-                callback.onScrollStateChanged(old, state, BaseSwipeMenu.this);
+                for (OnScrollStateChangeCallback callback : mOnScrollStateChangeCallbackHolder.keySet())
+                {
+                    callback.onScrollStateChanged(old, state, BaseSwipeMenu.this);
+                }
             }
         }
     }
@@ -747,9 +775,12 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
             updateLockEvent();
 
-            for (OnViewPositionChangeCallback callback : mOnViewPositionChangeCallbackHolder.keySet())
+            if (mOnViewPositionChangeCallbackHolder != null)
             {
-                callback.onViewPositionChanged(left, top, isDrag, BaseSwipeMenu.this);
+                for (OnViewPositionChangeCallback callback : mOnViewPositionChangeCallbackHolder.keySet())
+                {
+                    callback.onViewPositionChanged(left, top, isDrag, BaseSwipeMenu.this);
+                }
             }
         }
     }

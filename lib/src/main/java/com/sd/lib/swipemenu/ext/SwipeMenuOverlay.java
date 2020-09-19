@@ -35,8 +35,9 @@ public class SwipeMenuOverlay extends FrameLayout implements SwipeMenu.OnStateCh
         if (tag instanceof View)
             throw new IllegalArgumentException("tag must not be instance of view");
 
-        mMapSwipeMenu.put(swipeMenu, tag);
-        swipeMenu.setOnStateChangeCallback(this);
+        final Object preTag = mMapSwipeMenu.put(swipeMenu, tag);
+        if (preTag == null)
+            swipeMenu.addOnStateChangeCallback(this);
 
         SwipeMenuInfo info = mMapInfo.get(tag);
         if (info == null)

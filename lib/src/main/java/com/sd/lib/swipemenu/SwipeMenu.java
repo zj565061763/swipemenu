@@ -20,11 +20,18 @@ public interface SwipeMenu
     void setPullEnable(boolean enable);
 
     /**
-     * 设置状态变化回调
+     * 添加回调对象
      *
      * @param callback
      */
-    void setOnStateChangeCallback(OnStateChangeCallback callback);
+    void addOnStateChangeCallback(OnStateChangeCallback callback);
+
+    /**
+     * 移除回调对象
+     *
+     * @param callback
+     */
+    void removeOnStateChangeCallback(OnStateChangeCallback callback);
 
     /**
      * 添加回调对象

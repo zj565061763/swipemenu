@@ -32,7 +32,7 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
         mSwipeMenu.setMode(SwipeMenu.Mode.Drawer);
 
         // 设置状态变化回调
-        mSwipeMenu.setOnStateChangeCallback(new SwipeMenu.OnStateChangeCallback()
+        mSwipeMenu.addOnStateChangeCallback(new SwipeMenu.OnStateChangeCallback()
         {
             @Override
             public void onStateChanged(SwipeMenu.State oldState, SwipeMenu.State newState, SwipeMenu swipeMenu)
