@@ -624,7 +624,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         if (mIsDebug)
         {
             Log.i(SwipeMenu.class.getSimpleName(), "layoutInternal state:" + state + " isViewIdle:" + isViewIdle() + " mode:" + mMode
-                    + " [" + mContentContainer.getLeft() + "," + mContentContainer.getTop() + "," + mContentContainer.getRight() + "," + mContentContainer.getBottom() + "]");
+                    + " [" + mContentContainer.getLeft() + "," + mContentContainer.getTop() + "," + mContentContainer.getRight() + "," + mContentContainer.getBottom() + "]"
+                    + " direction:" + getMenuDirection());
         }
 
         // ---------- Menu ----------
