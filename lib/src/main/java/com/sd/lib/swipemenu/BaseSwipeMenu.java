@@ -308,8 +308,8 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
         updateView(state, anim);
 
-        if (changed && state == State.Close && mScrollState == ScrollState.Idle)
-            setMenuDirection(null);
+//        if (changed && state == State.Close && mScrollState == ScrollState.Idle)
+//            setMenuDirection(null);
 
         return changed;
     }
@@ -752,13 +752,15 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                     smoothScroll(boundCurrent, boundState);
                 } else
                 {
-                    layoutInternal(state);
                     if (state == mState)
                     {
                         if (mIsDebug)
                             Log.i(SwipeMenu.class.getSimpleName(), "requestLayout() state == mState");
 
                         requestLayout();
+                    } else
+                    {
+                        layoutInternal(state);
                     }
                 }
             }
