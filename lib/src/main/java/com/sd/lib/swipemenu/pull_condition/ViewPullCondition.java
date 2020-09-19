@@ -46,6 +46,33 @@ public abstract class ViewPullCondition implements SwipeMenu.PullCondition
 
     protected abstract boolean canPullImpl(SwipeMenu.Direction pullDirection, MotionEvent event, SwipeMenu swipeMenu);
 
+    @Override
+    public int hashCode()
+    {
+        final View view = getView();
+        if (view == null)
+            return super.hashCode();
+
+        return view.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == this) return true;
+        if (obj == null) return false;
+        if (obj.getClass() != getClass()) return false;
+
+        final View view = getView();
+        if (view == null)
+            return super.equals(obj);
+
+        final ViewPullCondition other = (ViewPullCondition) obj;
+        final View otherView = other.getView();
+
+        return view != null && view.equals(otherView);
+    }
+
     private static boolean isAttached(View view)
     {
         if (view == null)
