@@ -25,6 +25,7 @@ import java.util.Map;
 public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent, NestedScrollingChild
 {
     private FGestureManager mGestureManager;
+    private Direction mCanPullDirection;
 
     public FSwipeMenu(Context context, AttributeSet attrs)
     {
@@ -108,6 +109,13 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent, 
                     switch (newState)
                     {
                         case Consume:
+                            if (mCanPullDirection != null)
+                            {
+                                final Direction direction = mCanPullDirection;
+                                mCanPullDirection = null;
+
+                                setMenuDirection(direction);
+                            }
                             setScrollState(ScrollState.Drag);
                             break;
                         case Fling:
@@ -175,6 +183,8 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent, 
 
     private boolean canPull(MotionEvent event)
     {
+        mCanPullDirection = null;
+
         final boolean checkViewIdle = isViewIdle();
         if (!checkViewIdle)
             return false;
@@ -192,7 +202,7 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent, 
             if (!checkPullCondition(pullDirection, event))
                 return false;
 
-            setMenuDirection(initDirection);
+            mCanPullDirection = initDirection;
             return true;
         } else
         {
@@ -206,7 +216,7 @@ public class FSwipeMenu extends BaseSwipeMenu implements NestedScrollingParent, 
             if (!checkPullCondition(pullDirection, event))
                 return false;
 
-            setMenuDirection(initDirection);
+            mCanPullDirection = initDirection;
             return true;
         }
     }
