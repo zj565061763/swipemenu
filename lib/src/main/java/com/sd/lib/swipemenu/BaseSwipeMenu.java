@@ -755,7 +755,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                     if (state == mState)
                     {
                         if (mIsDebug)
-                            Log.i(SwipeMenu.class.getSimpleName(), "state == mState requestLayout()");
+                            Log.i(SwipeMenu.class.getSimpleName(), "requestLayout() state == mState");
 
                         requestLayout();
                     }
