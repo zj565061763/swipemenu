@@ -180,7 +180,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
         {
             for (PullCondition item : mPullConditionHolder.keySet())
             {
-                if (!item.canPull(this, pullDirection, event))
+                if (!item.canPull(pullDirection, event, BaseSwipeMenu.this))
                     return false;
             }
         }
@@ -300,7 +300,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             mState = state;
 
             if (mOnStateChangeCallback != null)
-                mOnStateChangeCallback.onStateChanged(this, stateOld, state);
+                mOnStateChangeCallback.onStateChanged(stateOld, state, BaseSwipeMenu.this);
         }
 
         if (!changed && state == State.Close && mScrollState == ScrollState.Fling)
@@ -489,7 +489,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             }
 
             if (mOnScrollStateChangeCallback != null)
-                mOnScrollStateChangeCallback.onScrollStateChanged(this, old, state);
+                mOnScrollStateChangeCallback.onScrollStateChanged(old, state, BaseSwipeMenu.this);
         }
     }
 
@@ -701,7 +701,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             updateLockEvent();
 
             if (mOnViewPositionChangeCallback != null)
-                mOnViewPositionChangeCallback.onViewPositionChanged(this, left, top, isDrag);
+                mOnViewPositionChangeCallback.onViewPositionChanged(left, top, isDrag, BaseSwipeMenu.this);
         }
     }
 

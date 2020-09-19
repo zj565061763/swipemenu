@@ -45,7 +45,7 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
     }
 
     @Override
-    public void onScrollStateChanged(SwipeMenu swipeMenu, SwipeMenu.ScrollState oldState, SwipeMenu.ScrollState newState)
+    public void onScrollStateChanged(SwipeMenu.ScrollState oldState, SwipeMenu.ScrollState newState, SwipeMenu swipeMenu)
     {
         processIfNeed(swipeMenu);
     }

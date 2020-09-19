@@ -27,7 +27,7 @@ public class NestedScrollPullCondition extends ViewPullCondition
     }
 
     @Override
-    protected boolean canPullImpl(SwipeMenu swipeMenu, SwipeMenu.Direction pullDirection, MotionEvent event)
+    protected boolean canPullImpl(SwipeMenu.Direction pullDirection, MotionEvent event, SwipeMenu swipeMenu)
     {
         if (mScrollToBoundPullCondition == null)
         {
@@ -35,7 +35,7 @@ public class NestedScrollPullCondition extends ViewPullCondition
             return true;
         }
 
-        if (!mScrollToBoundPullCondition.canPull(swipeMenu, pullDirection, event))
+        if (!mScrollToBoundPullCondition.canPull(pullDirection, event, swipeMenu))
             return false;
 
         return true;

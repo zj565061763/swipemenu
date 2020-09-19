@@ -35,7 +35,7 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
         mSwipeMenu.setOnStateChangeCallback(new SwipeMenu.OnStateChangeCallback()
         {
             @Override
-            public void onStateChanged(SwipeMenu swipeMenu, SwipeMenu.State oldState, SwipeMenu.State newState)
+            public void onStateChanged(SwipeMenu.State oldState, SwipeMenu.State newState, SwipeMenu swipeMenu)
             {
                 Log.e(TAG, "onStateChanged:" + oldState + "----->" + newState);
             }
@@ -47,7 +47,7 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
             private int mLastTop;
 
             @Override
-            public void onViewPositionChanged(SwipeMenu swipeMenu, int left, int top, boolean isDrag)
+            public void onViewPositionChanged(int left, int top, boolean isDrag, SwipeMenu swipeMenu)
             {
                 final int deltaLeft = left - mLastLeft;
                 final int deltaTop = top - mLastTop;
@@ -63,7 +63,7 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
         mSwipeMenu.setOnScrollStateChangeCallback(new SwipeMenu.OnScrollStateChangeCallback()
         {
             @Override
-            public void onScrollStateChanged(SwipeMenu swipeMenu, SwipeMenu.ScrollState oldState, SwipeMenu.ScrollState newState)
+            public void onScrollStateChanged(SwipeMenu.ScrollState oldState, SwipeMenu.ScrollState newState, SwipeMenu swipeMenu)
             {
                 Log.i(TAG, "onScrollStateChanged:" + oldState + " -> " + newState);
             }

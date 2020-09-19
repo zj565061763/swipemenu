@@ -26,7 +26,7 @@ public abstract class ViewPullCondition implements SwipeMenu.PullCondition
     }
 
     @Override
-    public final boolean canPull(SwipeMenu swipeMenu, SwipeMenu.Direction pullDirection, MotionEvent event)
+    public final boolean canPull(SwipeMenu.Direction pullDirection, MotionEvent event, SwipeMenu swipeMenu)
     {
         final View view = getView();
         if (view == null)
@@ -41,10 +41,10 @@ public abstract class ViewPullCondition implements SwipeMenu.PullCondition
         if (!isAttached(view))
             return true;
 
-        return canPullImpl(swipeMenu, pullDirection, event);
+        return canPullImpl(pullDirection, event, swipeMenu);
     }
 
-    protected abstract boolean canPullImpl(SwipeMenu swipeMenu, SwipeMenu.Direction pullDirection, MotionEvent event);
+    protected abstract boolean canPullImpl(SwipeMenu.Direction pullDirection, MotionEvent event, SwipeMenu swipeMenu);
 
     private static boolean isAttached(View view)
     {

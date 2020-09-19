@@ -200,11 +200,11 @@ public interface SwipeMenu
         /**
          * 状态变更回调
          *
-         * @param swipeMenu
          * @param oldState
          * @param newState
+         * @param swipeMenu
          */
-        void onStateChanged(SwipeMenu swipeMenu, State oldState, State newState);
+        void onStateChanged(State oldState, State newState, SwipeMenu swipeMenu);
     }
 
     interface OnViewPositionChangeCallback
@@ -217,7 +217,7 @@ public interface SwipeMenu
          * @param isDrag    true-拖动，false-惯性滚动
          * @param swipeMenu
          */
-        void onViewPositionChanged(SwipeMenu swipeMenu, int left, int top, boolean isDrag);
+        void onViewPositionChanged(int left, int top, boolean isDrag, SwipeMenu swipeMenu);
     }
 
     interface OnScrollStateChangeCallback
@@ -225,15 +225,23 @@ public interface SwipeMenu
         /**
          * 滚动状态变化回调
          *
-         * @param swipeMenu
          * @param oldState
          * @param newState
+         * @param swipeMenu
          */
-        void onScrollStateChanged(SwipeMenu swipeMenu, ScrollState oldState, ScrollState newState);
+        void onScrollStateChanged(ScrollState oldState, ScrollState newState, SwipeMenu swipeMenu);
     }
 
     interface PullCondition
     {
-        boolean canPull(SwipeMenu swipeMenu, Direction pullDirection, MotionEvent event);
+        /**
+         * 是否可以拖动
+         *
+         * @param pullDirection
+         * @param event
+         * @param swipeMenu
+         * @return
+         */
+        boolean canPull(Direction pullDirection, MotionEvent event, SwipeMenu swipeMenu);
     }
 }

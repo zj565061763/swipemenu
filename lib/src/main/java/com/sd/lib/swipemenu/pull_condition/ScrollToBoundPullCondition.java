@@ -27,7 +27,7 @@ public class ScrollToBoundPullCondition extends ViewPullCondition
     }
 
     @Override
-    protected boolean canPullImpl(SwipeMenu swipeMenu, SwipeMenu.Direction pullDirection, MotionEvent event)
+    protected boolean canPullImpl(SwipeMenu.Direction pullDirection, MotionEvent event, SwipeMenu swipeMenu)
     {
         switch (mAxis)
         {
