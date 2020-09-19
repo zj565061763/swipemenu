@@ -38,7 +38,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     private int mContentContainerTop;
 
     private OnStateChangeCallback mOnStateChangeCallback;
-    private OnViewPositionChangeCallback mOnViewPositionChangeCallback;
+    private Map<OnViewPositionChangeCallback, String> mOnViewPositionChangeCallbackHolder;
     private Map<OnScrollStateChangeCallback, String> mOnScrollStateChangeCallbackHolder;
 
     private Map<PullCondition, String> mPullConditionHolder;
@@ -118,9 +118,29 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
-    public final void setOnViewPositionChangeCallback(OnViewPositionChangeCallback callback)
+    public final void addOnViewPositionChangeCallback(OnViewPositionChangeCallback callback)
     {
-        mOnViewPositionChangeCallback = callback;
+        if (callback == null)
+            return;
+
+        if (mOnViewPositionChangeCallbackHolder == null)
+            mOnViewPositionChangeCallbackHolder = new ConcurrentHashMap<>();
+
+        mOnViewPositionChangeCallbackHolder.put(callback, "");
+    }
+
+    @Override
+    public final void removeOnViewPositionChangeCallback(OnViewPositionChangeCallback callback)
+    {
+        if (callback == null)
+            return;
+
+        if (mOnViewPositionChangeCallbackHolder != null)
+        {
+            mOnViewPositionChangeCallbackHolder.remove(callback);
+            if (mOnViewPositionChangeCallbackHolder.isEmpty())
+                mOnViewPositionChangeCallbackHolder = null;
+        }
     }
 
     @Override
@@ -727,8 +747,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
             updateLockEvent();
 
-            if (mOnViewPositionChangeCallback != null)
-                mOnViewPositionChangeCallback.onViewPositionChanged(left, top, isDrag, BaseSwipeMenu.this);
+            for (OnViewPositionChangeCallback callback : mOnViewPositionChangeCallbackHolder.keySet())
+            {
+                callback.onViewPositionChanged(left, top, isDrag, BaseSwipeMenu.this);
+            }
         }
     }
 

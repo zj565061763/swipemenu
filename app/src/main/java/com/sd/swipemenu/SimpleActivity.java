@@ -41,7 +41,7 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
         // 设置view位置变化回调
-        mSwipeMenu.setOnViewPositionChangeCallback(new SwipeMenu.OnViewPositionChangeCallback()
+        mSwipeMenu.addOnViewPositionChangeCallback(new SwipeMenu.OnViewPositionChangeCallback()
         {
             private int mLastLeft;
             private int mLastTop;

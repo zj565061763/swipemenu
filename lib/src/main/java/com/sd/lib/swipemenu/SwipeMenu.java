@@ -27,11 +27,18 @@ public interface SwipeMenu
     void setOnStateChangeCallback(OnStateChangeCallback callback);
 
     /**
-     * 位置变化回调
+     * 添加回调对象
      *
      * @param callback
      */
-    void setOnViewPositionChangeCallback(OnViewPositionChangeCallback callback);
+    void addOnViewPositionChangeCallback(OnViewPositionChangeCallback callback);
+
+    /**
+     * 移除回调对象
+     *
+     * @param callback
+     */
+    void removeOnViewPositionChangeCallback(OnViewPositionChangeCallback callback);
 
     /**
      * 添加回调对象
