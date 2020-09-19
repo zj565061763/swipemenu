@@ -374,15 +374,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             }
             mDirectionHandler.init();
 
-            if (direction == null)
-            {
-                if (mIsDebug)
-                    Log.i(SwipeMenu.class.getSimpleName(), "requestLayout() when direction is null");
-
-                // 状态被重置之后，需要requestLayout()，否则可能造成view树里面的view异常
-                requestLayout();
-            }
-
             onMenuDirectionChanged(direction);
         }
     }
@@ -491,6 +482,11 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             if (state == ScrollState.Idle && mState == State.Close)
             {
                 setMenuDirection(null);
+
+                if (mIsDebug)
+                    Log.i(SwipeMenu.class.getSimpleName(), "requestLayout() when Idle and Close");
+
+                requestLayout();
             }
 
             if (mOnScrollStateChangeCallback != null)
