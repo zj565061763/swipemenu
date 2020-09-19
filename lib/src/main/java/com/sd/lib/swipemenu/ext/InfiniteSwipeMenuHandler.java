@@ -5,7 +5,7 @@ import com.sd.lib.swipemenu.SwipeMenu;
 /**
  * 无限滑动处理
  */
-public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStateChangeCallback
+public abstract class InfiniteSwipeMenuHandler
 {
     private SwipeMenu mSwipeMenu;
 
@@ -20,16 +20,12 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
         if (old != swipeMenu)
         {
             if (old != null)
-            {
-                old.setOnScrollStateChangeCallback(null);
-            }
+                old.removeOnScrollStateChangeCallback(mOnScrollStateChangeCallback);
 
             mSwipeMenu = swipeMenu;
 
             if (mSwipeMenu != null)
-            {
-                mSwipeMenu.setOnScrollStateChangeCallback(this);
-            }
+                mSwipeMenu.addOnScrollStateChangeCallback(mOnScrollStateChangeCallback);
         }
     }
 
@@ -44,11 +40,14 @@ public abstract class InfiniteSwipeMenuHandler implements SwipeMenu.OnScrollStat
         onBindData(viewDirection, dataDirection, false);
     }
 
-    @Override
-    public void onScrollStateChanged(SwipeMenu.ScrollState oldState, SwipeMenu.ScrollState newState, SwipeMenu swipeMenu)
+    private final SwipeMenu.OnScrollStateChangeCallback mOnScrollStateChangeCallback = new SwipeMenu.OnScrollStateChangeCallback()
     {
-        processIfNeed(swipeMenu);
-    }
+        @Override
+        public void onScrollStateChanged(SwipeMenu.ScrollState oldState, SwipeMenu.ScrollState newState, SwipeMenu swipeMenu)
+        {
+            processIfNeed(swipeMenu);
+        }
+    };
 
     private void processIfNeed(SwipeMenu swipeMenu)
     {

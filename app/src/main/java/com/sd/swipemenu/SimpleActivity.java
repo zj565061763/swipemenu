@@ -60,7 +60,7 @@ public class SimpleActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
         // 设置滚动状态变化回调
-        mSwipeMenu.setOnScrollStateChangeCallback(new SwipeMenu.OnScrollStateChangeCallback()
+        mSwipeMenu.addOnScrollStateChangeCallback(new SwipeMenu.OnScrollStateChangeCallback()
         {
             @Override
             public void onScrollStateChanged(SwipeMenu.ScrollState oldState, SwipeMenu.ScrollState newState, SwipeMenu swipeMenu)

@@ -39,7 +39,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
 
     private OnStateChangeCallback mOnStateChangeCallback;
     private OnViewPositionChangeCallback mOnViewPositionChangeCallback;
-    private OnScrollStateChangeCallback mOnScrollStateChangeCallback;
+    private Map<OnScrollStateChangeCallback, String> mOnScrollStateChangeCallbackHolder;
 
     private Map<PullCondition, String> mPullConditionHolder;
 
@@ -124,9 +124,29 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     }
 
     @Override
-    public final void setOnScrollStateChangeCallback(OnScrollStateChangeCallback callback)
+    public final void addOnScrollStateChangeCallback(OnScrollStateChangeCallback callback)
     {
-        mOnScrollStateChangeCallback = callback;
+        if (callback == null)
+            return;
+
+        if (mOnScrollStateChangeCallbackHolder == null)
+            mOnScrollStateChangeCallbackHolder = new ConcurrentHashMap<>();
+
+        mOnScrollStateChangeCallbackHolder.put(callback, "");
+    }
+
+    @Override
+    public void removeOnScrollStateChangeCallback(OnScrollStateChangeCallback callback)
+    {
+        if (callback == null)
+            return;
+
+        if (mOnScrollStateChangeCallbackHolder != null)
+        {
+            mOnScrollStateChangeCallbackHolder.remove(callback);
+            if (mOnScrollStateChangeCallbackHolder.isEmpty())
+                mOnScrollStateChangeCallbackHolder = null;
+        }
     }
 
     @Override
@@ -492,8 +512,10 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
                 setMenuDirection(null);
             }
 
-            if (mOnScrollStateChangeCallback != null)
-                mOnScrollStateChangeCallback.onScrollStateChanged(old, state, BaseSwipeMenu.this);
+            for (OnScrollStateChangeCallback callback : mOnScrollStateChangeCallbackHolder.keySet())
+            {
+                callback.onScrollStateChanged(old, state, BaseSwipeMenu.this);
+            }
         }
     }
 

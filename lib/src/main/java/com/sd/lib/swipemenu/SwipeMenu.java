@@ -34,11 +34,18 @@ public interface SwipeMenu
     void setOnViewPositionChangeCallback(OnViewPositionChangeCallback callback);
 
     /**
-     * 设置滚动状态变化回调
+     * 添加回调对象
      *
      * @param callback
      */
-    void setOnScrollStateChangeCallback(OnScrollStateChangeCallback callback);
+    void addOnScrollStateChangeCallback(OnScrollStateChangeCallback callback);
+
+    /**
+     * 移除回调对象
+     *
+     * @param callback
+     */
+    void removeOnScrollStateChangeCallback(OnScrollStateChangeCallback callback);
 
     /**
      * 添加拖动条件限制
