@@ -13,14 +13,15 @@
         <FrameLayout
             android:id="@id/lib_swipemenu_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:onClick="onClick">
 
             <TextView
                 android:id="@+id/tv_content"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
-                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:onClick="onClick"
                 android:text="content"
                 android:textColor="@android:color/white" />
@@ -31,14 +32,15 @@
         <FrameLayout
             android:id="@id/lib_swipemenu_menu_left"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_green_dark"
+            android:onClick="onClick">
 
             <TextView
                 android:id="@+id/tv_menu_left"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/holo_green_dark"
-                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:onClick="onClick"
                 android:text="left"
                 android:textColor="@android:color/white" />
@@ -49,14 +51,15 @@
         <FrameLayout
             android:id="@id/lib_swipemenu_menu_right"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_red_dark"
+            android:onClick="onClick">
 
             <TextView
                 android:id="@+id/tv_menu_right"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/holo_red_dark"
-                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:onClick="onClick"
                 android:text="right"
                 android:textColor="@android:color/white" />
@@ -67,14 +70,15 @@
         <FrameLayout
             android:id="@id/lib_swipemenu_menu_top"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_orange_dark"
+            android:onClick="onClick">
 
             <TextView
                 android:id="@+id/tv_menu_top"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/holo_orange_dark"
-                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:onClick="onClick"
                 android:text="top"
                 android:textColor="@android:color/white" />
@@ -85,14 +89,14 @@
         <FrameLayout
             android:id="@id/lib_swipemenu_menu_bottom"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_purple">
 
             <TextView
                 android:id="@+id/tv_menu_bottom"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/holo_purple"
-                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:onClick="onClick"
                 android:text="bottom"
                 android:textColor="@android:color/white" />
