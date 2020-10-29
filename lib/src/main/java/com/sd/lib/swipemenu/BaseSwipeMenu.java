@@ -12,8 +12,8 @@ import androidx.core.view.ViewCompat;
 
 import com.sd.lib.swipemenu.gesture.FTouchHelper;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -456,7 +456,7 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
     {
         super.onFinishInflate();
 
-        final List<View> list = new ArrayList<>(5);
+        final List<View> list = new LinkedList<>();
         for (int i = 0; i < getChildCount(); i++)
         {
             final View child = getChildAt(i);
@@ -487,9 +487,6 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             {
                 removeView(item);
                 setMenuView(Direction.Bottom, item);
-            } else
-            {
-                throw new RuntimeException("Illegal child in swipe menu:" + item);
             }
         }
     }
@@ -605,9 +602,36 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
      */
     protected abstract boolean smoothScroll(int start, int end);
 
+    private boolean isExtraChild(View view)
+    {
+        if (view == mContentContainer)
+            return false;
+
+        for (MenuContainer item : mMapMenuContainer.values())
+        {
+            if (view == item)
+                return false;
+        }
+
+        return true;
+    }
+
     @Override
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec)
     {
+        final int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++)
+        {
+            final View child = getChildAt(i);
+            if (isExtraChild(child))
+            {
+                if (child.getVisibility() == GONE)
+                    continue;
+
+                measureChild(child, widthMeasureSpec, heightMeasureSpec);
+            }
+        }
+
         mContentContainer.measure(getChildMeasureSpec(widthMeasureSpec, 0, LayoutParams.MATCH_PARENT),
                 getChildMeasureSpec(heightMeasureSpec, 0, LayoutParams.MATCH_PARENT));
 
@@ -657,6 +681,19 @@ abstract class BaseSwipeMenu extends ViewGroup implements SwipeMenu
             Log.i(SwipeMenu.class.getSimpleName(), "onLayout");
 
         layoutInternal(mState);
+
+        final int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++)
+        {
+            final View child = getChildAt(i);
+            if (isExtraChild(child))
+            {
+                if (child.getVisibility() == GONE)
+                    continue;
+
+                child.layout(0, 0, child.getMeasuredWidth(), child.getMeasuredHeight());
+            }
+        }
     }
 
     private void layoutInternal(State state)
